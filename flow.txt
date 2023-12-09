@@ -15,3 +15,21 @@
 
      + Spring Boot 3
 
+
+
+Features
+Endpoints to record savings transactions per customer, including transaction details such as transaction ID, date, payment method, and amount.
+Endpoints to track the total savings amount for each person.
+Endpoints to track the total savings amount received across all users.
+Endpoints to create and manage multiple savings products, such as Education Savings, Personal Savings, and Vacation Savings.
+
+
+Test Steps:
+Set up a Spring Boot project.
+Define the necessary data models for customers, transactions, and savings products.
+Implement controllers and endpoints for each required functionality.
+Configure the appropriate database of your choice to store the data.
+Implement the necessary service layer to handle the business logic.
+Ensure proper error handling and validation of incoming requests.
+Implement unit tests to validate the functionality of the API endpoints.
+Document the APIs using both Postman and Swagger, providing clear descriptions and examples for each endpoint.
