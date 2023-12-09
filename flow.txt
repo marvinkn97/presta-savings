@@ -13,8 +13,5 @@
 
    + Technologies Used
 
-     + Spring Boot 3, Data JPA, Data JDBC
-     + PostgreSQL on Docker
-     + Testcontainers for DAO unit tests
-     + Flyway for seamless data migrations
+     + Spring Boot 3
 
