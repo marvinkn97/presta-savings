@@ -16,7 +16,6 @@
      + Spring Boot 3
 
 
-
 Features
 Endpoints to record savings transactions per customer, including transaction details such as transaction ID, date, payment method, and amount.
 Endpoints to track the total savings amount for each person.

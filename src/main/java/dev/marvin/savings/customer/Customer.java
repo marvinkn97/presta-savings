@@ -1,8 +1,16 @@
 package dev.marvin.savings.customer;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+import java.io.Serializable;
+
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Getter
+@Setter
 public class Customer implements Serializable {
     private Integer id;
     private String name;
@@ -10,11 +18,4 @@ public class Customer implements Serializable {
     private Integer mobile;
     private Integer governmentId;
     private String memberNumber;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    public Customer() {
-    }
-
-
 }
