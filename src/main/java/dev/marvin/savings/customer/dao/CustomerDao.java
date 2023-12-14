@@ -1,6 +1,6 @@
 package dev.marvin.savings.customer.dao;
 
-import dev.marvin.savings.customer.Customer;
+import dev.marvin.savings.customer.domain.Customer;
 
 import java.util.List;
 import java.util.Optional;

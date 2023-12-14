@@ -1,6 +1,6 @@
 package dev.marvin.savings.customer.dao;
 
-import dev.marvin.savings.customer.Customer;
+import dev.marvin.savings.customer.domain.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,16 +21,16 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public List<Customer> getAllCustomers() {
         String sql = """
-                SELECT id, name, email, mobile, government_id
-                FROM tbl_customers
+                SELECT id, name, email, mobile, government_id, member_number
+                FROM tlb_customers
                 """;
-        return null;
+        return jdbcTemplate.queryForList(sql, Customer.class);
     }
 
     @Override
     public Optional<Customer> getCustomerById(Integer customerId) {
         String sql = """
-                SELECT id, name, email, mobile, government_id
+                SELECT id, name, email, mobile, government_id, member_number
                 FROM tbl_customers
                 WHERE id = ?
                 """;
@@ -40,7 +40,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public Integer insertCustomer(Customer customer) {
         String sql = """
-                INSERT INTO (id, name, email, mobile, government_id)
+                INSERT INTO tbl_customers (id, name, email, mobile, government_id)
                 VALUES(?,?,?,?)
                 """;
         return null;
@@ -48,11 +48,22 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
 
     @Override
     public Boolean updateCustomer(Integer customerId) {
+        String sql = """
+                UPDATE tbl_customers 
+                SET name = ?
+                WHERE id = ?
+                """;
+
         return false;
     }
 
     @Override
     public Boolean deleteCustomer(Integer customerId) {
+        String sql = """
+                DELETE FROM tbl_customers
+                WHERE id = ?
+                """;
+
         return false;
     }
 }

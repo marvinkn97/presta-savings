@@ -14,6 +14,7 @@
    + Technologies Used
 
      + Spring Boot 3
+     + MySQL on Docker
 
 
 Features
@@ -32,3 +33,29 @@ Implement the necessary service layer to handle the business logic.
 Ensure proper error handling and validation of incoming requests.
 Implement unit tests to validate the functionality of the API endpoints.
 Document the APIs using both Postman and Swagger, providing clear descriptions and examples for each endpoint.
+
+
+-- Customer table
+CREATE TABLE Customer IF NOT EXISTS (
+    customer_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+
+-- Account table
+CREATE TABLE Account IF NOT EXITS (
+    account_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES Customer(customer_id),
+    account_type VARCHAR(50) NOT NULL,
+    balance DECIMAL(15, 2) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Transaction table
+CREATE TABLE Transaction IF NOT EXISTS (
+    transaction_id SERIAL PRIMARY KEY,
+    account_id INT REFERENCES Account(account_id),
+    transaction_type VARCHAR(50) NOT NULL,
+    amount DECIMAL(15, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

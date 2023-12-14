@@ -1,21 +1,19 @@
-package dev.marvin.savings.customer;
+package dev.marvin.savings.customer.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class Customer implements Serializable {
+public class Customer{
     private Integer id;
     private String name;
     private String email;
-    private Integer mobile;
+    private Long mobile;
     private Integer governmentId;
     private String memberNumber;
 }
