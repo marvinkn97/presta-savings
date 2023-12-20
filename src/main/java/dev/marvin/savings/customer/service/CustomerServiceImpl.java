@@ -2,6 +2,9 @@ package dev.marvin.savings.customer.service;
 
 import dev.marvin.savings.customer.dao.CustomerDao;
 import dev.marvin.savings.customer.domain.Customer;
+import dev.marvin.savings.customer.dto.CustomerVO;
+import dev.marvin.savings.customer.dto.NewCustomerRegistrationRequest;
+import dev.marvin.savings.customer.util.CustomerUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +18,37 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerDao = customerDao;
     }
 
-    public List<Customer> getAllCustomers() {
-        return customerDao.getAllCustomers();
+    @Override
+    public Integer insertCustomer(NewCustomerRegistrationRequest registrationRequest) {
+        Integer generatedID = 0;
+
+        if(registrationRequest != null){
+            Customer customer = new Customer();
+            customer.setName(registrationRequest.name());
+            customer.setEmail(registrationRequest.email());
+            customer.setMobile(Integer.parseInt(registrationRequest.mobile()));
+            customer.setGovernmentId(Integer.parseInt(registrationRequest.governmentId()));
+            customer.setMemberNumber(CustomerUtil.generateCustomerMemberNumber());
+
+            generatedID = customerDao.insertCustomer(customer);
+        }
+        return generatedID;
     }
 
-    public Customer getCustomerById(Integer customerId) {
-        return customerDao.getCustomerById(customerId).orElse(null);
+    @Override
+    public List<CustomerVO> getAllCustomers() {
+        List<Customer> customerList = customerDao.getAllCustomers();
+        List<CustomerVO> customerDTOList = null;
+
+        for (Customer customer: customerList) {
+
+        }
+
+        return null;
     }
 
-
+    @Override
+    public CustomerVO getCustomerById(Integer customerId) {
+        return null;
+    }
 }

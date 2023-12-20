@@ -4,5 +4,6 @@ public record NewCustomerRegistrationRequest(
         String name,
         String email,
         String mobile,
-        String governmentId) {
+        String governmentId
+) {
 }

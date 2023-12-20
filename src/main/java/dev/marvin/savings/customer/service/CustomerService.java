@@ -1,12 +1,15 @@
 package dev.marvin.savings.customer.service;
 
-import dev.marvin.savings.customer.domain.Customer;
+import dev.marvin.savings.customer.dto.CustomerVO;
+import dev.marvin.savings.customer.dto.NewCustomerRegistrationRequest;
 
 import java.util.List;
 
 public interface CustomerService {
 
-    List<Customer> getAllCustomers();
+    Integer insertCustomer(NewCustomerRegistrationRequest registrationRequest);
 
-    Customer getCustomerById(Integer customerId);
+    List<CustomerVO> getAllCustomers();
+
+    CustomerVO getCustomerById(Integer customerId);
 }

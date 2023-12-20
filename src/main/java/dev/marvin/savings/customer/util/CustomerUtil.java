@@ -9,4 +9,5 @@ public class CustomerUtil {
     public static String generateCustomerMemberNumber(){
         return "presta" + UUID.randomUUID().toString().substring(0,6);
     }
+
 }

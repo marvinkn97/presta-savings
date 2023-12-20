@@ -1,11 +1,13 @@
 package dev.marvin.savings.customer.dao;
 
 import dev.marvin.savings.customer.domain.Customer;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Repository(value = "jpa")
 public class CustomerJpaDataAccessService implements CustomerDao {
 
     @Override

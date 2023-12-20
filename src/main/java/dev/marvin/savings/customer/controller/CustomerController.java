@@ -1,10 +1,9 @@
 package dev.marvin.savings.customer.controller;
 
-import dev.marvin.savings.customer.domain.Customer;
+import dev.marvin.savings.customer.dto.CustomerVO;
+import dev.marvin.savings.customer.dto.NewCustomerRegistrationRequest;
 import dev.marvin.savings.customer.service.CustomerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +17,13 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping
-    public List<Customer> getAllCustomers(){
+    @PostMapping("/register")
+    public Integer insertCustomer(@RequestBody NewCustomerRegistrationRequest registrationRequest){
+        return customerService.insertCustomer(registrationRequest);
+    }
+
+    @GetMapping("/all")
+    public List<CustomerVO> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 }
