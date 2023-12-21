@@ -11,5 +11,5 @@ public interface CustomerService {
 
     List<CustomerVO> getAllCustomers();
 
-    CustomerVO getCustomerById(Integer customerId);
+    CustomerVO getCustomerByMemberNumber(String memberNumber);
 }

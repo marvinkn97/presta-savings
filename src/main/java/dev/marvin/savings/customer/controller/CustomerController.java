@@ -18,12 +18,19 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public Integer insertCustomer(@RequestBody NewCustomerRegistrationRequest registrationRequest){
+    public Integer insertCustomer(@RequestBody NewCustomerRegistrationRequest registrationRequest) {
         return customerService.insertCustomer(registrationRequest);
     }
 
     @GetMapping("/all")
-    public List<CustomerVO> getAllCustomers(){
+    public List<CustomerVO> getAllCustomers() {
         return customerService.getAllCustomers();
     }
+
+    @GetMapping("/{memberNumber}")
+    public CustomerVO getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
+        return customerService.getCustomerByMemberNumber(memberNumber);
+    }
 }
+
+

@@ -1,10 +1,14 @@
 package dev.marvin.savings.customer.dto;
 
-public record CustomerVO(
-        String name,
-        String email,
-        String mobile,
-        String governmentId,
-        String memberNumber
-) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class CustomerVO {
+    String name;
+    String email;
+    String mobile;
+    String governmentId;
+    String memberNumber;
 }
