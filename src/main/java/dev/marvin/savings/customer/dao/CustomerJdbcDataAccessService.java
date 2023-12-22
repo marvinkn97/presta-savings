@@ -2,6 +2,7 @@ package dev.marvin.savings.customer.dao;
 
 import dev.marvin.savings.customer.entity.Customer;
 import dev.marvin.savings.customer.rowmapper.CustomerRowMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Slf4j
 @Primary
 @Repository(value = "jdbc")
 public class CustomerJdbcDataAccessService implements CustomerDao {
@@ -28,7 +30,9 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
                 INSERT INTO tlb_customers (name, email, mobile, government_id, member_number)
                 VALUES(?,?,?,?,?)
                 """;
-        return jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getGovernmentId(), customer.getMemberNumber());
+        Integer rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getGovernmentId(), customer.getMemberNumber());
+        log.info("[%s] Customer added successfully".formatted(rowsAffected));
+        return rowsAffected;
     }
 
     @Override
@@ -57,6 +61,8 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
                 SET name = ?, email = ?, mobile = ?
                 WHERE member_number = ?
                 """;
-         return jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getMemberNumber());
+        Integer rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getMemberNumber());
+        log.info("[%s] Customer updated successfully".formatted(rowsAffected));
+        return rowsAffected;
     }
 }
