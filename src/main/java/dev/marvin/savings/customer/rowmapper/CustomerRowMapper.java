@@ -1,6 +1,6 @@
 package dev.marvin.savings.customer.rowmapper;
 
-import dev.marvin.savings.customer.domain.Customer;
+import dev.marvin.savings.customer.entity.Customer;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

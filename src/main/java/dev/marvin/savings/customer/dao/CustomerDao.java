@@ -1,6 +1,6 @@
 package dev.marvin.savings.customer.dao;
 
-import dev.marvin.savings.customer.domain.Customer;
+import dev.marvin.savings.customer.entity.Customer;
 
 import java.util.List;
 
@@ -11,4 +11,5 @@ public interface CustomerDao {
     List<Customer> getAllCustomers();
 
     Customer getCustomerByMemberNumber(String memberNumber);
+
 }

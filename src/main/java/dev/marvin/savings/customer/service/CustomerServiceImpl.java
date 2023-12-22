@@ -1,9 +1,9 @@
 package dev.marvin.savings.customer.service;
 
 import dev.marvin.savings.customer.dao.CustomerDao;
-import dev.marvin.savings.customer.domain.Customer;
+import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerVO;
-import dev.marvin.savings.customer.dto.NewCustomerRegistrationRequest;
+import dev.marvin.savings.customer.entity.Customer;
 import dev.marvin.savings.customer.util.CustomerUtil;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Integer insertCustomer(NewCustomerRegistrationRequest registrationRequest) {
+    public Integer insertCustomer(CustomerRegistrationRequest registrationRequest) {
         Integer generatedID = 0;
 
         if (registrationRequest != null) {
@@ -44,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (!customerList.isEmpty()) {
             customerDTOList = new ArrayList<>();
             for (Customer customer : customerList) {
-                CustomerVO customerVO = CustomerUtil.mapEntityToVo(customer);
+                CustomerVO customerVO = CustomerUtil.mapEntityToVO(customer);
                 customerDTOList.add(customerVO);
             }
         }
@@ -56,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDao.getCustomerByMemberNumber(memberNumber);
         CustomerVO customerVO = null;
         if(customer!= null){
-            customerVO = CustomerUtil.mapEntityToVo(customer);
+            customerVO = CustomerUtil.mapEntityToVO(customer);
         }
         return customerVO;
     }

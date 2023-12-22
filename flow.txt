@@ -20,41 +20,28 @@
 
    + Features
 
-     + Customer Management
-     + Account Management
-     + Payment/Transaction Management
+     +  Customer Management
+       +  Create customer
+       +  Update customer details
+       +  Delete customer
+       +  View customer
 
+     +  Account Management
+       +  Create Account
+       +  Mark Account as active
+       +  Update Account details
+       +  Delete Account
+       +  View Account
 
-
-Feat 4: Customer Management
-
-Feat 4.1: Create customer
-Feat 4.2: Suspend customer
-Feat 4.3: Activate/Unsuspend customer
-Feat 4.3: Close customer
-Feat 4.4: Update customer details
-Feat 4.5: View customer
-Feat 5: Order Management
-
-Feat 5.1: Create order
-Feat 5.2: Update order details (except amounts)
-Feat 5.3: Confirm order
-Feat 5.4: Cancel order
-Feat 5:5: Mark order as delivered
-Feat 5.6: Delete order
-Feat 5.7: View order
-Feat 6: Payment (Order) Management
-
-Feat 6.1: Record payment (positive adjustment)
-Feat 6.2: Negative adjustment
-Feat 5.7: View payment
-
+     +  Payment/Transaction Management
+       +  Record payment (positive adjustment)
+       +  Negative adjustment
+       +  View payment
 
 Features
 Endpoints to record savings transactions per customer, including transaction details such as transaction ID, date, payment method, and amount.
 Endpoints to track the total savings amount for each person.
 Endpoints to track the total savings amount received across all users.
-Endpoints to create and manage multiple savings products, such as Education Savings, Personal Savings, and Vacation Savings.
 
 Implement controllers and endpoints for each required functionality.
 Configure the appropriate database of your choice to store the data.

@@ -1,7 +1,7 @@
 package dev.marvin.savings.customer.controller;
 
+import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerVO;
-import dev.marvin.savings.customer.dto.NewCustomerRegistrationRequest;
 import dev.marvin.savings.customer.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/customers")
 public class CustomerController {
-
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService) {
@@ -18,7 +17,7 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    public Integer insertCustomer(@RequestBody NewCustomerRegistrationRequest registrationRequest) {
+    public Integer createCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
         return customerService.insertCustomer(registrationRequest);
     }
 
@@ -31,6 +30,8 @@ public class CustomerController {
     public CustomerVO getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
         return customerService.getCustomerByMemberNumber(memberNumber);
     }
+
+
 }
 
 

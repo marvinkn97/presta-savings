@@ -1,4 +1,4 @@
-package dev.marvin.savings.customer.domain;
+package dev.marvin.savings.customer.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

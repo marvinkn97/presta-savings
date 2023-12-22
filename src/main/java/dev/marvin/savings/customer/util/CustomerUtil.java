@@ -1,7 +1,7 @@
 package dev.marvin.savings.customer.util;
 
-import dev.marvin.savings.customer.domain.Customer;
 import dev.marvin.savings.customer.dto.CustomerVO;
+import dev.marvin.savings.customer.entity.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -13,7 +13,7 @@ public class CustomerUtil {
         return "presta" + UUID.randomUUID().toString().substring(0, 6);
     }
 
-    public static CustomerVO mapEntityToVo(Customer customer) {
+    public static CustomerVO mapEntityToVO(Customer customer) {
         CustomerVO customerVO = new CustomerVO();
         customerVO.setName(customer.getName());
         customerVO.setEmail(customer.getEmail());
