@@ -9,10 +9,7 @@ import java.util.List;
 public interface CustomerService {
 
     Integer insertCustomer(CustomerRegistrationRequest registrationRequest);
-
     List<CustomerVO> getAllCustomers();
-
     CustomerVO getCustomerByMemberNumber(String memberNumber);
-
     boolean updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest);
 }

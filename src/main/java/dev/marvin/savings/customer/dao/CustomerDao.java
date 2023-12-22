@@ -10,5 +10,5 @@ public interface CustomerDao {
     List<Customer> getAllCustomers();
     Customer getCustomerByMemberNumber(String memberNumber);
     Integer updateCustomer(String memberNumber, Customer customer);
-
+    Integer deleteCustomer(String memberNumber);
 }

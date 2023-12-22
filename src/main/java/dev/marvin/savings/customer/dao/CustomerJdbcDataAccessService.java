@@ -65,4 +65,15 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
         log.info("[%s] Customer updated successfully".formatted(rowsAffected));
         return rowsAffected;
     }
+
+    @Override
+    public Integer deleteCustomer(String memberNumber) {
+        String sql = """
+                DELETE FROM tlb_customers
+                WHERE member_number = ?
+                """;
+        Integer rowsAffected = jdbcTemplate.update(sql, memberNumber);
+        log.info("[%s] Customer deleted successfully".formatted(rowsAffected));
+        return rowsAffected;
+    }
 }
