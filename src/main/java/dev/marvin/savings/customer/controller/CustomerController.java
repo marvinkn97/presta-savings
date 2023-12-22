@@ -31,7 +31,6 @@ public class CustomerController {
         return customerService.getCustomerByMemberNumber(memberNumber);
     }
 
-
 }
 
 

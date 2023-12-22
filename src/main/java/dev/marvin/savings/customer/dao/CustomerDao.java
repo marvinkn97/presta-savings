@@ -7,9 +7,8 @@ import java.util.List;
 public interface CustomerDao {
 
     Integer insertCustomer(Customer customer);
-
     List<Customer> getAllCustomers();
-
     Customer getCustomerByMemberNumber(String memberNumber);
+    Integer updateCustomer(String memberNumber, Customer customer);
 
 }

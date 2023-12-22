@@ -48,6 +48,15 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
                 WHERE member_number = ?
                 """;
         return jdbcTemplate.queryForObject(sql, customerRowMapper, memberNumber);
+    }
 
+    @Override
+    public Integer updateCustomer(String memberNumber, Customer customer) {
+        String sql = """
+                UPDATE tlb_customers
+                SET name = ?, email = ?, mobile = ?
+                WHERE member_number = ?
+                """;
+         return jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getMemberNumber());
     }
 }
