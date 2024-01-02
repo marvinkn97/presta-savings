@@ -9,6 +9,6 @@ public interface CustomerDao {
     Integer insertCustomer(Customer customer);
     List<Customer> getAllCustomers();
     Customer getCustomerByMemberNumber(String memberNumber);
-    Integer updateCustomer(String memberNumber, Customer customer);
-    Integer deleteCustomer(String memberNumber);
+    void updateCustomer(Customer customer);
+    void deleteCustomer(String memberNumber);
 }

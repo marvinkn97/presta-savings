@@ -55,25 +55,23 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     }
 
     @Override
-    public Integer updateCustomer(String memberNumber, Customer customer) {
+    public void updateCustomer(Customer customer) {
         String sql = """
                 UPDATE tlb_customers
                 SET name = ?, email = ?, mobile = ?
                 WHERE member_number = ?
                 """;
         Integer rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getMemberNumber());
-        log.info("[%s] Customer updated successfully".formatted(rowsAffected));
-        return rowsAffected;
+        log.info("[%s] Customer UPDATE RESULT = ".formatted(rowsAffected));
     }
 
     @Override
-    public Integer deleteCustomer(String memberNumber) {
+    public void deleteCustomer(String memberNumber) {
         String sql = """
                 DELETE FROM tlb_customers
                 WHERE member_number = ?
                 """;
         Integer rowsAffected = jdbcTemplate.update(sql, memberNumber);
         log.info("[%s] Customer deleted successfully".formatted(rowsAffected));
-        return rowsAffected;
     }
 }
