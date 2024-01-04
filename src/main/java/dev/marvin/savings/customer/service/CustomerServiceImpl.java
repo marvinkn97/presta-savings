@@ -3,7 +3,7 @@ package dev.marvin.savings.customer.service;
 import dev.marvin.savings.customer.dao.CustomerDao;
 import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
-import dev.marvin.savings.customer.dto.CustomerVO;
+import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.entity.Customer;
 import dev.marvin.savings.customer.util.CustomerUtil;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Integer insertCustomer(CustomerRegistrationRequest registrationRequest) {
-        Integer generatedID = 0;
+    public String insertCustomer(CustomerRegistrationRequest registrationRequest) {
+        Integer insertResult = 0;
+        String response = null;
 
         if (registrationRequest != null) {
             Customer customer = new Customer();
@@ -31,35 +32,40 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setMobile(Integer.parseInt(registrationRequest.mobile()));
             customer.setGovernmentId(Integer.parseInt(registrationRequest.governmentId()));
             customer.setMemberNumber(CustomerUtil.generateCustomerMemberNumber());
+            insertResult = customerDao.insertCustomer(customer);
 
-            generatedID = customerDao.insertCustomer(customer);
+            if(insertResult == 1){
+                response = "Customer saved successfully";
+            }else{
+                response = "Error registering customer";
+            }
         }
-        return generatedID;
+        return response;
     }
 
     @Override
-    public List<CustomerVO> getAllCustomers() {
+    public List<CustomerResponse> getAllCustomers() {
         List<Customer> customerList = customerDao.getAllCustomers();
-        List<CustomerVO> customerDTOList = null;
+        List<CustomerResponse> customerDTOList = null;
 
         if (!customerList.isEmpty()) {
             customerDTOList = new ArrayList<>();
             for (Customer customer : customerList) {
-                CustomerVO customerVO = CustomerUtil.mapEntityToVO(customer);
-                customerDTOList.add(customerVO);
+                CustomerResponse customerResponse = CustomerUtil.mapEntityToDTO(customer);
+                customerDTOList.add(customerResponse);
             }
         }
         return customerDTOList;
     }
 
     @Override
-    public CustomerVO getCustomerByMemberNumber(String memberNumber) {
+    public CustomerResponse getCustomerByMemberNumber(String memberNumber) {
         Customer customer = customerDao.getCustomerByMemberNumber(memberNumber);
-        CustomerVO customerVO = null;
+        CustomerResponse customerResponse = null;
         if(customer!= null){
-            customerVO = CustomerUtil.mapEntityToVO(customer);
+            customerResponse = CustomerUtil.mapEntityToDTO(customer);
         }
-        return customerVO;
+        return customerResponse;
     }
 
     @Override

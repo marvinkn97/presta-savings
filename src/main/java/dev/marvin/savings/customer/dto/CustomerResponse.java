@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CustomerVO {
+public class CustomerResponse {
     String name;
     String email;
     String mobile;

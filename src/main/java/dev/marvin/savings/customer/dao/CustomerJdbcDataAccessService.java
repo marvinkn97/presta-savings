@@ -31,7 +31,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
                 VALUES(?,?,?,?,?)
                 """;
         Integer rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getGovernmentId(), customer.getMemberNumber());
-        log.info("[%s] Customer added successfully".formatted(rowsAffected));
+        log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
         return rowsAffected;
     }
 
