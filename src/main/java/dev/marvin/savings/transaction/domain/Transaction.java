@@ -1,5 +1,6 @@
 package dev.marvin.savings.transaction.domain;
 
+import dev.marvin.savings.savingsaccount.entity.SavingsAccount;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +17,7 @@ public class Transaction implements Serializable {
     private String transactionCode;
     private TransactionType transactionType;
     private PaymentMethod paymentMethod;
-    private LocalDateTime createdAt;
     private BigDecimal amount;
-
-
+    private LocalDateTime createdDate;
+    private SavingsAccount savingsAccount;
 }

@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-
     private final CustomerDao customerDao;
 
     public CustomerServiceImpl(CustomerDao customerDao) {
@@ -22,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String insertCustomer(CustomerRegistrationRequest registrationRequest) {
-        Integer insertResult = 0;
+        Integer insertResult;
         String response = null;
 
         if (registrationRequest != null) {
@@ -33,7 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setGovernmentId(Integer.parseInt(registrationRequest.governmentId()));
             customer.setMemberNumber(CustomerUtil.generateCustomerMemberNumber());
             insertResult = customerDao.insertCustomer(customer);
-
             if(insertResult == 1){
                 response = "Customer saved successfully";
             }else{
