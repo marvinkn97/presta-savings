@@ -6,9 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerResponse {
-    String name;
-    String email;
-    String mobile;
-    String governmentId;
     String memberNumber;
+    String name;
+    String role;
+    String email;
+    Integer mobile;
+    Integer governmentId;
+    Long createdDate;
 }

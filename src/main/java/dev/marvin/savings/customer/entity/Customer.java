@@ -5,18 +5,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class Customer implements Serializable {
-    private Integer id;
+    private String memberNumber;
     private String name;
-    private String email;
+    private String email;  //unique
     private String password;
+    private Role role;
     private Integer mobile;
     private Integer governmentId;
-    private String memberNumber;
-    private LocalDateTime createdAt;
+    private Long createdDate;
+
+
+//    CustomerUtil.generateCustomerMemberNumber()
+//    System.currentTimeMillis()
 }

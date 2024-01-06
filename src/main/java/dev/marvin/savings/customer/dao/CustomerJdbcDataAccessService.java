@@ -74,4 +74,9 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
         Integer rowsAffected = jdbcTemplate.update(sql, memberNumber);
         log.info("[%s] Customer deleted successfully".formatted(rowsAffected));
     }
+
+    @Override
+    public boolean existsCustomerWithEmail(String email) {
+        return false;
+    }
 }
