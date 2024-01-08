@@ -12,5 +12,4 @@ public class CustomerResponse {
     String email;
     Integer mobile;
     Integer governmentId;
-    Long createdDate;
 }

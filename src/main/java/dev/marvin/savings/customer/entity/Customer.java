@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Customer implements Serializable {
     private String memberNumber;
     private String name;
-    private String email;  //unique
+    private String email;
     private String password;
     private Integer mobile;
     private Integer governmentId;

@@ -8,19 +8,16 @@ import java.util.UUID;
 
 @Component
 public class CustomerUtil {
-
     public static String generateCustomerMemberNumber() {
         return "presta_mem_" + UUID.randomUUID().toString().substring(0, 6);
     }
 
     public static CustomerResponse mapEntityToDTO(Customer customer) {
-        CustomerResponse customerResponse = new CustomerResponse();
-        customerResponse.setName(customer.getName());
-        customerResponse.setEmail(customer.getEmail());
-        customerResponse.setMobile(customer.getMobile().toString());
-        customerResponse.setGovernmentId(customer.getGovernmentId().toString());
-        customerResponse.setMemberNumber(customer.getMemberNumber());
-
-        return customerResponse;
+        return CustomerResponse.builder()
+                .memberNumber(customer.getMemberNumber())
+                .email(customer.getEmail())
+                .mobile(customer.getMobile())
+                .governmentId(customer.getGovernmentId())
+                .build();
     }
 }

@@ -27,10 +27,10 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public Integer insertCustomer(Customer customer) {
         String sql = """
-                INSERT INTO tlb_customers (name, email, mobile, government_id, member_number)
-                VALUES(?,?,?,?,?)
+                INSERT INTO t_customers (member_number, name, email, password, mobile, government_id, created_date, is_deleted)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)
                 """;
-        Integer rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getGovernmentId(), customer.getMemberNumber());
+        Integer rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getMobile(), customer.getGovernmentId(), customer.getCreatedDate(), customer.getIsDeleted().name());
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
         return rowsAffected;
     }
@@ -47,7 +47,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public Customer getCustomerByMemberNumber(String memberNumber) {
         String sql = """
-                SELECT name, email, mobile, government_id, member_number
+                SELECT name, email, password, mobile, government_id, member_number
                 FROM tlb_customers
                 WHERE member_number = ?
                 """;
@@ -67,7 +67,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
 
     @Override
     public void deleteCustomer(String memberNumber) {
-        String sql = """
+        final String sql = """
                 DELETE FROM tlb_customers
                 WHERE member_number = ?
                 """;
@@ -77,6 +77,8 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
 
     @Override
     public boolean existsCustomerWithEmail(String email) {
-        return false;
+        final String sql = "SELECT COUNT(*) FROM t_customers WHERE email = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
     }
 }

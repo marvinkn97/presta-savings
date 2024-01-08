@@ -27,6 +27,7 @@ CREATE TABLE `savings_db`.`t_savings_account` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
+
 CREATE TABLE `savings_db`.`t_transaction` (
   `transaction_code` VARCHAR(50) NOT NULL,
   `transaction_type` VARCHAR(15) NOT NULL,

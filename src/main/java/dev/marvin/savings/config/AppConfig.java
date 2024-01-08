@@ -11,7 +11,7 @@ public class AppConfig {
     @Bean
     public DataSource dataSource(){
         return DataSourceBuilder.create()
-                .url("jdbc:mysql://localhost:3306/savings")
+                .url("jdbc:mysql://localhost:3306/savings_db")
                 .username("root")
                 .password("pass@123")
                 .build();
