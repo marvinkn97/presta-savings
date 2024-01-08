@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 
 @Configuration
 public class AppConfig {
-
     @Bean
     public DataSource dataSource(){
         return DataSourceBuilder.create()

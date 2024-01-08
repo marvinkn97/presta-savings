@@ -1,4 +1,4 @@
-package dev.marvin.savings.transaction.domain;
+package dev.marvin.savings.transaction.entity;
 
 import dev.marvin.savings.savingsaccount.entity.SavingsAccount;
 import lombok.Getter;

@@ -9,10 +9,8 @@ import java.util.UUID;
 @Component
 public class CustomerUtil {
 
-    private CustomerUtil(){}
-
     public static String generateCustomerMemberNumber() {
-        return "presta" + UUID.randomUUID().toString().substring(0, 6);
+        return "presta_mem_" + UUID.randomUUID().toString().substring(0, 6);
     }
 
     public static CustomerResponse mapEntityToDTO(Customer customer) {

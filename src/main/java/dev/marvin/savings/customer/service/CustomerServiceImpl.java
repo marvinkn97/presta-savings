@@ -24,6 +24,8 @@ public class CustomerServiceImpl implements CustomerService {
         Integer insertResult;
         String response = null;
 
+        //TODO: Check if exists customer with given email
+
         if (registrationRequest != null) {
             Customer customer = new Customer();
             customer.setName(registrationRequest.name());
