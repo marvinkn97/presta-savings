@@ -16,7 +16,7 @@ public class Customer implements Serializable {
     private Long createdDate;
     private Deleted isDeleted;
 
-
-//    CustomerUtil.generateCustomerMemberNumber()
-//    System.currentTimeMillis()
+//TODO:
+// add photo property
+// System.currentTimeMillis()
 }

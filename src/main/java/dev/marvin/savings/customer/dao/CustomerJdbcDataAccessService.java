@@ -27,7 +27,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public Integer insertCustomer(Customer customer) {
         String sql = """
-                INSERT INTO t_customers (member_number, name, email, password, mobile, government_id, created_date, is_deleted)
+                INSERT INTO t_customer (member_number, name, email, password, mobile, government_id, created_date, is_deleted)
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         Integer rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getMobile(), customer.getGovernmentId(), customer.getCreatedDate(), customer.getIsDeleted().name());
@@ -39,7 +39,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     public List<Customer> getAllCustomers() {
         String sql = """
                 SELECT name, email, mobile, government_id, member_number
-                FROM tlb_customers
+                FROM t_customer
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
     }
@@ -48,7 +48,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     public Customer getCustomerByMemberNumber(String memberNumber) {
         String sql = """
                 SELECT name, email, password, mobile, government_id, member_number
-                FROM tlb_customers
+                FROM t_customer
                 WHERE member_number = ?
                 """;
         return jdbcTemplate.queryForObject(sql, customerRowMapper, memberNumber);
@@ -57,7 +57,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public void updateCustomer(Customer customer) {
         String sql = """
-                UPDATE tlb_customers
+                UPDATE t_customer
                 SET name = ?, email = ?, mobile = ?
                 WHERE member_number = ?
                 """;
@@ -68,7 +68,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public void deleteCustomer(String memberNumber) {
         final String sql = """
-                DELETE FROM tlb_customers
+                DELETE FROM t_customer
                 WHERE member_number = ?
                 """;
         Integer rowsAffected = jdbcTemplate.update(sql, memberNumber);
@@ -77,7 +77,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
 
     @Override
     public boolean existsCustomerWithEmail(String email) {
-        final String sql = "SELECT COUNT(*) FROM t_customers WHERE email = ?";
+        final String sql = "SELECT COUNT(*) FROM t_customer WHERE email = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }

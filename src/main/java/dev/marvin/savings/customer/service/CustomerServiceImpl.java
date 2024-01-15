@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String insertCustomer(CustomerRegistrationRequest registrationRequest) {
         Integer insertResult;
-        String response = null;
+        String response;
 
         //Check if exists customer with given email
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
