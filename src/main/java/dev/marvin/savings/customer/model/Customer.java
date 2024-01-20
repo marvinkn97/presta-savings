@@ -1,4 +1,4 @@
-package dev.marvin.savings.customer.entity;
+package dev.marvin.savings.customer.model;
 
 import lombok.*;
 
@@ -11,12 +11,9 @@ public class Customer implements Serializable {
     private String name;
     private String email;
     private String password;
-    private Integer mobile;
+    private String mobile;
     private Integer governmentId;
     private Long createdDate;
-    private Deleted isDeleted;
 
-//TODO:
-// add photo property
-// System.currentTimeMillis()
+//TODO: add photo, System.currentTimeMillis()
 }

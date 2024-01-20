@@ -2,10 +2,9 @@ package dev.marvin.savings.customer.service;
 
 import dev.marvin.savings.customer.dao.CustomerDao;
 import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
-import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
-import dev.marvin.savings.customer.entity.Customer;
-import dev.marvin.savings.customer.entity.Deleted;
+import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
+import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.util.CustomerUtil;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String insertCustomer(CustomerRegistrationRequest registrationRequest) {
-        Integer insertResult;
-        String response;
 
         //Check if exists customer with given email
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
@@ -40,17 +37,11 @@ public class CustomerServiceImpl implements CustomerService {
                 .mobile(registrationRequest.mobile())
                 .governmentId(registrationRequest.governmentId())
                 .createdDate(System.currentTimeMillis())
-                .isDeleted(Deleted.NO)
                 .build();
 
-        insertResult = customerDao.insertCustomer(customer);
-        if (insertResult == 1) {
-            response = "Customer saved successfully";
-        } else {
-            response = "Error registering customer";
-        }
+        customerDao.insertCustomer(customer);
 
-        return response;
+        return "customer saved successfully";
     }
 
     @Override
@@ -95,8 +86,8 @@ public class CustomerServiceImpl implements CustomerService {
                 changes = true;
             }
 
-            if (!customerUpdateRequest.mobile().isBlank() && !customerUpdateRequest.mobile().equals(customer.getMobile().toString())) {
-                customer.setMobile(Integer.parseInt(customerUpdateRequest.mobile()));
+            if (!customerUpdateRequest.mobile().isBlank() && !customerUpdateRequest.mobile().equals(customer.getMobile())) {
+                customer.setMobile(customerUpdateRequest.mobile());
                 changes = true;
             }
 

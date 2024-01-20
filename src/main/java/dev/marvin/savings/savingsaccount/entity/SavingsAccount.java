@@ -1,6 +1,6 @@
 package dev.marvin.savings.savingsaccount.entity;
 
-import dev.marvin.savings.customer.entity.Customer;
+import dev.marvin.savings.customer.model.Customer;
 import lombok.Builder;
 import lombok.Data;
 

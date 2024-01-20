@@ -1,6 +1,6 @@
 package dev.marvin.savings.customer.dao;
 
-import dev.marvin.savings.customer.entity.Customer;
+import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.rowmapper.CustomerRowMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,13 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     }
 
     @Override
-    public Integer insertCustomer(Customer customer) {
+    public void insertCustomer(Customer customer) {
         String sql = """
-                INSERT INTO t_customer (member_number, name, email, password, mobile, government_id, created_date, is_deleted)
-                VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO t_customer (member_number, customer_name, email, password, mobile_no, government_id, created_date)
+                VALUES(?, ?, ?, ?, ?, ?, ?)
                 """;
-        Integer rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getMobile(), customer.getGovernmentId(), customer.getCreatedDate(), customer.getIsDeleted().name());
+        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getMobile(), customer.getGovernmentId(), customer.getCreatedDate());
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
-        return rowsAffected;
     }
 
     @Override

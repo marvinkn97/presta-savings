@@ -8,8 +8,7 @@ import lombok.Data;
 public class CustomerResponse {
     String memberNumber;
     String name;
-    String role;
     String email;
-    Integer mobile;
+    String mobile;
     Integer governmentId;
 }

@@ -1,7 +1,7 @@
 package dev.marvin.savings.customer.util;
 
 import dev.marvin.savings.customer.dto.CustomerResponse;
-import dev.marvin.savings.customer.entity.Customer;
+import dev.marvin.savings.customer.model.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -14,6 +14,7 @@ public class CustomerUtil {
     public static CustomerResponse mapEntityToDTO(Customer customer) {
         return CustomerResponse.builder()
                 .memberNumber(customer.getMemberNumber())
+                .name(customer.getMemberNumber())
                 .email(customer.getEmail())
                 .mobile(customer.getMobile())
                 .governmentId(customer.getGovernmentId())

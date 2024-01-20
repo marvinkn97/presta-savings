@@ -1,7 +1,7 @@
 package dev.marvin.savings.customer.rowmapper;
 
-import dev.marvin.savings.customer.entity.Customer;
-import dev.marvin.savings.customer.entity.Deleted;
+import dev.marvin.savings.customer.model.Customer;
+import dev.marvin.savings.savingsaccount.entity.Deleted;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +14,12 @@ public class CustomerRowMapper implements RowMapper<Customer> {
     public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
         return Customer.builder()
                 .memberNumber(rs.getString("member_number"))
-                .name(rs.getString("name"))
+                .name(rs.getString("customer_name"))
                 .email(rs.getString("email"))
                 .password(rs.getString("password"))
-                .mobile(rs.getInt("mobile"))
+                .mobile(rs.getString("mobile_no"))
                 .governmentId(rs.getInt("government_id"))
                 .createdDate(rs.getLong("created_date"))
-                .isDeleted(Deleted.valueOf(rs.getString("is_deleted")))
                 .build();
     }
 }
