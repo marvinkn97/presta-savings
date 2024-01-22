@@ -1,6 +1,6 @@
 package dev.marvin.savings.transaction.entity;
 
-import dev.marvin.savings.savingsaccount.entity.SavingsAccount;
+import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import lombok.Builder;
 import lombok.Data;
 

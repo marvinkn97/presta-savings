@@ -1,16 +1,4 @@
-CREATE TABLE `savings_db`.`t_customer` (
-  `member_number` VARCHAR(25) NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `email` VARCHAR(150) NOT NULL,
-  `password` VARCHAR(100) NOT NULL,
-  `mobile` INT NOT NULL,
-  `government_id` INT NOT NULL,
-  `created_date` BIGINT NOT NULL,
-  `is_deleted` VARCHAR(5) NOT NULL,
-  PRIMARY KEY (`member_number`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
-
-
+amount
 CREATE TABLE `savings_db`.`t_savings_account` (
   `account_number` VARCHAR(25) NOT NULL,
   `account_name` VARCHAR(50) NOT NULL,

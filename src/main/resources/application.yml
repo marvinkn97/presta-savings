@@ -1,10 +1,10 @@
-#server:
-#  error:
-#    include-message: always
-#
+server:
+  error:
+    include-message: always
+
 #spring:
 #  datasource:
 #    driver-class-name:
-#    url:
-#    username: postgres
-#    password: password
+#    url:jdbc:mysql://localhost:3306/presta_savings
+#    username: root
+#    password: pass@123

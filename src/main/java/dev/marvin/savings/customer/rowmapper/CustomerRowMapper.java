@@ -1,7 +1,6 @@
 package dev.marvin.savings.customer.rowmapper;
 
 import dev.marvin.savings.customer.model.Customer;
-import dev.marvin.savings.savingsaccount.entity.Deleted;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

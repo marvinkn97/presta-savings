@@ -37,7 +37,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public List<Customer> getAllCustomers() {
         String sql = """
-                SELECT name, email, mobile, government_id, member_number
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
@@ -46,7 +46,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public Customer getCustomerByMemberNumber(String memberNumber) {
         String sql = """
-                SELECT name, email, password, mobile, government_id, member_number
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
                 WHERE member_number = ?
                 """;
