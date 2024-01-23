@@ -60,18 +60,18 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
                 SET name = ?, email = ?, mobile = ?
                 WHERE member_number = ?
                 """;
-        Integer rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getMemberNumber());
-        log.info("[%s] Customer UPDATE RESULT = ".formatted(rowsAffected));
+        int rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getMemberNumber());
+        log.info("CUSTOMER UPDATE RESULT = " + rowsAffected);
     }
 
     @Override
-    public void deleteCustomer(String memberNumber) {
+    public void deleteCustomer(Customer customer) {
         final String sql = """
                 DELETE FROM t_customer
                 WHERE member_number = ?
                 """;
-        Integer rowsAffected = jdbcTemplate.update(sql, memberNumber);
-        log.info("[%s] Customer deleted successfully".formatted(rowsAffected));
+        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber());
+        log.info("CUSTOMER DELETE RESULT = " + rowsAffected);
     }
 
     @Override

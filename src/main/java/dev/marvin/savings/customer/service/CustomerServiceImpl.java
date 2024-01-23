@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
+    public String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
         Customer customer = customerDao.getCustomerByMemberNumber(memberNumber);
         boolean changes = false;
 
@@ -86,13 +86,31 @@ public class CustomerServiceImpl implements CustomerService {
                 changes = true;
             }
 
+            //TODO: include password
+
             if (!customerUpdateRequest.mobile().isBlank() && !customerUpdateRequest.mobile().equals(customer.getMobile())) {
                 customer.setMobile(customerUpdateRequest.mobile());
                 changes = true;
             }
-
-            return !changes;
         }
-        return false;
+
+        if (changes) {
+            return "customer [%s] updated successfully".formatted(customer.getMemberNumber());
+        } else {
+            return "no data changes found";
+        }
+
+    }
+
+    @Override
+    public String deleteCustomer(String memberNumber) {
+        Customer existingCustomer = customerDao.getCustomerByMemberNumber(memberNumber);
+
+        if (existingCustomer != null) {
+            customerDao.deleteCustomer(existingCustomer);
+            return "customer [%s] deleted successfully".formatted(memberNumber);
+        } else {
+            return "customer not found";
+        }
     }
 }

@@ -10,5 +10,6 @@ public interface CustomerService {
     String insertCustomer(CustomerRegistrationRequest registrationRequest);
     List<CustomerResponse> getAllCustomers();
     CustomerResponse getCustomerByMemberNumber(String memberNumber);
-    boolean updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest);
+    String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest);
+    String deleteCustomer(String memberNumber);
 }

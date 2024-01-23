@@ -2,6 +2,7 @@ package dev.marvin.savings.customer.controller;
 
 import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
+import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,15 @@ public class CustomerController {
     @GetMapping("/{memberNumber}")
     public CustomerResponse getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
         return customerService.getCustomerByMemberNumber(memberNumber);
+    }
+
+    @PutMapping("/update/{memberNumber}")
+    public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @RequestBody CustomerUpdateRequest updateRequest){
+        return customerService.updateCustomer(memberNumber, updateRequest);
+    }
+    @DeleteMapping("/delete/{memberNumber}")
+    public String deleteCustomer(@PathVariable("memberNumber") String memberNumber){
+        return customerService.deleteCustomer(memberNumber);
     }
 
 }

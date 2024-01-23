@@ -9,6 +9,6 @@ public interface CustomerDao {
     List<Customer> getAllCustomers();
     Customer getCustomerByMemberNumber(String memberNumber);
     void updateCustomer(Customer customer);
-    void deleteCustomer(String memberNumber);
+    void deleteCustomer(Customer customer);
     boolean existsCustomerWithEmail(String email);
 }
