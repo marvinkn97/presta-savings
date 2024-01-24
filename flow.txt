@@ -2,7 +2,7 @@
 
    +  This API provides a simple savings system, allowing users to create savings accounts, deposit and withdraw funds, check their account balance, and view transaction history.
 
-      +  Implemented endpoints to capture a list of customers, including their bio data
+      +  Implemented endpoints to capture a list of customers, including their bio data✔️
       +  Implemented endpoints to record savings transactions per customer, including transaction details such as transaction ID, date, payment method, and amount.
       +  Implemented endpoints to track the total savings amount for each person.
       +  Implemented endpoints to track the total savings amount received across all users
@@ -28,7 +28,6 @@
 
      +  Account Management
        +  Create Account
-       +  Mark Account as active
        +  Update Account details
        +  Delete Account
        +  View Account

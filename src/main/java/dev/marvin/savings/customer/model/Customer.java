@@ -3,7 +3,6 @@ package dev.marvin.savings.customer.model;
 import lombok.*;
 
 import java.io.Serializable;
-
 @Builder
 @Data
 public class Customer implements Serializable {
@@ -14,6 +13,4 @@ public class Customer implements Serializable {
     private String mobile;
     private Integer governmentId;
     private Long createdDate;
-
-//TODO: add photo, System.currentTimeMillis()
 }
