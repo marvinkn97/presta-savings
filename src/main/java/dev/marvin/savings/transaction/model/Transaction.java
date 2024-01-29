@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
@@ -14,7 +13,7 @@ public class Transaction implements Serializable {
     private String transactionCode;
     private TransactionType transactionType;
     private PaymentMethod paymentMethod;
-    private BigDecimal amount;
+    private Double amount;
     private LocalDateTime createdDate;
     private SavingsAccount savingsAccount;
 }
