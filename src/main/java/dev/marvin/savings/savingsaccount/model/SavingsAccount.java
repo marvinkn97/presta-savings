@@ -12,6 +12,6 @@ public class SavingsAccount implements Serializable {
     private String accountName;
     private SavingsAccountType savingsAccountType;
     private Double balance;
-    private Long createdAt;
+    private Long createdDate;
     private Customer customer;
 }
