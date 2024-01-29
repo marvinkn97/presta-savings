@@ -57,7 +57,7 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     public void updateCustomer(Customer customer) {
         String sql = """
                 UPDATE t_customer
-                SET name = ?, email = ?, mobile = ?
+                SET customer_name = ?, email = ?, mobile_no = ?
                 WHERE member_number = ?
                 """;
         int rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getMobile(), customer.getMemberNumber());

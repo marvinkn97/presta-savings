@@ -95,6 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         if (changes) {
+            customerDao.updateCustomer(customer);
             return "customer [%s] updated successfully".formatted(customer.getMemberNumber());
         } else {
             return "no data changes found";
