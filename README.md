@@ -15,7 +15,8 @@
    +   Technologies Used
        +  Spring Boot 3
        +  Spring Data JDBC
-       +  MySQL on Docker
+       +  MySQL
+       +  Lombok
      
    +    Features
         +  Customer Management
