@@ -1,7 +1,7 @@
 package dev.marvin.savings.customer.dao;
 
 import dev.marvin.savings.customer.model.Customer;
-import dev.marvin.savings.customer.rowmapper.CustomerRowMapper;
+import dev.marvin.savings.customer.dao.rowmapper.CustomerRowMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;

@@ -1,5 +1,6 @@
 package dev.marvin.savings.savingsaccount.dao;
 
+import dev.marvin.savings.savingsaccount.dao.rowmapper.SavingsAccountRowMapper;
 import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -13,9 +14,11 @@ import java.util.List;
 @Repository
 public class SavingsAccountDaoImpl implements SavingsAccountDao{
     private final JdbcTemplate jdbcTemplate;
+    private final SavingsAccountRowMapper savingsAccountRowMapper;
 
-    public SavingsAccountDaoImpl(JdbcTemplate jdbcTemplate) {
+    public SavingsAccountDaoImpl(JdbcTemplate jdbcTemplate, SavingsAccountRowMapper savingsAccountRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.savingsAccountRowMapper = savingsAccountRowMapper;
     }
 
     @Override
@@ -30,7 +33,10 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
 
     @Override
     public List<SavingsAccount> getAllAccounts() {
-        return null;
+        final String sql = """
+                SELECT account_number, account_name, account_type, balance, created_date, member_no FROM t_savings_account
+                """;
+        return jdbcTemplate.query(sql, savingsAccountRowMapper);
     }
 
     @Override

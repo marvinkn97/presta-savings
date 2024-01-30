@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         //Create New Customer
         Customer customer = Customer.builder()
-                .memberNumber(CustomerUtil.generateCustomerMemberNumber())
+                .memberNumber(CustomerUtil.generateCustomerMemberNumber().toUpperCase())
                 .name(registrationRequest.name())
                 .email(registrationRequest.email())
                 .password(registrationRequest.password())
