@@ -52,5 +52,21 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         return savingsAccounts.stream().map(SavingsAccountUtil::mapEntityToDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public List<SavingsAccountResponse> getAccountsByMemberNumber(String memberNumber) {
+        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByMemberNumber(memberNumber).stream()
+                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
+                .toList();
+        return savingsAccounts.stream().map(SavingsAccountUtil::mapEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SavingsAccountResponse> getAccountsByAccountType(String accountType) {
+        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByAccountType(accountType).stream()
+                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
+                .toList();
+        return savingsAccounts.stream().map(SavingsAccountUtil::mapEntityToDTO).collect(Collectors.toList());
+    }
 }
 

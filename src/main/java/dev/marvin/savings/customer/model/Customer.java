@@ -14,5 +14,5 @@ public class Customer implements Serializable {
     private Integer governmentId;
     private Long createdDate;
 
-    //TODO: add photo, dob, address
+    //TODO: add photo,
 }

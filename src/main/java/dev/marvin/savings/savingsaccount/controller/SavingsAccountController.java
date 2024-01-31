@@ -26,4 +26,14 @@ public class SavingsAccountController {
     public List<SavingsAccountResponse> getAllAccounts(){
         return savingsAccountService.getAllAccounts();
     }
+
+    @GetMapping("/member/{memberNo}")
+    public List<SavingsAccountResponse> getAccountsByMemberNumber(@PathVariable("memberNo") String memberNumber){
+       return savingsAccountService.getAccountsByMemberNumber(memberNumber);
+    }
+
+    @GetMapping("/type/{accountType}")
+    public List<SavingsAccountResponse> getAccountsByAccountType(@PathVariable("accountType") String accountType){
+        return savingsAccountService.getAccountsByAccountType(accountType);
+    }
 }

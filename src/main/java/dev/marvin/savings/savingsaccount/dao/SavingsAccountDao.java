@@ -10,6 +10,6 @@ public interface SavingsAccountDao {
     List<SavingsAccount> getAccountsByMemberNumber(String memberNumber);
     void updateAccount(SavingsAccount savingsAccount);
     void deleteAccount(SavingsAccount savingsAccount);
+    List<SavingsAccount> getAccountsByAccountType(String accountType);
 
-    //get accounts by type
 }

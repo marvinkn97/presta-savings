@@ -23,6 +23,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String insertCustomer(CustomerRegistrationRequest registrationRequest) {
 
+        //TODO: Use only email and password alternate route to user registration and populate rest of fields through profile update
+
         //Check if exists customer with given email
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
             throw new DuplicateResourceException("email already taken");

@@ -41,7 +41,21 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
 
     @Override
     public List<SavingsAccount> getAccountsByMemberNumber(String memberNumber) {
-        return null;
+        final String sql = """
+                 SELECT account_number, account_name, account_type, balance, created_date, member_no FROM t_savings_account WHERE member_no = ?
+                """;
+        return jdbcTemplate.query(sql, savingsAccountRowMapper, memberNumber);
+    }
+
+    @Override
+    public List<SavingsAccount> getAccountsByAccountType(String accountType) {
+        final String sql = """
+                 SELECT account_number, account_name, account_type, balance, created_date, member_no FROM t_savings_account WHERE account_type = ?
+                """;
+
+                List<SavingsAccount> s = jdbcTemplate.query(sql, savingsAccountRowMapper, accountType);
+        System.out.println(s);
+        return s;
     }
 
     @Override
@@ -53,4 +67,5 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
     public void deleteAccount(SavingsAccount savingsAccount) {
 
     }
+
 }

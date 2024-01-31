@@ -24,3 +24,8 @@
            +  Update customer details
            +  Delete customer
            +  View customer
+        +  Account Management
+           +  Create Account
+           +  Update Account details
+           +  Delete Account
+           +  View Account
