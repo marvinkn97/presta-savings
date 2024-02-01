@@ -38,8 +38,13 @@ public class SavingsAccountController {
         return savingsAccountService.getAccountsByAccountType(accountType);
     }
 
+    @GetMapping("/{accountNo}")
+    public SavingsAccountResponse getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber){
+        return savingsAccountService.getAccountByAccountNumber(accountNumber);
+    }
+
     @PutMapping("/update/{accountNo}")
-    public String getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber, @RequestBody SavingsAccountUpdateRequest updateRequest){
+    public String updateAccount(@PathVariable("accountNo") String accountNumber, @RequestBody SavingsAccountUpdateRequest updateRequest){
         return savingsAccountService.updateAccount(accountNumber, updateRequest);
     }
 
