@@ -79,6 +79,11 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
 
     @Override
     public void deleteAccount(SavingsAccount savingsAccount) {
+        final String sql = """
+                DELETE FROM t_savings_account WHERE account_number = ?
+                """;
+        int rowsAffected =  jdbcTemplate.update(sql, savingsAccount.getAccountNumber());
+        log.info("SAVINGS ACCOUNT DELETE RESULT = " + rowsAffected);
 
     }
 

@@ -13,7 +13,7 @@ public interface SavingsAccountService {
     List<SavingsAccountResponse> getAccountsByAccountType(String accountType);
     SavingsAccountResponse getAccountByAccountNumber(String accountNumber);
     String updateAccount(String accountNumber, SavingsAccountUpdateRequest updateRequest);
-//    void deleteAccount(SavingsAccount savingsAccount);
+    String deleteAccount(String accountNumber);
 
 
 }

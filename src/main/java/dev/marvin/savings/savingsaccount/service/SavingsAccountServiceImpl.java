@@ -8,16 +8,18 @@ import dev.marvin.savings.savingsaccount.dto.SavingsAccountResponse;
 import dev.marvin.savings.savingsaccount.dto.SavingsAccountUpdateRequest;
 import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import dev.marvin.savings.savingsaccount.model.SavingsAccountType;
-import dev.marvin.savings.savingsaccount.util.SavingsAccountUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class SavingsAccountServiceImpl implements SavingsAccountService {
     private final SavingsAccountDao savingsAccountDao;
     private final CustomerDao customerDao;
+
+    //TODO: refactor to functional style
 
     public SavingsAccountServiceImpl(SavingsAccountDao savingsAccountDao, CustomerDao customerDao) {
         this.savingsAccountDao = savingsAccountDao;
@@ -30,7 +32,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
         if (customer != null) {
             SavingsAccount savingsAccount = SavingsAccount.builder()
-                    .accountNumber(SavingsAccountUtil.generateSavingsAccountNumber().toUpperCase())
+                    .accountNumber(generateSavingsAccountNumber())
                     .accountName(accountRequest.accountName())
                     .savingsAccountType(SavingsAccountType.valueOf(accountRequest.accountType().toUpperCase()))
                     .balance(0.0)
@@ -51,7 +53,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
                 .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
                 .toList();
 
-        return savingsAccounts.stream().map(SavingsAccountUtil::mapEntityToDTO).collect(Collectors.toList());
+        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -59,7 +61,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
         List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByMemberNumber(memberNumber).stream()
                 .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
                 .toList();
-        return savingsAccounts.stream().map(SavingsAccountUtil::mapEntityToDTO).collect(Collectors.toList());
+        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -67,14 +69,13 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
         List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByAccountType(accountType).stream()
                 .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
                 .toList();
-        return savingsAccounts.stream().map(SavingsAccountUtil::mapEntityToDTO).collect(Collectors.toList());
+        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
     }
 
     @Override
     public SavingsAccountResponse getAccountByAccountNumber(String accountNumber) {
         SavingsAccount savingsAccount = savingsAccountDao.getAccountByAccountNumber(accountNumber);
-
-        return null;
+        return mapEntityToDTO(savingsAccount);
     }
 
     @Override
@@ -101,5 +102,33 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
             return "Account not found";
         }
     }
+
+    @Override
+    public String deleteAccount(String accountNumber) {
+        SavingsAccount savingsAccount = savingsAccountDao.getAccountByAccountNumber(accountNumber);
+
+        if (savingsAccount != null) {
+            savingsAccountDao.deleteAccount(savingsAccount);
+            return "Account [%s] deleted successfully".formatted(savingsAccount.getAccountNumber());
+        } else {
+            return "Account not found";
+        }
+    }
+
+    private SavingsAccountResponse mapEntityToDTO(SavingsAccount savingsAccount) {
+        return SavingsAccountResponse.builder()
+                .accountNumber(savingsAccount.getAccountNumber())
+                .accountName(savingsAccount.getAccountName())
+                .accountType(savingsAccount.getSavingsAccountType().name())
+                .createdDate(savingsAccount.getCreatedDate())
+                .memberNumber(savingsAccount.getCustomer().getMemberNumber())
+                .build();
+    }
+
+    private String generateSavingsAccountNumber() {
+        String accountNumber = "ACC" + UUID.randomUUID().toString().substring(0, 6);
+        return accountNumber.toUpperCase();
+    }
+
 }
 
