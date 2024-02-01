@@ -2,6 +2,7 @@ package dev.marvin.savings.savingsaccount.controller;
 
 import dev.marvin.savings.savingsaccount.dto.NewSavingsAccountRequest;
 import dev.marvin.savings.savingsaccount.dto.SavingsAccountResponse;
+import dev.marvin.savings.savingsaccount.dto.SavingsAccountUpdateRequest;
 import dev.marvin.savings.savingsaccount.service.SavingsAccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,5 +36,10 @@ public class SavingsAccountController {
     @GetMapping("/type/{accountType}")
     public List<SavingsAccountResponse> getAccountsByAccountType(@PathVariable("accountType") String accountType){
         return savingsAccountService.getAccountsByAccountType(accountType);
+    }
+
+    @PutMapping("/update/{accountNo}")
+    public String getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber, @RequestBody SavingsAccountUpdateRequest updateRequest){
+        return savingsAccountService.updateAccount(accountNumber, updateRequest);
     }
 }

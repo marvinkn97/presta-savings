@@ -5,12 +5,12 @@ import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
-import dev.marvin.savings.customer.util.CustomerUtil;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         //Create New Customer
         Customer customer = Customer.builder()
-                .memberNumber(CustomerUtil.generateCustomerMemberNumber().toUpperCase())
+                .memberNumber(generateCustomerMemberNumber())
                 .name(registrationRequest.name())
                 .email(registrationRequest.email())
                 .password(registrationRequest.password())
@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (!customerList.isEmpty()) {
             customerDTOList = new ArrayList<>();
             for (Customer customer : customerList) {
-                CustomerResponse customerResponse = CustomerUtil.mapEntityToDTO(customer);
+                CustomerResponse customerResponse = mapEntityToDTO(customer);
                 customerDTOList.add(customerResponse);
             }
         }
@@ -66,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDao.getCustomerByMemberNumber(memberNumber);
         CustomerResponse customerResponse = null;
         if (customer != null) {
-            customerResponse = CustomerUtil.mapEntityToDTO(customer);
+            customerResponse = mapEntityToDTO(customer);
         }
         return customerResponse;
     }
@@ -115,5 +115,21 @@ public class CustomerServiceImpl implements CustomerService {
         } else {
             return "customer not found";
         }
+    }
+
+
+    private  CustomerResponse mapEntityToDTO(Customer customer) {
+        return CustomerResponse.builder()
+                .memberNumber(customer.getMemberNumber())
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .mobile(customer.getMobile())
+                .governmentId(customer.getGovernmentId())
+                .build();
+    }
+
+    private String generateCustomerMemberNumber() {
+        String memberNumber =  "MEM" + UUID.randomUUID().toString().substring(0, 6);
+        return memberNumber.toUpperCase();
     }
 }

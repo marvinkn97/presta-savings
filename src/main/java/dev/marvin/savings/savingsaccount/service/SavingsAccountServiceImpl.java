@@ -5,6 +5,7 @@ import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.savingsaccount.dao.SavingsAccountDao;
 import dev.marvin.savings.savingsaccount.dto.NewSavingsAccountRequest;
 import dev.marvin.savings.savingsaccount.dto.SavingsAccountResponse;
+import dev.marvin.savings.savingsaccount.dto.SavingsAccountUpdateRequest;
 import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import dev.marvin.savings.savingsaccount.model.SavingsAccountType;
 import dev.marvin.savings.savingsaccount.util.SavingsAccountUtil;
@@ -67,6 +68,38 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
                 .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
                 .toList();
         return savingsAccounts.stream().map(SavingsAccountUtil::mapEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public SavingsAccountResponse getAccountByAccountNumber(String accountNumber) {
+        SavingsAccount savingsAccount = savingsAccountDao.getAccountByAccountNumber(accountNumber);
+
+        return null;
+    }
+
+    @Override
+    public String updateAccount(String accountNumber, SavingsAccountUpdateRequest updateRequest) {
+
+        boolean changes = false;
+
+        SavingsAccount savingsAccount = savingsAccountDao.getAccountByAccountNumber(accountNumber);
+
+        if (savingsAccount != null) {
+
+            if (!updateRequest.accountName().isBlank() && !savingsAccount.getAccountName().equalsIgnoreCase(updateRequest.accountName())) {
+                savingsAccount.setAccountName(updateRequest.accountName());
+                changes = true;
+            }
+
+            if (!changes) {
+                return "No data changes found";
+            }
+
+            savingsAccountDao.updateAccount(savingsAccount);
+            return "Account updated successfully";
+        } else {
+            return "Account not found";
+        }
     }
 }
 

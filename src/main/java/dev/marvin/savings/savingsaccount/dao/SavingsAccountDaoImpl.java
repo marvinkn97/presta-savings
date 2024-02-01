@@ -59,8 +59,22 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
     }
 
     @Override
-    public void updateAccount(SavingsAccount savingsAccount) {
+    public SavingsAccount getAccountByAccountNumber(String accountNumber) {
+        final String sql = """
+                 SELECT account_number, account_name, account_type, balance, created_date, member_no FROM t_savings_account WHERE account_number = ?
+                """;
+        return jdbcTemplate.queryForObject(sql, savingsAccountRowMapper, accountNumber);
+    }
 
+    @Override
+    public void updateAccount(SavingsAccount savingsAccount) {
+       final String sql = """
+               UPDATE t_savings_account
+               SET account_name = ?
+               WHERE account_number = ?
+               """;
+        int rowsAffected =  jdbcTemplate.update(sql, savingsAccount.getAccountName(), savingsAccount.getAccountNumber());
+        log.info("SAVINGS ACCOUNT NAME UPDATE RESULT = " + rowsAffected);
     }
 
     @Override

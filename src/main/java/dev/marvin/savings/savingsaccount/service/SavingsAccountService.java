@@ -2,6 +2,7 @@ package dev.marvin.savings.savingsaccount.service;
 
 import dev.marvin.savings.savingsaccount.dto.NewSavingsAccountRequest;
 import dev.marvin.savings.savingsaccount.dto.SavingsAccountResponse;
+import dev.marvin.savings.savingsaccount.dto.SavingsAccountUpdateRequest;
 
 import java.util.List;
 
@@ -10,8 +11,8 @@ public interface SavingsAccountService {
     List<SavingsAccountResponse> getAllAccounts();
     List<SavingsAccountResponse> getAccountsByMemberNumber(String memberNumber);
     List<SavingsAccountResponse> getAccountsByAccountType(String accountType);
-
-//    void updateAccount(SavingsAccount savingsAccount);
+    SavingsAccountResponse getAccountByAccountNumber(String accountNumber);
+    String updateAccount(String accountNumber, SavingsAccountUpdateRequest updateRequest);
 //    void deleteAccount(SavingsAccount savingsAccount);
 
 

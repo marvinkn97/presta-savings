@@ -8,8 +8,10 @@ public interface SavingsAccountDao {
     void insertAccount(SavingsAccount savingsAccount);
     List<SavingsAccount> getAllAccounts();
     List<SavingsAccount> getAccountsByMemberNumber(String memberNumber);
+    List<SavingsAccount> getAccountsByAccountType(String accountType);
+    SavingsAccount getAccountByAccountNumber(String accountNumber);
     void updateAccount(SavingsAccount savingsAccount);
     void deleteAccount(SavingsAccount savingsAccount);
-    List<SavingsAccount> getAccountsByAccountType(String accountType);
+
 
 }
