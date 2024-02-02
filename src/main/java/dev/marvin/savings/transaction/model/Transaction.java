@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -14,6 +13,6 @@ public class Transaction implements Serializable {
     private TransactionType transactionType;
     private PaymentMethod paymentMethod;
     private Double amount;
-    private LocalDateTime createdDate;
+    private Long createdDate;
     private SavingsAccount savingsAccount;
 }

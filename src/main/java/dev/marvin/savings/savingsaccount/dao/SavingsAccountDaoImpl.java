@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @Primary
 @Repository
-public class SavingsAccountDaoImpl implements SavingsAccountDao{
+public class SavingsAccountDaoImpl implements SavingsAccountDao {
     private final JdbcTemplate jdbcTemplate;
     private final SavingsAccountRowMapper savingsAccountRowMapper;
 
@@ -53,7 +53,7 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
                  SELECT account_number, account_name, account_type, balance, created_date, member_no FROM t_savings_account WHERE account_type = ?
                 """;
 
-                List<SavingsAccount> s = jdbcTemplate.query(sql, savingsAccountRowMapper, accountType);
+        List<SavingsAccount> s = jdbcTemplate.query(sql, savingsAccountRowMapper, accountType);
         System.out.println(s);
         return s;
     }
@@ -68,13 +68,15 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
 
     @Override
     public void updateAccount(SavingsAccount savingsAccount) {
-       final String sql = """
-               UPDATE t_savings_account
-               SET account_name = ?
-               WHERE account_number = ?
-               """;
-        int rowsAffected =  jdbcTemplate.update(sql, savingsAccount.getAccountName(), savingsAccount.getAccountNumber());
-        log.info("SAVINGS ACCOUNT NAME UPDATE RESULT = " + rowsAffected);
+        if (savingsAccount.getAccountName() != null) {
+            final String sql = """
+                    UPDATE t_savings_account
+                    SET account_name = ?
+                    WHERE account_number = ?
+                    """;
+            int rowsAffected = jdbcTemplate.update(sql, savingsAccount.getAccountName(), savingsAccount.getAccountNumber());
+            log.info("SAVINGS ACCOUNT NAME UPDATE RESULT = " + rowsAffected);
+        }
     }
 
     @Override
@@ -82,7 +84,7 @@ public class SavingsAccountDaoImpl implements SavingsAccountDao{
         final String sql = """
                 DELETE FROM t_savings_account WHERE account_number = ?
                 """;
-        int rowsAffected =  jdbcTemplate.update(sql, savingsAccount.getAccountNumber());
+        int rowsAffected = jdbcTemplate.update(sql, savingsAccount.getAccountNumber());
         log.info("SAVINGS ACCOUNT DELETE RESULT = " + rowsAffected);
 
     }

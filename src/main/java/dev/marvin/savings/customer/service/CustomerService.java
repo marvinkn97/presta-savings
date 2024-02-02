@@ -1,8 +1,8 @@
 package dev.marvin.savings.customer.service;
 
 import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
-import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
+import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 
 import java.util.List;
 

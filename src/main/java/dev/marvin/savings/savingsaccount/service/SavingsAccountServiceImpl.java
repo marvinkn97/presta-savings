@@ -80,15 +80,19 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Override
     public String updateAccount(String accountNumber, SavingsAccountUpdateRequest updateRequest) {
-
         boolean changes = false;
 
         SavingsAccount savingsAccount = savingsAccountDao.getAccountByAccountNumber(accountNumber);
 
+        SavingsAccount update;
+
         if (savingsAccount != null) {
 
+            update = new SavingsAccount();
+            update.setAccountNumber(savingsAccount.getAccountNumber());
+
             if (!updateRequest.accountName().isBlank() && !savingsAccount.getAccountName().equalsIgnoreCase(updateRequest.accountName())) {
-                savingsAccount.setAccountName(updateRequest.accountName());
+               update.setAccountName(updateRequest.accountName());
                 changes = true;
             }
 
@@ -96,7 +100,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
                 return "No data changes found";
             }
 
-            savingsAccountDao.updateAccount(savingsAccount);
+            savingsAccountDao.updateAccount(update);
             return "Account updated successfully";
         } else {
             return "Account not found";

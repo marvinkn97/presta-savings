@@ -1,10 +1,10 @@
 package dev.marvin.savings.customer.service;
 
 import dev.marvin.savings.customer.dao.CustomerDao;
+import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
-import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import org.springframework.stereotype.Service;
 
@@ -71,12 +71,16 @@ public class CustomerServiceImpl implements CustomerService {
         return customerResponse;
     }
 
+    //TODO: update customer update functionality
     @Override
     public String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
         Customer customer = customerDao.getCustomerByMemberNumber(memberNumber);
         boolean changes = false;
 
+        Customer update;
+
         if (customer != null) {
+            update = new Customer();
 
             if (!customerUpdateRequest.name().isBlank() && !customerUpdateRequest.name().equalsIgnoreCase(customer.getName())) {
                 customer.setName(customerUpdateRequest.name());
@@ -118,7 +122,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-    private  CustomerResponse mapEntityToDTO(Customer customer) {
+    private CustomerResponse mapEntityToDTO(Customer customer) {
         return CustomerResponse.builder()
                 .memberNumber(customer.getMemberNumber())
                 .name(customer.getName())
@@ -129,7 +133,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private String generateCustomerMemberNumber() {
-        String memberNumber =  "MEM" + UUID.randomUUID().toString().substring(0, 6);
+        String memberNumber = "MEM" + UUID.randomUUID().toString().substring(0, 6);
         return memberNumber.toUpperCase();
     }
 }
