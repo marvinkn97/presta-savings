@@ -17,6 +17,7 @@
        +  Spring Data JDBC
        +  MySQL
        +  Lombok
+       +  Validation
      
    +    Features
         +  Customer Management
@@ -29,3 +30,7 @@
            +  Update Account details
            +  Delete Account
            +  View Account
+        +  Payment/Transaction Management
+           +  Record payment (positive adjustment)
+           +  Negative adjustment
+           +  View Payment
