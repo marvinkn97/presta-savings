@@ -1,15 +1,19 @@
 package dev.marvin.savings.transaction.service;
 
+import dev.marvin.savings.exception.InsufficientAmountException;
 import dev.marvin.savings.savingsaccount.dao.SavingsAccountDao;
 import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import dev.marvin.savings.transaction.dao.TransactionDao;
 import dev.marvin.savings.transaction.dto.TransactionRequest;
+import dev.marvin.savings.transaction.dto.TransactionResponse;
 import dev.marvin.savings.transaction.model.PaymentMethod;
 import dev.marvin.savings.transaction.model.Transaction;
 import dev.marvin.savings.transaction.model.TransactionType;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -31,8 +35,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         SavingsAccount update;
 
-        if (amount < 0) {
-            return "Deposit amount should be greater than zero";
+        if (amount <= 0) {
+            throw new InsufficientAmountException("Amount should be greater than zero");
         }
 
         if (savingsAccount != null) {
@@ -43,10 +47,10 @@ public class TransactionServiceImpl implements TransactionService {
                 update.setBalance(savingsAccount.getBalance() + amount);
             } else if (transactionType.equals(TransactionType.WITHDRAW)) {
 
-                if (savingsAccount.getBalance() - amount != 0) {
+                if (savingsAccount.getBalance() - amount >= 0) {
                     update.setBalance(savingsAccount.getBalance() - amount);
                 } else {
-                    return "Insufficient amount";
+                    throw new InsufficientAmountException("Insufficient Account Balance");
                 }
             }
 
@@ -67,8 +71,42 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
+    @Override
+    public List<TransactionResponse> getAllTransactions() {
+        List<Transaction> transactions = transactionDao.getAllTransactions().stream()
+                .peek(transaction -> transaction.setSavingsAccount(savingsAccountDao.getAccountByAccountNumber(transaction.getSavingsAccount().getAccountNumber())))
+                .toList();
+
+        return transactions.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TransactionResponse> getAllTransactionsByAccountNumber(String accountNumber) {
+        List<Transaction> transactions = transactionDao.getAllTransactionsByAccountNumber(accountNumber).stream()
+                .peek(transaction -> transaction.setSavingsAccount(savingsAccountDao.getAccountByAccountNumber(transaction.getSavingsAccount().getAccountNumber())))
+                .toList();
+        return transactions.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public TransactionResponse getTransactionByTransactionCode(String transactionCode) {
+       Transaction transaction = transactionDao.getTransactionByTransactionCode(transactionCode);
+       return mapEntityToDTO(transaction);
+    }
+
     private String generateTransactionCode() {
         String transactionCode = "TX" + UUID.randomUUID().toString().substring(0, 6);
         return transactionCode.toUpperCase();
+    }
+
+    private TransactionResponse mapEntityToDTO(Transaction transaction) {
+        return TransactionResponse.builder()
+                .transactionCode(transaction.getTransactionCode())
+                .transactionType(transaction.getTransactionType().name())
+                .paymentMethod(transaction.getPaymentMethod().name())
+                .amount(transaction.getAmount())
+                .createdDate(transaction.getCreatedDate())
+                .accountNumber(transaction.getSavingsAccount().getAccountNumber())
+                .build();
     }
 }

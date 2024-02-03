@@ -4,21 +4,22 @@ import dev.marvin.savings.transaction.model.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
-@Transactional
+
 @Slf4j
 @Repository
 public class TransactionDaoImpl implements TransactionDao {
-
     private final JdbcTemplate jdbcTemplate;
+    private final TransactionRowMapper transactionRowMapper;
 
-    public TransactionDaoImpl(JdbcTemplate jdbcTemplate) {
+    public TransactionDaoImpl(JdbcTemplate jdbcTemplate, TransactionRowMapper transactionRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.transactionRowMapper = transactionRowMapper;
     }
 
     @Override
@@ -54,5 +55,34 @@ public class TransactionDaoImpl implements TransactionDao {
             }
             log.info(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions() {
+        final String sql = """
+                SELECT transaction_code, transaction_type, payment_method, amount, created_date, account_no
+                FROM t_transaction
+                """;
+        return jdbcTemplate.query(sql, transactionRowMapper);
+    }
+
+    @Override
+    public List<Transaction> getAllTransactionsByAccountNumber(String accountNumber) {
+        final String sql = """
+                SELECT transaction_code, transaction_type, payment_method, amount, created_date, account_no
+                FROM t_transaction
+                WHERE account_no = ?
+                """;
+        return jdbcTemplate.query(sql, transactionRowMapper, accountNumber);
+    }
+
+    @Override
+    public Transaction getTransactionByTransactionCode(String transactionCode) {
+        final String sql = """
+                SELECT transaction_code, transaction_type, payment_method, amount, created_date, account_no
+                FROM t_transaction
+                WHERE transaction_code = ?
+                """;
+        return jdbcTemplate.queryForObject(sql, transactionRowMapper, transactionCode);
     }
 }
