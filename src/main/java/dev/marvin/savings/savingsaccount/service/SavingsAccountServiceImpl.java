@@ -92,7 +92,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
             update.setAccountNumber(savingsAccount.getAccountNumber());
 
             if (!updateRequest.accountName().isBlank() && !savingsAccount.getAccountName().equalsIgnoreCase(updateRequest.accountName())) {
-               update.setAccountName(updateRequest.accountName());
+                update.setAccountName(updateRequest.accountName());
                 changes = true;
             }
 
@@ -117,6 +117,30 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
         } else {
             return "Account not found";
         }
+    }
+
+    @Override
+    public Double getAllCustomerAccountsTotalBalance(String memberNumber) {
+        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByMemberNumber(memberNumber);
+        Double sum = 0.0;
+
+        if (!savingsAccounts.isEmpty()) {
+            for (SavingsAccount savingsAccount : savingsAccounts) {
+                sum += savingsAccount.getBalance();
+            }
+        }
+        return sum;
+    }
+
+    @Override
+    public Double getAllCustomersAccountTotalBalance() {
+        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAllAccounts();
+        Double sum = 0.0;
+
+        for (SavingsAccount savingsAccount : savingsAccounts) {
+            sum += savingsAccount.getBalance();
+        }
+        return sum;
     }
 
     private SavingsAccountResponse mapEntityToDTO(SavingsAccount savingsAccount) {

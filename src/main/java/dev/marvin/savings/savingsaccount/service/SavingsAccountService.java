@@ -14,6 +14,9 @@ public interface SavingsAccountService {
     SavingsAccountResponse getAccountByAccountNumber(String accountNumber);
     String updateAccount(String accountNumber, SavingsAccountUpdateRequest updateRequest);
     String deleteAccount(String accountNumber);
+    Double getAllCustomerAccountsTotalBalance(String memberNumber);
+    Double getAllCustomersAccountTotalBalance();
+
 
 
 }
