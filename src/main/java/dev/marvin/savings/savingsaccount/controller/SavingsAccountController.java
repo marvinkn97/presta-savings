@@ -18,7 +18,7 @@ public class SavingsAccountController {
         this.savingsAccountService = savingsAccountService;
     }
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create")
     public String createAccount(@RequestBody NewSavingsAccountRequest accountRequest) {
         return savingsAccountService.createAccount(accountRequest);
     }
