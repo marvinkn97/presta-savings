@@ -8,8 +8,6 @@ Document the APIs using both Postman and Swagger, providing clear descriptions a
 
 ##########################################
 
-SAmple
-
 notification service that will expose send notification api
 type: SMS or EMAIL
 to: 254722XXXXX
