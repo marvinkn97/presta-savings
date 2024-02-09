@@ -17,27 +17,28 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/register")
+    @PostMapping(path = "/register")
     public String createCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
         return customerService.insertCustomer(registrationRequest);
     }
 
-    @GetMapping("/all")
+    @GetMapping(path = "/all", produces = {"application/json"})
     public List<CustomerResponse> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
-    @GetMapping("/{memberNumber}")
+    @GetMapping(value = "/{memberNumber}")
     public CustomerResponse getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
         return customerService.getCustomerByMemberNumber(memberNumber);
     }
 
     @PutMapping("/update/{memberNumber}")
-    public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @RequestBody CustomerUpdateRequest updateRequest){
+    public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @RequestBody CustomerUpdateRequest updateRequest) {
         return customerService.updateCustomer(memberNumber, updateRequest);
     }
+
     @DeleteMapping("/delete/{memberNumber}")
-    public String deleteCustomer(@PathVariable("memberNumber") String memberNumber){
+    public String deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
         return customerService.deleteCustomer(memberNumber);
     }
 

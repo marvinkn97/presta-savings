@@ -1,4 +1,4 @@
-package dev.marvin.savings.advice;
+package dev.marvin.savings.exception.advice;
 
 import dev.marvin.savings.exception.InsufficientAmountException;
 import dev.marvin.savings.exception.MessageResponse;

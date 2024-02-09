@@ -18,6 +18,6 @@ public class Customer implements Serializable {
     private String mobile;
     private Integer governmentId;
     private Long createdDate;
-    private String profilePic;
+    private String profileImagePath;
     private Role role;
 }

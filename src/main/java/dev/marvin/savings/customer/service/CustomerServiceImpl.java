@@ -1,10 +1,10 @@
 package dev.marvin.savings.customer.service;
 
 import dev.marvin.savings.customer.dao.CustomerDao;
-import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
+import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import org.springframework.stereotype.Service;
 
