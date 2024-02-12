@@ -6,6 +6,7 @@ import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import dev.marvin.savings.security.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,13 +16,16 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerDao customerDao;
+    private final UserService userService;
 
-    public CustomerServiceImpl(CustomerDao customerDao) {
+    public CustomerServiceImpl(CustomerDao customerDao, UserService userService) {
         this.customerDao = customerDao;
+        this.userService = userService;
     }
 
+
     @Override
-    public String insertCustomer(CustomerRegistrationRequest registrationRequest) {
+    public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
 
         //TODO: Use only email and password alternate route to user registration and populate rest of fields through profile update
 
@@ -29,6 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
             throw new DuplicateResourceException("email already taken");
         }
+
 
         //Create New Customer
         Customer customer = Customer.builder()
@@ -136,4 +141,5 @@ public class CustomerServiceImpl implements CustomerService {
         String memberNumber = "MEM" + UUID.randomUUID().toString().substring(0, 6);
         return memberNumber.toUpperCase();
     }
+
 }

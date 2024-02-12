@@ -7,7 +7,7 @@ import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import java.util.List;
 
 public interface CustomerService {
-    String insertCustomer(CustomerRegistrationRequest registrationRequest);
+    String registerCustomer(CustomerRegistrationRequest registrationRequest);
     List<CustomerResponse> getAllCustomers();
     CustomerResponse getCustomerByMemberNumber(String memberNumber);
     String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest);

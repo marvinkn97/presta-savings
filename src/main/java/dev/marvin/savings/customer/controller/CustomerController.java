@@ -4,6 +4,7 @@ import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.service.CustomerService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,12 @@ public class CustomerController {
 
     @PostMapping(path = "/register")
     public String createCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
-        return customerService.insertCustomer(registrationRequest);
+        return customerService.registerCustomer(registrationRequest);
     }
 
     @GetMapping(path = "/all", produces = {"application/json"})
-    public List<CustomerResponse> getAllCustomers() {
+    public List<CustomerResponse> getAllCustomers(HttpServletRequest httpServletRequest) {
+        System.out.println(httpServletRequest.getSession().getId());
         return customerService.getAllCustomers();
     }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -18,6 +19,6 @@ public class Customer implements Serializable {
     private String mobile;
     private Integer governmentId;
     private Long createdDate;
+    private Long updatedDate;
     private String profileImagePath;
-    private Role role;
 }

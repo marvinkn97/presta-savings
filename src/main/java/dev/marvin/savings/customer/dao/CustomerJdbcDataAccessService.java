@@ -54,6 +54,16 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     }
 
     @Override
+    public Customer getCustomerByEmail(String email) {
+        String sql = """
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
+                FROM t_customer
+                WHERE email = ?
+                """;
+        return jdbcTemplate.queryForObject(sql, customerRowMapper);
+    }
+
+    @Override
     public void updateCustomer(Customer customer) {
         String sql = """
                 UPDATE t_customer
