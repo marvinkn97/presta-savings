@@ -19,7 +19,7 @@ public class CustomerController {
     }
 
     @PostMapping(path = "/register")
-    public String createCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
+    public String registerCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
         return customerService.registerCustomer(registrationRequest);
     }
 

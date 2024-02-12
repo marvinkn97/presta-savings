@@ -5,8 +5,12 @@ import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
+import dev.marvin.savings.customer.model.Role;
 import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.security.UserService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,13 +18,25 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl implements CustomerService, UserDetailsService {
     private final CustomerDao customerDao;
-    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerServiceImpl(CustomerDao customerDao, UserService userService) {
+    public CustomerServiceImpl(CustomerDao customerDao, PasswordEncoder passwordEncoder) {
         this.customerDao = customerDao;
-        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Customer customer = customerDao.getCustomerByEmail(email);
+
+        if (customer == null) {
+            System.out.println("Customer 404");
+            throw new UsernameNotFoundException("Customer with email [%s] not found".formatted(email));
+        }
+
+        return customer;
     }
 
 
@@ -35,15 +51,13 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
 
-        //Create New Customer
+        //Register New Customer
         Customer customer = Customer.builder()
                 .memberNumber(generateCustomerMemberNumber())
-                .name(registrationRequest.name())
                 .email(registrationRequest.email())
-                .password(registrationRequest.password())
-                .mobile(registrationRequest.mobile())
-                .governmentId(registrationRequest.governmentId())
+                .password(passwordEncoder.encode(registrationRequest.password()))
                 .createdDate(System.currentTimeMillis())
+                .role(Role.MEMBER)
                 .build();
 
         customerDao.insertCustomer(customer);
