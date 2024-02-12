@@ -5,6 +5,7 @@ import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class CustomerController {
     }
 
     @PostMapping(path = "/register")
-    public String registerCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
+    public String registerCustomer(@RequestBody @Valid CustomerRegistrationRequest registrationRequest) {
         return customerService.registerCustomer(registrationRequest);
     }
 

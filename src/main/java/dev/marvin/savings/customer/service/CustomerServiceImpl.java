@@ -7,6 +7,7 @@ import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.model.Role;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,11 +21,12 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
     private final CustomerDao customerDao;
-    private final PasswordEncoder passwordEncoder;
 
-    public CustomerServiceImpl(CustomerDao customerDao, PasswordEncoder passwordEncoder) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public CustomerServiceImpl(CustomerDao customerDao) {
         this.customerDao = customerDao;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -50,7 +52,6 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
             throw new DuplicateResourceException("email already taken");
         }
 
-
         //Register New Customer
         Customer customer = Customer.builder()
                 .memberNumber(generateCustomerMemberNumber())
@@ -63,6 +64,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         customerDao.insertCustomer(customer);
 
         return "customer saved successfully";
+
     }
 
     @Override

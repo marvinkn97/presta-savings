@@ -27,10 +27,10 @@ public class CustomerJdbcDataAccessService implements CustomerDao {
     @Override
     public void insertCustomer(Customer customer) {
         String sql = """
-                INSERT INTO t_customer (member_number, customer_name, email, password, mobile_no, government_id, created_date)
-                VALUES(?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO t_customer (member_number, email, password, created_date, role)
+                VALUES(?, ?, ?, ?, ?)
                 """;
-        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getMobile(), customer.getGovernmentId(), customer.getCreatedDate());
+        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getEmail(), customer.getPassword(), customer.getCreatedDate(), customer.getRole().name());
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
     }
 
