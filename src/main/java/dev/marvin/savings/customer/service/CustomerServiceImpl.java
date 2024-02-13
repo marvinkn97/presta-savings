@@ -20,14 +20,12 @@ import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
-    private final CustomerDao customerDao;
+
+    @Autowired
+    private  CustomerDao customerDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    public CustomerServiceImpl(CustomerDao customerDao) {
-        this.customerDao = customerDao;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -47,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         //TODO: Use only email and password alternate route to user registration and populate rest of fields through profile update
 
-        //Check if exists customer with given email
+       // Check if exists customer with given email
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
             throw new DuplicateResourceException("email already taken");
         }

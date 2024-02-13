@@ -4,25 +4,20 @@ import dev.marvin.savings.customer.dao.rowmapper.CustomerRowMapper;
 import dev.marvin.savings.customer.model.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Slf4j
-@Primary
-@Repository(value = "jdbc")
-public class CustomerJdbcDataAccessService implements CustomerDao {
-
-    private final JdbcTemplate jdbcTemplate;
-    private final CustomerRowMapper customerRowMapper;
+@Repository
+public class CustomerDaoImpl implements CustomerDao {
 
     @Autowired
-    public CustomerJdbcDataAccessService(JdbcTemplate jdbcTemplate, CustomerRowMapper customerRowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.customerRowMapper = customerRowMapper;
-    }
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private CustomerRowMapper customerRowMapper;
 
     @Override
     public void insertCustomer(Customer customer) {
