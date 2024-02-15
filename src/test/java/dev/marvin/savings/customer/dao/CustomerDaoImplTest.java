@@ -8,10 +8,9 @@ class CustomerDaoImplTest {
 
     CustomerDaoImpl underTest;
 
-
     @BeforeEach
     void setUp() {
-//        underTest = new CustomerJdbcDataAccessService();
+      
     }
 
     @AfterEach

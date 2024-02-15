@@ -6,6 +6,7 @@ import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,11 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/customer")
 public class CustomerController {
-    private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+    @Autowired
+    private CustomerService customerService;
 
     @PostMapping(path = "/register")
     public String registerCustomer(@RequestBody @Valid CustomerRegistrationRequest registrationRequest) {

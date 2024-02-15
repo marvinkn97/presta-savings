@@ -1,7 +1,7 @@
 package dev.marvin.savings.exception.advice;
 
 import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.exception.MessageResponse;
+import dev.marvin.savings.exception.ServerResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,7 +14,7 @@ public class ControllerAdvice {
     @ExceptionHandler(InsufficientAmountException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public MessageResponse processInsufficientAmountException(InsufficientAmountException e) {
-        return new MessageResponse(e.getMessage(), "Error");
+    public ServerResponse processInsufficientAmountException(InsufficientAmountException e) {
+        return new ServerResponse(HttpStatus.BAD_REQUEST.toString(), e.getMessage());
     }
 }

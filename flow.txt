@@ -27,9 +27,6 @@ send a reequest - payment service
 Feat 1: Authentication requirements
 
 Feat 1.1: Sign up baker using email address (local credentials)
-Feat 1.2: Sign up baker using Google
-Feat 1.3: Sign in baker using local credentials
-Feat 1.4: Sign in baker using Google
 Feat 1.5: Reset baker password (local credentials)
 Feat 1.6: Change baker password (local credentials)
 Feat 2: Authorization requirements:

@@ -15,9 +15,10 @@
    +   Technologies Used
        +  Spring Boot 3
        +  Spring Data JDBC
-       +  MySQL
+       +  MySQL on Docker
        +  Lombok
-       +  Validation
+       +  Spring Security
+       +  TestContainers for DAO Layer unit testing 
      
    +    Features
         +  Customer Management
@@ -36,5 +37,4 @@
            +  View Payment
    
   +    TODO
-       +  Implement Security
        +  Implement Testing

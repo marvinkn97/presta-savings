@@ -39,7 +39,6 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         return customer;
     }
 
-
     @Override
     public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
 
@@ -53,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         //Register New Customer
         Customer customer = Customer.builder()
                 .memberNumber(generateCustomerMemberNumber())
+                .name(registrationRequest.name())
                 .email(registrationRequest.email())
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .createdDate(System.currentTimeMillis())
