@@ -3,9 +3,7 @@ package dev.marvin.savings.customer.dto;
 public record CustomerUpdateRequest(
         String name,
         String email,
-        String pass,
+        String password,
         String mobile,
-        Integer governmentId) {
+        String profileImage) {
 }
-
-//TODO: add password field

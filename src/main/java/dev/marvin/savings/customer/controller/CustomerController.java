@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/customer")
@@ -31,7 +32,8 @@ public class CustomerController {
 
     @GetMapping(value = "/{memberNumber}")
     public CustomerResponse getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
-        return customerService.getCustomerByMemberNumber(memberNumber);
+        Optional<CustomerResponse> customerResponse = customerService.getCustomerByMemberNumber(memberNumber);
+        return customerResponse.orElse(null);
     }
 
     @PutMapping("/update/{memberNumber}")
