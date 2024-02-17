@@ -1,27 +1,3 @@
-      +  Ensured proper error handling and validation of incoming requests.
-      +  Implemented unit tests to validate the functionality of the API endpoints.
-
-Ensure proper error handling and validation of incoming requests.
-Implement unit tests to validate the functionality of the API endpoints.
-Document the APIs using both Postman and Swagger, providing clear descriptions and examples for each endpoint.
-
-
-##########################################
-
-notification service that will expose send notification api
-type: SMS or EMAIL
-to: 254722XXXXX
-from: CAKEYARD
-subject - optional for sms
-content: Thank you for your business....
-etc..
-
-
-Send email notification
-send sms notification - notification service
-send auth request to the external auth services...
-send a reequest - payment service
-
 
 4.1. Sprint 1 Features
 Feat 1: Authentication requirements
