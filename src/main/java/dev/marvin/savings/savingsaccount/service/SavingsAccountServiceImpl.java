@@ -11,8 +11,8 @@ import dev.marvin.savings.savingsaccount.model.SavingsAccountType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class SavingsAccountServiceImpl implements SavingsAccountService {
@@ -28,16 +28,17 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Override
     public String createAccount(NewSavingsAccountRequest accountRequest) {
-        Customer customer = customerDao.getCustomerByMemberNumber(accountRequest.memberNumber());
+        Optional<Customer> customer = customerDao.getCustomerByMemberNumber(accountRequest.memberNumber());
 
-        if (customer != null) {
+        if (customer.isPresent()) {
+            Customer c = customer.get();
             SavingsAccount savingsAccount = SavingsAccount.builder()
                     .accountNumber(generateSavingsAccountNumber())
                     .accountName(accountRequest.accountName())
                     .savingsAccountType(SavingsAccountType.valueOf(accountRequest.accountType().toUpperCase()))
                     .balance(0.0)
                     .createdDate(System.currentTimeMillis())
-                    .customer(customer)
+                    .customer(c)
                     .build();
 
             savingsAccountDao.insertAccount(savingsAccount);
@@ -49,27 +50,30 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Override
     public List<SavingsAccountResponse> getAllAccounts() {
-        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAllAccounts().stream()
-                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
-                .toList();
-
-        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+//        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAllAccounts().stream()
+//                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
+//                .toList();
+//
+//        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+        return null;
     }
 
     @Override
     public List<SavingsAccountResponse> getAccountsByMemberNumber(String memberNumber) {
-        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByMemberNumber(memberNumber).stream()
-                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
-                .toList();
-        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+//        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByMemberNumber(memberNumber).stream()
+//                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
+//                .toList();
+//        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+        return null;
     }
 
     @Override
     public List<SavingsAccountResponse> getAccountsByAccountType(String accountType) {
-        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByAccountType(accountType).stream()
-                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
-                .toList();
-        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+//        List<SavingsAccount> savingsAccounts = savingsAccountDao.getAccountsByAccountType(accountType).stream()
+//                .peek(savingsAccount -> savingsAccount.setCustomer(customerDao.getCustomerByMemberNumber(savingsAccount.getCustomer().getMemberNumber())))
+//                .toList();
+//        return savingsAccounts.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+        return null;
     }
 
     @Override
