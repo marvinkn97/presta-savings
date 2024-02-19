@@ -8,9 +8,7 @@ import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.model.Role;
 import dev.marvin.savings.exception.DatabaseOperationException;
 import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.advice.GlobalExceptionHandler;
 import dev.marvin.savings.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,14 +23,14 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
 
-    @Autowired
-    private CustomerDao customerDao;
+    private final CustomerDao customerDao;
 
-    @Autowired
-    private GlobalExceptionHandler globalExceptionHandler;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public CustomerServiceImpl(CustomerDao customerDao, PasswordEncoder passwordEncoder) {
+        this.customerDao = customerDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -44,7 +42,6 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         // checks if a customer with the given email already exists in the system
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
-            System.out.println(globalExceptionHandler.handleDuplicateResourceException(new DuplicateResourceException("email already taken")));
             throw new DuplicateResourceException("email already taken");
         }
 

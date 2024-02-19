@@ -3,7 +3,6 @@ package dev.marvin.savings.customer.dao;
 import dev.marvin.savings.customer.dao.rowmapper.CustomerRowMapper;
 import dev.marvin.savings.customer.model.Customer;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -16,11 +15,14 @@ public class CustomerDaoImpl implements CustomerDao {
 
     //Look into NamedParameterJdbcTemplate
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private CustomerRowMapper customerRowMapper;
+    private final CustomerRowMapper customerRowMapper;
+
+    public CustomerDaoImpl(JdbcTemplate jdbcTemplate, CustomerRowMapper customerRowMapper) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.customerRowMapper = customerRowMapper;
+    }
 
     @Override
     public void insertCustomer(Customer customer) {
