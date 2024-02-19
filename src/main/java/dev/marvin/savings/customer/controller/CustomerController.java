@@ -6,6 +6,7 @@ import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,9 @@ public class CustomerController {
     }
 
     @PostMapping(path = "/register")
-    public String registerCustomer(@RequestBody @Valid CustomerRegistrationRequest registrationRequest) {
-        return customerService.registerCustomer(registrationRequest);
+    public ResponseEntity<String> registerCustomer(@RequestBody @Valid CustomerRegistrationRequest registrationRequest) {
+        String response = customerService.registerCustomer(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping(path = "/all", produces = {"application/json"})

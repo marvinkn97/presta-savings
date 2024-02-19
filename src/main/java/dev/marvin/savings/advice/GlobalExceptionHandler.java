@@ -1,9 +1,6 @@
 package dev.marvin.savings.advice;
 
-import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.exception.ErrorResponse;
-import dev.marvin.savings.exception.ResourceNotFoundException;
+import dev.marvin.savings.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,5 +31,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ErrorResponse handleResourceNotFoundException(ResourceNotFoundException e){
         return new ErrorResponse(HttpStatus.NOT_FOUND.toString(), e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(DatabaseOperationException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleDatabaseOperationException(DatabaseOperationException e){
+       return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), LocalDateTime.now());
     }
 }

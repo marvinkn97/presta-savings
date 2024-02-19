@@ -9,10 +9,6 @@ import dev.marvin.savings.customer.model.Role;
 import dev.marvin.savings.exception.DatabaseOperationException;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,21 +17,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class CustomerServiceImpl implements CustomerService, UserDetailsService {
+public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public CustomerServiceImpl(CustomerDao customerDao, PasswordEncoder passwordEncoder) {
+    public CustomerServiceImpl(CustomerDao customerDao) {
         this.customerDao = customerDao;
-        this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return customerDao.getCustomerByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Customer with email [%s] not found".formatted(email)));
-    }
 
     @Override
     public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
@@ -50,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
                 .memberNumber(generateCustomerMemberNumber())
                 .name(registrationRequest.name())
                 .email(registrationRequest.email())
-                .password(passwordEncoder.encode(registrationRequest.password()))
+                .password(registrationRequest.password())
                 .createdDate(System.currentTimeMillis())
                 .role(Role.MEMBER)
                 .build();
@@ -163,6 +152,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
                 .email(customer.getEmail())
                 .mobile(customer.getMobile())
                 .governmentId(customer.getGovernmentId())
+                .createdDate(customer.getCreatedDate())
+                .roleName(customer.getRole().name())
                 .build();
     }
 

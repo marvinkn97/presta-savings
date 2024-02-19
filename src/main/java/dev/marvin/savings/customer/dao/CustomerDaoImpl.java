@@ -37,8 +37,9 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public List<Customer> getAllCustomers() {
         String sql = """
-                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date, role
                 FROM t_customer
+                LIMIT 100
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
     }
@@ -65,7 +66,7 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Optional<Customer> getCustomerByEmail(String email) {
         String sql = """
-                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date, role
                 FROM t_customer
                 WHERE email = ?
                 """;
