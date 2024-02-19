@@ -1,7 +1,7 @@
 package dev.marvin.savings.transaction.service;
 
 import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.exception.advice.ControllerAdvice;
+import dev.marvin.savings.advice.GlobalExceptionHandler;
 import dev.marvin.savings.savingsaccount.dao.SavingsAccountDao;
 import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import dev.marvin.savings.transaction.dao.TransactionDao;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
-    private ControllerAdvice controllerAdvice;
+    private GlobalExceptionHandler globalExceptionHandler;
     private final SavingsAccountDao savingsAccountDao;
     private final TransactionDao transactionDao;
 
@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
         SavingsAccount update;
 
         if (amount <= 0) {
-            System.out.println(controllerAdvice.processInsufficientAmountException(new InsufficientAmountException("Amount should be greater than zero")));
+            System.out.println(globalExceptionHandler.processInsufficientAmountException(new InsufficientAmountException("Amount should be greater than zero")));
             throw new InsufficientAmountException("Amount should be greater than zero");
 
         }

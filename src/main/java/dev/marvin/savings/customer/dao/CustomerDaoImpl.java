@@ -109,13 +109,14 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public void deleteCustomer(Customer customer) {
+    public Boolean deleteCustomer(Customer customer) {
         final String sql = """
                 DELETE FROM t_customer
                 WHERE member_number = ?
                 """;
         int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber());
         log.info("CUSTOMER DELETE RESULT = " + rowsAffected);
+        return rowsAffected > 0;
     }
 
     @Override

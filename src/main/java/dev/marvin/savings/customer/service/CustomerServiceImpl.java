@@ -7,7 +7,7 @@ import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.model.Role;
 import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.exception.advice.ControllerAdvice;
+import dev.marvin.savings.advice.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,23 +27,14 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     private CustomerDao customerDao;
 
     @Autowired
-    private ControllerAdvice controllerAdvice;
+    private GlobalExceptionHandler globalExceptionHandler;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Customer> customer = customerDao.getCustomerByEmail(email);
-        Customer existingCustomer;
-        if (customer.isPresent()) {
-            existingCustomer = customer.get();
-            return existingCustomer;
-        } else {
-            System.out.println("Customer 404");
-            throw new UsernameNotFoundException("Customer with email [%s] not found".formatted(email));
-        }
-
+        return customerDao.getCustomerByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Customer with email [%s] not found".formatted(email)));
     }
 
     @Override
@@ -51,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         // checks if a customer with the given email already exists in the system
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
-            System.out.println(controllerAdvice.processDuplicateResourceException(new DuplicateResourceException("email already taken")));
+            System.out.println(globalExceptionHandler.processDuplicateResourceException(new DuplicateResourceException("email already taken")));
             throw new DuplicateResourceException("email already taken");
         }
 

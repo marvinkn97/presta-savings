@@ -15,9 +15,9 @@ public class AppConfig {
     public DataSource dataSource() {
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://localhost:3306/presta_savings")
+                .url("jdbc:mysql://localhost:3307/presta_savings")
                 .username("root")
-                .password("pass@123")
+                .password("1234")
                 .build();
     }
 

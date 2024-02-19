@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-  app:
-    build: .
-    ports:
-      - "8081:8090"
-    depends_on:
-      - mysql
-    networks:
-      - ps-network
+#  app:
+#    build: .
+#    ports:
+#      - "8081:8090"
+#    depends_on:
+#      - mysql
+#    networks:
+#      - ps-network
 
   mysql:
     image: mysql:latest
@@ -18,7 +18,7 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: presta-savings
       MYSQL_USER: root
-      MYSQL_PASSWORD: 1234
+
     volumes:
       - ./mysql-data:/var/lib/mysql
     networks:
