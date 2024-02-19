@@ -7,6 +7,7 @@ import dev.marvin.savings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,8 +43,9 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{memberNumber}")
-    public String deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
-        return customerService.deleteCustomer(memberNumber);
+    public ResponseEntity<String> deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
+        String response = customerService.deleteCustomer(memberNumber);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -36,10 +36,11 @@
            +  Record payment (positive adjustment)
            +  Negative adjustment
            +  View Payment
-        +  Notification Service
-           +  email notification
-           +  sms notification
+  
   +    TODO
        +  Implement Testing
        +  Implement Security
-       + Document the APIs using both Postman and Swagger, providing clear descriptions and examples for each endpoint.
+       +  Document the APIs using both Postman and Swagger, providing clear descriptions and examples for each endpoint.
+       +  Notification Service
+          +  email notification
+          +  sms notification

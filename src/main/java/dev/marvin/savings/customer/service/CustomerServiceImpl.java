@@ -6,8 +6,10 @@ import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
 import dev.marvin.savings.customer.model.Role;
+import dev.marvin.savings.exception.DatabaseOperationException;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.advice.GlobalExceptionHandler;
+import dev.marvin.savings.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -42,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         // checks if a customer with the given email already exists in the system
         if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
-            System.out.println(globalExceptionHandler.processDuplicateResourceException(new DuplicateResourceException("email already taken")));
+            System.out.println(globalExceptionHandler.handleDuplicateResourceException(new DuplicateResourceException("email already taken")));
             throw new DuplicateResourceException("email already taken");
         }
 
@@ -143,15 +145,18 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     public String deleteCustomer(String memberNumber) {
-        Optional<Customer> customer = customerDao.getCustomerByMemberNumber(memberNumber);
+        Customer existingCustomer = customerDao.getCustomerByMemberNumber(memberNumber)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "customer with given member number [%s] not found".formatted(memberNumber)
+                ));
 
-        if (customer.isPresent()) {
-            Customer existingCustomer = customer.get();
-            customerDao.deleteCustomer(existingCustomer);
-            return "customer [%s] deleted successfully".formatted(memberNumber);
+        Boolean isDeleted = customerDao.deleteCustomer(existingCustomer);
+        if (isDeleted) {
+            return "Customer with given member number [%s] deleted successfully".formatted(memberNumber);
         } else {
-            return "customer not found";
+            throw new DatabaseOperationException("Failed to delete customer with member number [%s]".formatted(memberNumber));
         }
+
     }
 
     private CustomerResponse mapEntityToDTO(Customer customer) {

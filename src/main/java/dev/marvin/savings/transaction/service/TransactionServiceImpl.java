@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
         SavingsAccount update;
 
         if (amount <= 0) {
-            System.out.println(globalExceptionHandler.processInsufficientAmountException(new InsufficientAmountException("Amount should be greater than zero")));
+            System.out.println(globalExceptionHandler.handleInsufficientAmountException(new InsufficientAmountException("Amount should be greater than zero")));
             throw new InsufficientAmountException("Amount should be greater than zero");
 
         }
