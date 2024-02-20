@@ -27,17 +27,17 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public void insertCustomer(Customer customer) {
         String sql = """
-                INSERT INTO t_customer (member_number, customer_name, email, password, created_date, role)
-                VALUES(?, ?, ?, ?, ?, ?)
+                INSERT INTO t_customer (member_number, customer_name, email, password, created_date)
+                VALUES(?, ?, ?, ?, ?)
                 """;
-        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getCreatedDate(), customer.getRole().name());
+        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getCreatedDate());
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
     }
 
     @Override
     public List<Customer> getAllCustomers() {
         String sql = """
-                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date, role
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
                 LIMIT 100
                 """;
@@ -66,7 +66,7 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Optional<Customer> getCustomerByEmail(String email) {
         String sql = """
-                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date, role
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
                 WHERE email = ?
                 """;

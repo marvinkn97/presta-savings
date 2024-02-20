@@ -20,7 +20,5 @@ public class Customer implements Serializable {
     private Integer governmentId;
     private Long createdDate;
     private Long updatedDate;
-    private String profileImagePath;
-    private Role role;
-
+    private String profileImageId;
 }

@@ -5,11 +5,11 @@ import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
-import dev.marvin.savings.customer.model.Role;
 import dev.marvin.savings.exception.DatabaseOperationException;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +87,7 @@ public class CustomerServiceImpl implements CustomerService {
         String emailUpdate = customerUpdateRequest.email();
         String nameUpdate = customerUpdateRequest.name();
         String mobileUpdate = customerUpdateRequest.mobile();
+        String profileImageUpdate = customerUpdateRequest.profileImage();
 
         Customer update = null;
 
@@ -108,10 +109,14 @@ public class CustomerServiceImpl implements CustomerService {
                 }
             }
 
-            //TODO: include password, profileImage
-
+            //TODO: include password, profileImageId with AWS s3
             if (!mobileUpdate.isBlank() && !mobileUpdate.equals(c.getMobile())) {
                 update.setMobile(mobileUpdate);
+                changes = true;
+            }
+
+            if(!profileImageUpdate.isBlank() && !profileImageUpdate.equals(c.getProfileImageId())){
+                update.setProfileImageId(profileImageUpdate);
                 changes = true;
             }
         }
@@ -140,7 +145,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (isDeleted) {
             return "Customer with given member number [%s] deleted successfully".formatted(memberNumber);
         } else {
-            throw new DatabaseOperationException("Failed to delete customer with member number [%s]".formatted(memberNumber));
+            throw new DatabaseOperationException("Failed to delete customer");
         }
 
     }
@@ -161,5 +166,10 @@ public class CustomerServiceImpl implements CustomerService {
         String memberNumber = "MEM" + UUID.randomUUID().toString().substring(0, 6);
         return memberNumber.toUpperCase();
     }
+
+    private void uploadProfileImage(MultipartFile multipartFile){
+        //start off with savings file to drive and savings file link to db then integrate AWS S3 bucket
+    }
+    private void downloadProfileImage(){}
 
 }

@@ -1,7 +1,6 @@
 package dev.marvin.savings.customer.dao.rowmapper;
 
 import dev.marvin.savings.customer.model.Customer;
-import dev.marvin.savings.customer.model.Role;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,6 @@ public class CustomerRowMapper implements RowMapper<Customer> {
                 .mobile(rs.getString("mobile_no"))
                 .governmentId(rs.getInt("government_id"))
                 .createdDate(rs.getLong("created_date"))
-                .role(Role.valueOf(rs.getString("role")))
                 .build();
     }
 }
