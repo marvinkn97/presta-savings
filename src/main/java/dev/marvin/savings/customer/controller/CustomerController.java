@@ -32,10 +32,11 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CustomerResponse> getAllCustomers(HttpServletRequest httpServletRequest) {
+    @GetMapping(path = "/all", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers(HttpServletRequest httpServletRequest) {
         System.out.println(httpServletRequest.getSession().getId());
-        return customerService.getAllCustomers();
+        List<CustomerResponse> customers =  customerService.getAllCustomers();
+        return ResponseEntity.status(HttpStatus.OK).body(customers);
     }
 
     @GetMapping(value = "/{memberNumber}", produces = MediaType.APPLICATION_JSON_VALUE)

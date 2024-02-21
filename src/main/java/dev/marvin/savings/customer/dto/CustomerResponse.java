@@ -9,7 +9,6 @@ public record CustomerResponse(
         String email,
         String mobile,
         Integer governmentId,
-        Long createdDate,
-        String roleName
+        Long createdDate
 ) {
 }

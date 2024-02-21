@@ -1,8 +1,8 @@
 package dev.marvin.savings.customer.dao;
 
-import dev.marvin.savings.customer.dao.rowmapper.CustomerRowMapper;
 import dev.marvin.savings.customer.model.Customer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Slf4j
 @Repository
+@Primary
 public class CustomerDaoImpl implements CustomerDao {
 
     //Look into NamedParameterJdbcTemplate
@@ -81,10 +82,10 @@ public class CustomerDaoImpl implements CustomerDao {
         if (customer.getName() != null) {
             String sql = """
                     UPDATE t_customer
-                    SET customer_name = ?
+                    SET customer_name = ?, updated_time = ?
                     WHERE member_number = ?
                     """;
-            rowsAffected = jdbcTemplate.update(sql, customer.getName());
+            rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getUpdatedDate());
             log.info("CUSTOMER UPDATE NAME RESULT = " + rowsAffected);
         }
 

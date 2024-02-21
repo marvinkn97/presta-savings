@@ -1,4 +1,4 @@
-package dev.marvin.savings.customer.dao.rowmapper;
+package dev.marvin.savings.customer.dao;
 
 import dev.marvin.savings.customer.model.Customer;
 import org.springframework.jdbc.core.RowMapper;

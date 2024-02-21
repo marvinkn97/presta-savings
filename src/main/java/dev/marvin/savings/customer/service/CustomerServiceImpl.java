@@ -41,7 +41,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .email(registrationRequest.email())
                 .password(registrationRequest.password())
                 .createdDate(System.currentTimeMillis())
-                .role(Role.MEMBER)
                 .build();
 
         customerDao.insertCustomer(customer);
@@ -115,23 +114,24 @@ public class CustomerServiceImpl implements CustomerService {
                 changes = true;
             }
 
-            if(!profileImageUpdate.isBlank() && !profileImageUpdate.equals(c.getProfileImageId())){
+            if (!profileImageUpdate.isBlank() && !profileImageUpdate.equals(c.getProfileImageId())) {
                 update.setProfileImageId(profileImageUpdate);
                 changes = true;
             }
         }
 
-        if (changes) {
-            Boolean result = customerDao.updateCustomer(update);
-            if (result) {
-                return "customer [%s] updated successfully".formatted(memberNumber);
-            } else {
-                return "error during update";
-            }
-
-        } else {
+        if (!changes) {
             return "no data changes found";
         }
+
+        update.setUpdatedDate(System.currentTimeMillis());
+        Boolean result = customerDao.updateCustomer(update);
+        if (result) {
+            return "customer [%s] updated successfully".formatted(memberNumber);
+        } else {
+            throw new DatabaseOperationException("Failed to update customer");
+        }
+
     }
 
     @Override
@@ -158,7 +158,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .mobile(customer.getMobile())
                 .governmentId(customer.getGovernmentId())
                 .createdDate(customer.getCreatedDate())
-                .roleName(customer.getRole().name())
                 .build();
     }
 
@@ -167,9 +166,11 @@ public class CustomerServiceImpl implements CustomerService {
         return memberNumber.toUpperCase();
     }
 
-    private void uploadProfileImage(MultipartFile multipartFile){
+    private void uploadProfileImage(MultipartFile multipartFile) {
         //start off with savings file to drive and savings file link to db then integrate AWS S3 bucket
     }
-    private void downloadProfileImage(){}
+
+    private void downloadProfileImage() {
+    }
 
 }
