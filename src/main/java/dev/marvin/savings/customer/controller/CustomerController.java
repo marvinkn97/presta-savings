@@ -46,7 +46,10 @@ public class CustomerController {
     }
 
     @PutMapping(value = "/update/{memberNumber}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam("profile image") MultipartFile multipartFile) {
+    public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam("profileImage") MultipartFile multipartFile) {
+
+        String fileName = multipartFile.getName();
+
         return customerService.updateCustomer(memberNumber, updateRequest);
     }
 

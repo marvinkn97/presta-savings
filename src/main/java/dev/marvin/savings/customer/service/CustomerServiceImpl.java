@@ -34,9 +34,11 @@ public class CustomerServiceImpl implements CustomerService {
             throw new DuplicateResourceException("email already taken");
         }
 
+        String memberNumber = generateCustomerMemberNumber();
+
         //Register New Customer
         Customer customer = Customer.builder()
-                .memberNumber(generateCustomerMemberNumber())
+                .memberNumber(memberNumber)
                 .name(registrationRequest.name())
                 .email(registrationRequest.email())
                 .password(registrationRequest.password())
@@ -45,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerDao.insertCustomer(customer);
 
-        return "customer saved successfully";
+        return "Customer [%s] registered successfully".formatted(memberNumber);
 
     }
 
