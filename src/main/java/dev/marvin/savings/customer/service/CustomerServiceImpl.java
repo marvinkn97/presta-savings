@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerDao.insertCustomer(customer);
 
-        return "Customer [%s] registered successfully".formatted(memberNumber);
+        return "Customer registered successfully";
 
     }
 

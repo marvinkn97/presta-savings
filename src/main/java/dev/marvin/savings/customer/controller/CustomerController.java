@@ -19,6 +19,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/customer")
 @MultipartConfig()
+@CrossOrigin(value = "http://localhost:4200")
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -36,6 +37,11 @@ public class CustomerController {
     public ResponseEntity<List<CustomerResponse>> getAllCustomers(HttpServletRequest httpServletRequest) {
         System.out.println(httpServletRequest.getSession().getId());
         List<CustomerResponse> customers =  customerService.getAllCustomers();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(customers);
     }
 

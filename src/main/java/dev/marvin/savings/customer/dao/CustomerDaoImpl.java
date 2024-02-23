@@ -40,7 +40,6 @@ public class CustomerDaoImpl implements CustomerDao {
         String sql = """
                 SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
-                LIMIT 100
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
     }

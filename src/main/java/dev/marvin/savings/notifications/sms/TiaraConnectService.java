@@ -23,7 +23,7 @@ public class TiaraConnectService implements SmsService {
     private String authorizationToken;
 
     @Override
-    public void sendSMS(String to, String message) {
+    public void sendSMS(String to, String message, String from) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + authorizationToken);
