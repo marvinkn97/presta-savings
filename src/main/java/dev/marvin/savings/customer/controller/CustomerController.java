@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/customer")
-@MultipartConfig()
+@RequestMapping(value = "api/v1/customers")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5, maxFileSize = 1024 * 1024 * 10)
 @CrossOrigin(value = "http://localhost:4200")
 public class CustomerController {
     private final CustomerService customerService;
@@ -36,7 +36,7 @@ public class CustomerController {
     @GetMapping(path = "/all", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<CustomerResponse>> getAllCustomers(HttpServletRequest httpServletRequest) {
         System.out.println(httpServletRequest.getSession().getId());
-        List<CustomerResponse> customers =  customerService.getAllCustomers();
+        List<CustomerResponse> customers = customerService.getAllCustomers();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -55,6 +55,7 @@ public class CustomerController {
     public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam("profileImage") MultipartFile multipartFile) {
 
         String fileName = multipartFile.getName();
+        System.out.println(fileName);
 
         return customerService.updateCustomer(memberNumber, updateRequest);
     }
