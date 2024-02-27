@@ -20,6 +20,7 @@
        +  Spring Security
        +  TestContainers for DAO Layer unit testing 
        +  Flyway for seamless database migrations
+       +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
      
    +    Features
         +  Customer Management

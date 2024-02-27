@@ -1,14 +1,12 @@
 package dev.marvin.savings.notifications.sms;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class SmsResponse {
     public String cost;
     public String mnc;
