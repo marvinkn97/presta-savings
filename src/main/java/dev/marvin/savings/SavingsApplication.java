@@ -1,5 +1,6 @@
 package dev.marvin.savings;
 
+import dev.marvin.savings.notifications.sms.SmsRequest;
 import dev.marvin.savings.notifications.sms.SmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -25,11 +26,14 @@ public class SavingsApplication {
         return args -> {
             try {
 
+
+//                SmsRequest smsRequest = new SmsRequest("254790982712", "Testing Tiara Connect", "TIARACONECT");
+
                 String to = "254790982712";
                 String message = "Testing Tiara Connect";
                 String from = "TIARACONECT";
 
-				smsService.sendSMS(from, to, message);
+//				smsService.sendSMS(from, to, message);
 
             } catch (Exception e) {
                 log.info(e.getMessage());

@@ -61,8 +61,8 @@ public class TiaraConnectService implements SmsService {
             return "SMS sent successfully. Response: {}" + smsResponse;
         } else {
             // Error response
-            log.error("Failed to send SMS. Status code: [%s], Response: [%s]".formatted(statusCode, smsResponse));
-            return "Failed to send SMS. Status code: [%s], Response: [%s]".formatted(statusCode, smsResponse);
+            log.error("Failed to send sms");
+            return "Failed to send SMS";
 
         }
     }

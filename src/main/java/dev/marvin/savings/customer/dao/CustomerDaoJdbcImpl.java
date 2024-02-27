@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Repository
+@Repository(value = "jdbc")
 @Primary
-public class CustomerDaoImpl implements CustomerDao {
+public class CustomerDaoJdbcImpl implements CustomerDao {
 
     //Look into NamedParameterJdbcTemplate
 
@@ -20,7 +20,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     private final CustomerRowMapper customerRowMapper;
 
-    public CustomerDaoImpl(JdbcTemplate jdbcTemplate, CustomerRowMapper customerRowMapper) {
+    public CustomerDaoJdbcImpl(JdbcTemplate jdbcTemplate, CustomerRowMapper customerRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.customerRowMapper = customerRowMapper;
     }

@@ -14,7 +14,7 @@
 
    +   Technologies Used
        +  Spring Boot 3
-       +  Spring Data JDBC
+       +  Spring Data JDBC/JPA
        +  MySQL on Docker
        +  Lombok
        +  Spring Security
