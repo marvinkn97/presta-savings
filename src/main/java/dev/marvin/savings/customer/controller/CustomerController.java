@@ -18,7 +18,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "api/v1/customers")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5, maxFileSize = 1024 * 1024 * 10)
-@CrossOrigin(value = "http://localhost:4200")
 public class CustomerController {
     private final CustomerService customerService;
 

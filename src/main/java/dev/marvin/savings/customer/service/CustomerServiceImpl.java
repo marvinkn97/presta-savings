@@ -99,7 +99,7 @@ public class CustomerServiceImpl implements CustomerService {
             update = new Customer();
             update.setMemberNumber(memberNumber);
 
-            if (!customerUpdateRequest.name().isEmpty() && !customerUpdateRequest.name().equalsIgnoreCase(c.getName())) {
+            if (!customerUpdateRequest.name().isBlank() && !customerUpdateRequest.name().equalsIgnoreCase(c.getName())) {
                 update.setName(customerUpdateRequest.name());
                 changes = true;
             }
