@@ -1,7 +1,6 @@
 package dev.marvin.savings.notifications.sms;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -15,14 +14,17 @@ import java.util.Map;
 @Slf4j
 @Service
 public class TiaraConnectService implements SmsService {
-
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @Value(value = "${sms.gateway.endpoint}")
     private String endpoint;
+
     @Value(value = "${sms.gateway.apikey}")
     private String authorizationToken;
+
+    public TiaraConnectService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public String sendSMS(String from, String to, String message) {

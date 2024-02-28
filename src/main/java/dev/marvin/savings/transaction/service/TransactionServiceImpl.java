@@ -1,7 +1,7 @@
 package dev.marvin.savings.transaction.service;
 
 import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.advice.GlobalExceptionHandler;
+import dev.marvin.savings.exception.advice.GlobalExceptionHandler;
 import dev.marvin.savings.savingsaccount.dao.SavingsAccountDao;
 import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import dev.marvin.savings.transaction.dao.TransactionDao;

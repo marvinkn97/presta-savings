@@ -5,7 +5,6 @@ import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.service.CustomerService;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,11 +32,12 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(path = "/all", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<CustomerResponse>> getAllCustomers(HttpServletRequest httpServletRequest) {
-        System.out.println(httpServletRequest.getSession().getId());
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers() {
+
         List<CustomerResponse> customers = customerService.getAllCustomers();
         try {
+            //trigger loader for client side
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -45,17 +45,18 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.OK).body(customers);
     }
 
-    @GetMapping(value = "/{memberNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{memberNumber}")
     public CustomerResponse getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
         Optional<CustomerResponse> customerResponse = customerService.getCustomerByMemberNumber(memberNumber);
         return customerResponse.orElse(null);
     }
 
-    @PutMapping(value = "/update/{memberNumber}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam("profileImage") MultipartFile multipartFile) {
+    @PutMapping(value = "/update/{memberNumber}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam(value = "profileImage", required = false) MultipartFile multipartFile) {
 
-        String fileName = multipartFile.getName();
-        System.out.println(fileName);
+        System.out.println(memberNumber);
+//        String fileName = multipartFile.getName();
+//        System.out.println(fileName);
 
         return customerService.updateCustomer(memberNumber, updateRequest);
     }

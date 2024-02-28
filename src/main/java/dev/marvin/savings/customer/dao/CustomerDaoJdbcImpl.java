@@ -81,30 +81,35 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
         if (customer.getName() != null) {
             String sql = """
                     UPDATE t_customer
-                    SET customer_name = ?, updated_time = ?
+                    SET customer_name = ?, updated_date = ?
                     WHERE member_number = ?
                     """;
-            rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getUpdatedDate());
+            rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getUpdatedDate(), customer.getMemberNumber());
             log.info("CUSTOMER UPDATE NAME RESULT = " + rowsAffected);
         }
 
         if (customer.getEmail() != null) {
             String sql = """
                     UPDATE t_customer
-                    SET email = ?
+                    SET email = ?, updated_date = ?
                     WHERE member_number = ?
                     """;
-            rowsAffected = jdbcTemplate.update(sql, customer.getEmail());
+            rowsAffected = jdbcTemplate.update(sql, customer.getEmail(), customer.getUpdatedDate(), customer.getMemberNumber());
             log.info("CUSTOMER UPDATE EMAIL RESULT = " + rowsAffected);
         }
 
         if (customer.getMobile() != null) {
-            String sql = """
-                    UPDATE t_customer
-                    SET mobile_no = ?
-                    WHERE member_number = ?
-                    """;
-            rowsAffected = jdbcTemplate.update(sql, customer.getMobile());
+            System.out.println(customer.getMobile());
+            System.out.println(customer.getUpdatedDate());
+            System.out.println(customer.getMemberNumber());
+//            String sql = """
+//                    UPDATE t_customer
+//                    SET mobile_no = ?, updated_date = ?
+//                    WHERE member_number = ?
+//                    """;
+            String sql = "UPDATE t_customer SET mobile_no = ? , updated_date = ?  WHERE member_number = ?";
+
+            rowsAffected = jdbcTemplate.update(sql, customer.getMobile(), customer.getUpdatedDate(), customer.getMemberNumber());
             log.info("CUSTOMER UPDATE MOBILE RESULT = " + rowsAffected);
         }
 

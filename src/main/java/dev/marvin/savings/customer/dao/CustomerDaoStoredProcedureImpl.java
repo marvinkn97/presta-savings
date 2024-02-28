@@ -1,14 +1,10 @@
 package dev.marvin.savings.customer.dao;
 
 import dev.marvin.savings.customer.model.Customer;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-@Qualifier(value = "stored procedures")
 public class CustomerDaoStoredProcedureImpl implements CustomerDao{
     @Override
     public void insertCustomer(Customer customer) {

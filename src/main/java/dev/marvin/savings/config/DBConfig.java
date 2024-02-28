@@ -9,13 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class DBConfig {
 
     @Bean
     @Primary
     @ConfigurationProperties(prefix = "app.datasource")
-    public HikariDataSource dataSource() {
+    public DataSource dataSource() {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();

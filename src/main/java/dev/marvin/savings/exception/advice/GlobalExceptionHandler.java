@@ -1,4 +1,4 @@
-package dev.marvin.savings.advice;
+package dev.marvin.savings.exception.advice;
 
 import dev.marvin.savings.exception.*;
 import org.springframework.http.HttpStatus;
@@ -15,28 +15,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InsufficientAmountException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleInsufficientAmountException(InsufficientAmountException e) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), e.getMessage(), LocalDateTime.now());
+    public ErrorMessage handleInsufficientAmountException(InsufficientAmountException e) {
+        return new ErrorMessage(HttpStatus.BAD_REQUEST, e.getMessage(), LocalDateTime.now());
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.CONFLICT)
-    public ErrorResponse handleDuplicateResourceException(DuplicateResourceException e){
-        return new ErrorResponse(HttpStatus.CONFLICT.toString(), e.getMessage(), LocalDateTime.now());
+    public ErrorMessage handleDuplicateResourceException(DuplicateResourceException e){
+        return new ErrorMessage(HttpStatus.CONFLICT, e.getMessage(), LocalDateTime.now());
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ErrorResponse handleResourceNotFoundException(ResourceNotFoundException e){
-        return new ErrorResponse(HttpStatus.NOT_FOUND.toString(), e.getMessage(), LocalDateTime.now());
+    public ErrorMessage handleResourceNotFoundException(ResourceNotFoundException e){
+        return new ErrorMessage(HttpStatus.NOT_FOUND, e.getMessage(), LocalDateTime.now());
     }
 
     @ExceptionHandler(DatabaseOperationException.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleDatabaseOperationException(DatabaseOperationException e){
-       return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage(), LocalDateTime.now());
+    public ErrorMessage handleDatabaseOperationException(DatabaseOperationException e){
+       return new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), LocalDateTime.now());
     }
 }

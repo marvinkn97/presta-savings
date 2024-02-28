@@ -1,23 +1,15 @@
 package dev.marvin.savings.customer.dao;
 
 import dev.marvin.savings.customer.model.Customer;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository(value = "jpa")
 public class CustomerDaoJpaImpl implements CustomerDao {
-
-    private final CustomerRepository customerRepository;
-
-    public CustomerDaoJpaImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
 
     @Override
     public void insertCustomer(Customer customer) {
-        customerRepository.save(customer);
+
     }
 
     @Override
