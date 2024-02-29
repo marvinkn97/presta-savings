@@ -1,12 +1,12 @@
 package dev.marvin.savings.customer.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record CustomerRegistrationRequest(
         @NotBlank(message = "customer name is required")
-        @Min(value = 3, message = "Minimum length is 3")
+        @Size(min = 6, message = "Minimum length is 6")
         String name,
 
         @Email(message = "customer email is invalid")

@@ -5,7 +5,6 @@ import dev.marvin.savings.customer.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.customer.dto.CustomerResponse;
 import dev.marvin.savings.customer.dto.CustomerUpdateRequest;
 import dev.marvin.savings.customer.model.Customer;
-import dev.marvin.savings.exception.DatabaseOperationException;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.sms.SmsService;
@@ -13,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -142,7 +144,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (result) {
             return "customer updated successfully";
         } else {
-            throw new DatabaseOperationException("Failed to update customer");
+            throw new RuntimeException("Failed to update customer");
         }
 
     }
@@ -158,7 +160,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (isDeleted) {
             return "Customer with given member number [%s] deleted successfully".formatted(memberNumber);
         } else {
-            throw new DatabaseOperationException("Failed to delete customer");
+            throw new RuntimeException("Failed to delete customer");
         }
 
     }

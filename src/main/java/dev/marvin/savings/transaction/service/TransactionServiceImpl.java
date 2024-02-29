@@ -1,7 +1,6 @@
 package dev.marvin.savings.transaction.service;
 
 import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.exception.advice.GlobalExceptionHandler;
 import dev.marvin.savings.savingsaccount.dao.SavingsAccountDao;
 import dev.marvin.savings.savingsaccount.model.SavingsAccount;
 import dev.marvin.savings.transaction.dao.TransactionDao;
@@ -10,7 +9,6 @@ import dev.marvin.savings.transaction.dto.TransactionResponse;
 import dev.marvin.savings.transaction.model.PaymentMethod;
 import dev.marvin.savings.transaction.model.Transaction;
 import dev.marvin.savings.transaction.model.TransactionType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +18,6 @@ import java.util.stream.Collectors;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    @Autowired
-    private GlobalExceptionHandler globalExceptionHandler;
     private final SavingsAccountDao savingsAccountDao;
     private final TransactionDao transactionDao;
 
@@ -40,9 +36,7 @@ public class TransactionServiceImpl implements TransactionService {
         SavingsAccount update;
 
         if (amount <= 0) {
-            System.out.println(globalExceptionHandler.handleInsufficientAmountException(new InsufficientAmountException("Amount should be greater than zero")));
             throw new InsufficientAmountException("Amount should be greater than zero");
-
         }
 
         if (savingsAccount != null) {

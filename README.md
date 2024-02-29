@@ -16,9 +16,10 @@
        +  Spring Boot 3
        +  Spring Data JDBC/JPA
        +  MySQL on Docker
+       +  TestContainers for DAO Layer unit testing
        +  Lombok
+       +  Hibernate Validator
        +  Spring Security
-       +  TestContainers for DAO Layer unit testing 
        +  Flyway for seamless database migrations
        +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
      
