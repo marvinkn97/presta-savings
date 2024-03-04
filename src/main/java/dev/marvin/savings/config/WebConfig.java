@@ -23,6 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("Authorization", "Content-Type")
                 .exposedHeaders("Authorization", "Content-Type")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins("http://localhost:*");
+                .allowedOrigins("http://localhost:4200");
     }
 }

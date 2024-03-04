@@ -18,6 +18,7 @@
        +  MySQL on Docker
        +  TestContainers for DAO Layer unit testing
        +  Lombok
+       +  Spring Boot DevTools
        +  Hibernate Validator
        +  Spring Security
        +  Flyway for seamless database migrations
