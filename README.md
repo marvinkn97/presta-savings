@@ -11,16 +11,15 @@
        +  Implemented endpoints to create and manage multiple savings products, such as Education Savings, Personal Savings, and Vacation Savings.
        +  Ensured proper error handling and validation of incoming requests.
        +  Implemented unit tests to validate the functionality of the API endpoints.
+       +  Document the APIs using Swagger, providing clear descriptions and examples for each endpoint.
 
    +   Technologies Used
-       +  Spring Boot 3
-       +  Spring Data JDBC/JPA
+       +  Spring Boot 3, Data JPA/JDBC, DevTools, Actuator, Security
        +  MySQL on Docker
        +  TestContainers for DAO Layer unit testing
        +  Lombok
-       +  Spring Boot DevTools
        +  Hibernate Validator
-       +  Spring Security
+       +  REST API Documentation with SpringDoc OPENAPI
        +  Flyway for seamless database migrations
        +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
      
@@ -44,6 +43,5 @@
   +    TODO
        +  Implement Testing
        +  Implement Security
-       +  Document the APIs using both Postman and Swagger, providing clear descriptions and examples for each endpoint.
        +  Notification Service
           +  email notification
