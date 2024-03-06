@@ -14,7 +14,7 @@
        +  Document the APIs using Swagger, providing clear descriptions and examples for each endpoint.
 
    +   Technologies Used
-       +  Spring Boot 3, Data JPA/JDBC, DevTools, Actuator, Security
+       +  Spring Boot 3, Data JDBC, DevTools, Actuator, Security
        +  MySQL on Docker
        +  TestContainers for DAO Layer unit testing
        +  Lombok

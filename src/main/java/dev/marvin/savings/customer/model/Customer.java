@@ -8,7 +8,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 public class Customer implements Serializable {
     private String memberNumber;

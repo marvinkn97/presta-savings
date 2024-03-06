@@ -29,6 +29,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
+    /*
+     collecting only the necessary information from users while ensuring a seamless
+      and secure registration experience.
+    */
     @Override
     public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
 
@@ -70,16 +74,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerResponse> getCustomerByMemberNumber(String memberNumber) {
-        Optional<Customer> customer = customerDao.getCustomerByMemberNumber(memberNumber);
-        CustomerResponse customerResponse;
-        if (customer.isPresent()) {
-            Customer c = customer.get();
-            customerResponse = mapEntityToDTO(c);
-            return Optional.ofNullable(customerResponse);
-        } else {
-            return Optional.empty();
-        }
+    public CustomerResponse getCustomerByMemberNumber(String memberNumber) {
+        Customer customer = customerDao.getCustomerByMemberNumber(memberNumber).orElseThrow(() -> new ResourceNotFoundException("customer does not exist"));
+        return mapEntityToDTO(customer);
     }
 
     //TODO: update customer update functionality

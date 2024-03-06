@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "api/v1/customers")
@@ -31,8 +30,9 @@ public class CustomerController {
     @ApiResponse(responseCode = "201", description = "Customer successfully registered")
     @Operation(summary = "Register Customer", description = "Register customer is used to save customer in database")
     public ResponseEntity<String> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-        String response = customerService.registerCustomer(registrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//        String response = customerService.registerCustomer(registrationRequest);
+        System.out.println(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body("working");
     }
 
     @GetMapping(path = "/all")
@@ -50,8 +50,7 @@ public class CustomerController {
 
     @GetMapping(value = "/{memberNumber}")
     public CustomerResponse getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
-        Optional<CustomerResponse> customerResponse = customerService.getCustomerByMemberNumber(memberNumber);
-        return customerResponse.orElse(null);
+        return customerService.getCustomerByMemberNumber(memberNumber);
     }
 
     @PutMapping(value = "/update/{memberNumber}", consumes = MediaType.APPLICATION_JSON_VALUE)
