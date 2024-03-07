@@ -1,9 +1,9 @@
-package dev.marvin.savings.transaction.dao;
+package dev.marvin.savings.dao.rowmapper;
 
 import dev.marvin.savings.model.savingsaccount.SavingsAccount;
-import dev.marvin.savings.transaction.model.PaymentMethod;
-import dev.marvin.savings.transaction.model.Transaction;
-import dev.marvin.savings.transaction.model.TransactionType;
+import dev.marvin.savings.model.transaction.PaymentMethod;
+import dev.marvin.savings.model.transaction.Transaction;
+import dev.marvin.savings.model.transaction.TransactionType;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

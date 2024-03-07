@@ -1,13 +1,14 @@
-package dev.marvin.savings.service.customer;
+package dev.marvin.savings.service.impl;
 
-import dev.marvin.savings.dao.customer.CustomerDao;
+import dev.marvin.savings.dao.CustomerDao;
 import dev.marvin.savings.dto.customer.CustomerRegistrationRequest;
 import dev.marvin.savings.dto.customer.CustomerResponse;
 import dev.marvin.savings.dto.customer.CustomerUpdateRequest;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.model.customer.Customer;
-import dev.marvin.savings.notifications.sms.SmsService;
+import dev.marvin.savings.service.CustomerService;
+import dev.marvin.savings.service.SmsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

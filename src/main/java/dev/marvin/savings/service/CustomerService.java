@@ -1,4 +1,4 @@
-package dev.marvin.savings.service.customer;
+package dev.marvin.savings.service;
 
 import dev.marvin.savings.dto.customer.CustomerRegistrationRequest;
 import dev.marvin.savings.dto.customer.CustomerResponse;

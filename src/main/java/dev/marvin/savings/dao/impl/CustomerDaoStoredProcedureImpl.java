@@ -1,11 +1,12 @@
-package dev.marvin.savings.dao.customer;
+package dev.marvin.savings.dao.impl;
 
+import dev.marvin.savings.dao.CustomerDao;
 import dev.marvin.savings.model.customer.Customer;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CustomerDaoStoredProcedureImpl implements CustomerDao{
+public class CustomerDaoStoredProcedureImpl implements CustomerDao {
     @Override
     public void insertCustomer(Customer customer) {
 

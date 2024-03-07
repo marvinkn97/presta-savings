@@ -1,6 +1,6 @@
-package dev.marvin.savings.transaction.dao;
+package dev.marvin.savings.dao;
 
-import dev.marvin.savings.transaction.model.Transaction;
+import dev.marvin.savings.model.transaction.Transaction;
 
 import java.util.List;
 

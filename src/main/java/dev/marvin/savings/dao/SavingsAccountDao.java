@@ -1,4 +1,4 @@
-package dev.marvin.savings.dao.savingsaccount;
+package dev.marvin.savings.dao;
 
 import dev.marvin.savings.model.savingsaccount.SavingsAccount;
 

@@ -1,13 +1,14 @@
-package dev.marvin.savings.service.savingsaccount;
+package dev.marvin.savings.service.impl;
 
-import dev.marvin.savings.dao.customer.CustomerDao;
-import dev.marvin.savings.dao.savingsaccount.SavingsAccountDao;
+import dev.marvin.savings.dao.CustomerDao;
+import dev.marvin.savings.dao.SavingsAccountDao;
 import dev.marvin.savings.dto.savingsaccount.NewSavingsAccountRequest;
 import dev.marvin.savings.dto.savingsaccount.SavingsAccountResponse;
 import dev.marvin.savings.dto.savingsaccount.SavingsAccountUpdateRequest;
 import dev.marvin.savings.model.customer.Customer;
 import dev.marvin.savings.model.savingsaccount.SavingsAccount;
 import dev.marvin.savings.model.savingsaccount.SavingsAccountType;
+import dev.marvin.savings.service.SavingsAccountService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package dev.marvin.savings.service.savingsaccount;
+package dev.marvin.savings.service;
 
 import dev.marvin.savings.dto.savingsaccount.NewSavingsAccountRequest;
 import dev.marvin.savings.dto.savingsaccount.SavingsAccountResponse;

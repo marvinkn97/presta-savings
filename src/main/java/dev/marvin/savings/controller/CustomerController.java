@@ -3,7 +3,7 @@ package dev.marvin.savings.controller;
 import dev.marvin.savings.dto.customer.CustomerRegistrationRequest;
 import dev.marvin.savings.dto.customer.CustomerResponse;
 import dev.marvin.savings.dto.customer.CustomerUpdateRequest;
-import dev.marvin.savings.service.customer.CustomerService;
+import dev.marvin.savings.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

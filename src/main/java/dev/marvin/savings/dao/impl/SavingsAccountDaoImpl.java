@@ -1,5 +1,7 @@
-package dev.marvin.savings.dao.savingsaccount;
+package dev.marvin.savings.dao.impl;
 
+import dev.marvin.savings.dao.SavingsAccountDao;
+import dev.marvin.savings.dao.rowmapper.SavingsAccountRowMapper;
 import dev.marvin.savings.model.savingsaccount.SavingsAccount;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;

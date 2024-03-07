@@ -1,5 +1,7 @@
-package dev.marvin.savings.notifications.sms;
+package dev.marvin.savings.service.impl;
 
+import dev.marvin.savings.dto.sms.SmsResponse;
+import dev.marvin.savings.service.SmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
