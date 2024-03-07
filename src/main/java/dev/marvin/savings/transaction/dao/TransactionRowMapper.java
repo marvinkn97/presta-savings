@@ -1,6 +1,6 @@
 package dev.marvin.savings.transaction.dao;
 
-import dev.marvin.savings.savingsaccount.model.SavingsAccount;
+import dev.marvin.savings.model.savingsaccount.SavingsAccount;
 import dev.marvin.savings.transaction.model.PaymentMethod;
 import dev.marvin.savings.transaction.model.Transaction;
 import dev.marvin.savings.transaction.model.TransactionType;

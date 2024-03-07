@@ -1,5 +1,6 @@
 package dev.marvin.savings.customer.dao;
 
+import dev.marvin.savings.dao.customer.CustomerDaoJdbcImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
