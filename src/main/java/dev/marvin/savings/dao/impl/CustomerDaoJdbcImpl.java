@@ -120,17 +120,19 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
     public Boolean deleteCustomer(Customer customer) {
         final String sql = """
                 DELETE FROM t_customer
-                WHERE member_number = ?
+                WHERE member_number = :memberNumber
                 """;
-        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber());
+        int rowsAffected = namedParameterJdbcTemplate.update(sql,
+                new MapSqlParameterSource()
+                        .addValue("memberNumber", customer.getMemberNumber()));
         log.info("CUSTOMER DELETE RESULT = " + rowsAffected);
         return rowsAffected > 0;
     }
 
     @Override
     public boolean existsCustomerWithEmail(String email) {
-        final String sql = "SELECT COUNT(*) FROM t_customer WHERE email = ?";
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        final String sql = "SELECT COUNT(*) FROM t_customer WHERE email = :email";
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, new MapSqlParameterSource().addValue("email", email), Integer.class);
         return count != null && count > 0;
     }
 }
