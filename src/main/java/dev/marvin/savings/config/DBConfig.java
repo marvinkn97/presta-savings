@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 import javax.sql.DataSource;
 
@@ -37,6 +38,11 @@ public class DBConfig {
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate(){
         return new NamedParameterJdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public SimpleJdbcCall simpleJdbcCall(){
+        return new SimpleJdbcCall(dataSource());
     }
 
 }

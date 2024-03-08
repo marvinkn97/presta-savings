@@ -1,2 +1,13 @@
-DELIMITER //
-CREATE PROCEDURE p_customer_screen(in status varchar(), in memberNumber varchar() )
+DELIMITER $$
+CREATE PROCEDURE IF NOT EXISTS p_customer_screen(IN status VARCHAR(45), IN memberNumber VARCHAR(25), OUT message TEXT)
+BEGIN
+IF status = 'insert' THEN
+ INSERT INTO t_customer (member_number, customer_name, email, password, created_date)
+                VALUES(memberNumber, name, email, password, createdDate);
+         SET message = 'Customer inserted successfully';
+ELSEIF status = 'getAll' THEN
+ELSEIF status = 'getByMemberNumber' THEN
+ELSEIF status  = 'get'
+
+END $$
+DELIMITER ;

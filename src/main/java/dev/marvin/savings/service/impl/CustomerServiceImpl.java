@@ -55,6 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerDao.insertCustomer(customer);
 
+//        CustomerRegistrationResponse response = new CustomerRegistrationResponse("Customer registered successfully", LocalDateTime.now());
+
         return "Customer registered successfully";
 
     }

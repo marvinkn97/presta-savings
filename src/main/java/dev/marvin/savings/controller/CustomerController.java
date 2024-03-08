@@ -31,7 +31,6 @@ public class CustomerController {
     @Operation(summary = "Register Customer", description = "Register customer is used to save customer in database")
     public ResponseEntity<String> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
         String response = customerService.registerCustomer(registrationRequest);
-//        System.out.println(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
