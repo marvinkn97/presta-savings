@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
         int rowsAffected = namedParameterJdbcTemplate.update(sql,
                 new MapSqlParameterSource()
                         .addValue("memberNumber", customer.getMemberNumber())
-                        .addValue("name", customer.getName())
+                        .addValue("name", customer.getName(), Types.VARCHAR)
                         .addValue("email", customer.getEmail())
                         .addValue("password", customer.getPassword())
                         .addValue("createdDate", customer.getCreatedDate())

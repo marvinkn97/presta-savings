@@ -8,6 +8,8 @@ IF status = 'insert' THEN
 ELSEIF status = 'getAll' THEN
 ELSEIF status = 'getByMemberNumber' THEN
 ELSEIF status  = 'get'
+ELSE
+END IF;
 
 END $$
 DELIMITER ;
