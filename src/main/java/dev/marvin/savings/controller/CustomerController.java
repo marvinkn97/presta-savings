@@ -27,12 +27,12 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponse(responseCode = "201", description = "Customer successfully registered")
+    @ApiResponse(responseCode = "201", description = "Customer registered successfully")
     @Operation(summary = "Register Customer", description = "Register customer is used to save customer in database")
     public ResponseEntity<String> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-//        String response = customerService.registerCustomer(registrationRequest);
-        System.out.println(registrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("working");
+        String response = customerService.registerCustomer(registrationRequest);
+//        System.out.println(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping(path = "/all")

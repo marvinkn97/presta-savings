@@ -3,37 +3,42 @@ package dev.marvin.savings.dao.impl;
 import dev.marvin.savings.dao.CustomerDao;
 import dev.marvin.savings.dao.rowmapper.CustomerRowMapper;
 import dev.marvin.savings.model.customer.Customer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Repository(value = "jdbc")
+@Slf4j
 @Primary
+@RequiredArgsConstructor
 public class CustomerDaoJdbcImpl implements CustomerDao {
 
-    //Look into NamedParameterJdbcTemplate
-
     private final JdbcTemplate jdbcTemplate;
-
     private final CustomerRowMapper customerRowMapper;
-
-    public CustomerDaoJdbcImpl(JdbcTemplate jdbcTemplate, CustomerRowMapper customerRowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.customerRowMapper = customerRowMapper;
-    }
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public void insertCustomer(Customer customer) {
         String sql = """
                 INSERT INTO t_customer (member_number, customer_name, email, password, created_date)
-                VALUES(?, ?, ?, ?, ?)
+                VALUES(:memberNumber, :name, :email, :password, :createdDate)
                 """;
-        int rowsAffected = jdbcTemplate.update(sql, customer.getMemberNumber(), customer.getName(), customer.getEmail(), customer.getPassword(), customer.getCreatedDate());
+
+        int rowsAffected = namedParameterJdbcTemplate.update(sql,
+                new MapSqlParameterSource()
+                        .addValue("memberNumber", customer.getMemberNumber())
+                        .addValue("name", customer.getName())
+                        .addValue("email", customer.getEmail())
+                        .addValue("password", customer.getPassword())
+                        .addValue("createdDate", customer.getCreatedDate())
+        );
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
     }
 
@@ -43,7 +48,7 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
                 SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
                 """;
-        return jdbcTemplate.query(sql, customerRowMapper);
+        return namedParameterJdbcTemplate.query(sql, customerRowMapper);
     }
 
     @Override
@@ -51,18 +56,13 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
         String sql = """
                 SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
-                WHERE member_number = ?
+                WHERE member_number = :memberNumber
                 """;
-
-        /*
-        The queryForObject method will throw an org.springframework.dao.EmptyResultDataAccessException if
-        no rows are returned by the query.
-        Customer c =jdbcTemplate.queryForObject(sql, customerRowMapper, memberNumber);
-         */
-
-        // handles the case where no rows are returned by the query without throwing an exception.
-        List<Customer> customers = jdbcTemplate.query(sql, customerRowMapper, memberNumber);
-        return customers.isEmpty() ? Optional.empty() : Optional.of(customers.get(0));
+        return namedParameterJdbcTemplate.query(sql,
+                        new MapSqlParameterSource().addValue("memberNumber", memberNumber),
+                        customerRowMapper)
+                .stream()
+                .findFirst();
     }
 
     @Override
@@ -70,51 +70,49 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
         String sql = """
                 SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
-                WHERE email = ?
+                WHERE email = :email
                 """;
-        List<Customer> customers = jdbcTemplate.query(sql, customerRowMapper, email);
-        return customers.isEmpty() ? Optional.empty() : Optional.of(customers.get(0));
+
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource().addValue("email", email)
+                , customerRowMapper)
+                .stream()
+                .findFirst();
     }
 
     @Override
-    public Boolean updateCustomer(Customer customer) {
-        int rowsAffected = 0;
+    public Boolean updateCustomer(Customer update) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        StringBuilder sqlBuilder = new StringBuilder("UPDATE t_customer SET ");
 
-        if (customer.getName() != null) {
-            String sql = """
-                    UPDATE t_customer
-                    SET customer_name = ?, updated_date = ?
-                    WHERE member_number = ?
-                    """;
-            rowsAffected = jdbcTemplate.update(sql, customer.getName(), customer.getUpdatedDate(), customer.getMemberNumber());
-            log.info("CUSTOMER UPDATE NAME RESULT = " + rowsAffected);
+        if (update.getName() != null) {
+            sqlBuilder.append("customer_name = :name, ");
+            parameterSource.addValue("name", update.getName());
         }
 
-        if (customer.getEmail() != null) {
-            String sql = """
-                    UPDATE t_customer
-                    SET email = ?, updated_date = ?
-                    WHERE member_number = ?
-                    """;
-            rowsAffected = jdbcTemplate.update(sql, customer.getEmail(), customer.getUpdatedDate(), customer.getMemberNumber());
-            log.info("CUSTOMER UPDATE EMAIL RESULT = " + rowsAffected);
+        if (update.getEmail() != null) {
+            sqlBuilder.append("email = :email, ");
+            parameterSource.addValue("email", update.getEmail());
+
         }
 
-        if (customer.getMobile() != null) {
-            System.out.println(customer.getMobile());
-            System.out.println(customer.getUpdatedDate());
-            System.out.println(customer.getMemberNumber());
-//            String sql = """
-//                    UPDATE t_customer
-//                    SET mobile_no = ?, updated_date = ?
-//                    WHERE member_number = ?
-//                    """;
-            String sql = "UPDATE t_customer SET mobile_no = ? , updated_date = ?  WHERE member_number = ?";
-
-            rowsAffected = jdbcTemplate.update(sql, customer.getMobile(), customer.getUpdatedDate(), customer.getMemberNumber());
-            log.info("CUSTOMER UPDATE MOBILE RESULT = " + rowsAffected);
+        if (update.getMobile() != null) {
+            sqlBuilder.append("mobile_no = :mobile, ");
+            parameterSource.addValue("mobile", update.getMobile());
         }
 
+        // Add updated_date and member_number to the SQL statement
+        sqlBuilder.append("updated_date = :updatedDate WHERE member_number = :memberNumber");
+        parameterSource.addValue("updatedDate", update.getUpdatedDate());
+        parameterSource.addValue("memberNumber", update.getMemberNumber());
+
+        // Execute the SQL update statement
+       int rowsAffected = namedParameterJdbcTemplate.update(sqlBuilder.toString(), parameterSource);
+
+        // Log the result of the update operation
+        log.info("CUSTOMER UPDATE RESULT = " + rowsAffected);
+
+        // Return true if rows were affected, false otherwise
         return rowsAffected > 0;
     }
 
