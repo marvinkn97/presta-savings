@@ -11,14 +11,15 @@ import java.sql.SQLException;
 public class CustomerRowMapper implements RowMapper<Customer> {
     @Override
     public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return Customer.builder()
-                .memberNumber(rs.getString("member_number"))
-                .name(rs.getString("customer_name"))
-                .email(rs.getString("email"))
-                .password(rs.getString("password"))
-                .mobile(rs.getString("mobile_no"))
-                .governmentId(rs.getInt("government_id"))
-                .createdDate(rs.getLong("created_date"))
-                .build();
+        Customer customer = new Customer();
+        customer.setMemberNumber(rs.getString("member_number"));
+        customer.setMemberNumber(rs.getString("customer_name"));
+        customer.setEmail(rs.getString("email"));
+        customer.setPassword(rs.getString("password"));
+        customer.setMobile(rs.getString("mobile_no"));
+        customer.setGovernmentId(rs.getInt("government_id"));
+        customer.setCreatedDate(rs.getLong("created_date"));
+
+        return customer;
     }
 }

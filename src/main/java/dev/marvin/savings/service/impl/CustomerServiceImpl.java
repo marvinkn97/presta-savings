@@ -45,13 +45,11 @@ public class CustomerServiceImpl implements CustomerService {
         String memberNumber = generateCustomerMemberNumber();
 
         //Register New Customer
-        Customer customer = Customer.builder()
-                .memberNumber(memberNumber)
-                .name(registrationRequest.name())
-                .email(registrationRequest.email())
-                .password(registrationRequest.password())
-                .createdDate(System.currentTimeMillis())
-                .build();
+        Customer customer = new Customer();
+        customer.setMemberNumber(memberNumber);
+        customer.setName(registrationRequest.name());
+        customer.setEmail(registrationRequest.email());
+        customer.setPassword(registrationRequest.password());
 
         customerDao.insertCustomer(customer);
 

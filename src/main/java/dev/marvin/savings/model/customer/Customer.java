@@ -5,10 +5,8 @@ import lombok.*;
 import java.io.Serializable;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public class Customer implements Serializable {
     private String memberNumber;
     private String name;
