@@ -9,6 +9,8 @@ import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.model.customer.Customer;
 import dev.marvin.savings.service.CustomerService;
 import dev.marvin.savings.service.SmsService;
+import dev.marvin.savings.util.UniqueIDSupplier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,16 +21,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;
     private final SmsService smsService;
-
-    public CustomerServiceImpl(CustomerDao customerDao, SmsService smsService) {
-        this.customerDao = customerDao;
-        this.smsService = smsService;
-    }
-
 
     /*
      collecting only the necessary information from users while ensuring a seamless
@@ -42,11 +39,13 @@ public class CustomerServiceImpl implements CustomerService {
             throw new DuplicateResourceException("email already taken");
         }
 
-        String memberNumber = generateCustomerMemberNumber();
+//        String memberNumber = generateCustomerMemberNumber();
+
+        UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
         //Register New Customer
         Customer customer = new Customer();
-        customer.setMemberNumber(memberNumber);
+        customer.setMemberNumber(customerUniqueIDSupplier.get());
         customer.setName(registrationRequest.name());
         customer.setEmail(registrationRequest.email());
         customer.setPassword(registrationRequest.password());
@@ -178,6 +177,7 @@ public class CustomerServiceImpl implements CustomerService {
         String memberNumber = "MEM" + UUID.randomUUID().toString().substring(0, 6);
         return memberNumber.toUpperCase();
     }
+
 
     private String generateOTP(int length) {
         SecureRandom secureRandom = new SecureRandom();
