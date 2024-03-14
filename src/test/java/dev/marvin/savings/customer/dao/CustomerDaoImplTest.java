@@ -1,13 +1,13 @@
 package dev.marvin.savings.customer.dao;
 
-import dev.marvin.savings.dao.impl.CustomerDaoJdbcImpl;
+import dev.marvin.savings.dao.CustomerDaoImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class CustomerDaoJdbcImplTest {
+class CustomerDaoImplTest {
 
-    CustomerDaoJdbcImpl underTest;
+    CustomerDaoImpl underTest;
 
     @BeforeEach
     void setUp() {

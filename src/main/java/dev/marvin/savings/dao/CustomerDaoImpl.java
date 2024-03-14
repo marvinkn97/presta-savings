@@ -1,12 +1,9 @@
-package dev.marvin.savings.dao.impl;
+package dev.marvin.savings.dao;
 
-import dev.marvin.savings.dao.CustomerDao;
 import dev.marvin.savings.dao.rowmapper.CustomerRowMapper;
 import dev.marvin.savings.model.customer.Customer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,15 +12,16 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 
-@Repository(value = "jdbc")
+@Repository
 @Slf4j
-@Primary
 @RequiredArgsConstructor
-public class CustomerDaoJdbcImpl implements CustomerDao {
+public class CustomerDaoImpl implements CustomerDao {
 
-    private final JdbcTemplate jdbcTemplate;
     private final CustomerRowMapper customerRowMapper;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    private static final String MEMBER_NUMBER_PARAM = "memberNumber";
+    private static final String EMAIL_PARAM = "email";
 
     @Override
     public void insertCustomer(Customer customer) {
@@ -34,11 +32,11 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
 
         int rowsAffected = namedParameterJdbcTemplate.update(sql,
                 new MapSqlParameterSource()
-                        .addValue("memberNumber", customer.getMemberNumber())
+                        .addValue(MEMBER_NUMBER_PARAM, customer.getMemberNumber(), Types.VARCHAR)
                         .addValue("name", customer.getName(), Types.VARCHAR)
-                        .addValue("email", customer.getEmail())
-                        .addValue("password", customer.getPassword())
-                        .addValue("createdDate", customer.getCreatedDate())
+                        .addValue(EMAIL_PARAM, customer.getEmail(), Types.VARCHAR)
+                        .addValue("password", customer.getPassword(), Types.LONGVARCHAR)
+                        .addValue("createdDate", customer.getCreatedDate(), Types.BIGINT)
         );
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
     }
@@ -60,7 +58,7 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
                 WHERE member_number = :memberNumber
                 """;
         return namedParameterJdbcTemplate.query(sql,
-                        new MapSqlParameterSource().addValue("memberNumber", memberNumber),
+                        new MapSqlParameterSource().addValue(MEMBER_NUMBER_PARAM, memberNumber),
                         customerRowMapper)
                 .stream()
                 .findFirst();
@@ -75,7 +73,7 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
                 """;
 
         return namedParameterJdbcTemplate.query(sql,
-                new MapSqlParameterSource().addValue("email", email)
+                new MapSqlParameterSource().addValue(EMAIL_PARAM, email)
                 , customerRowMapper)
                 .stream()
                 .findFirst();
@@ -93,7 +91,7 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
 
         if (update.getEmail() != null) {
             sqlBuilder.append("email = :email, ");
-            parameterSource.addValue("email", update.getEmail());
+            parameterSource.addValue(EMAIL_PARAM, update.getEmail());
 
         }
 
@@ -105,7 +103,7 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
         // Add updated_date and member_number to the SQL statement
         sqlBuilder.append("updated_date = :updatedDate WHERE member_number = :memberNumber");
         parameterSource.addValue("updatedDate", update.getUpdatedDate());
-        parameterSource.addValue("memberNumber", update.getMemberNumber());
+        parameterSource.addValue(MEMBER_NUMBER_PARAM, update.getMemberNumber());
 
         // Execute the SQL update statement
        int rowsAffected = namedParameterJdbcTemplate.update(sqlBuilder.toString(), parameterSource);
@@ -125,15 +123,15 @@ public class CustomerDaoJdbcImpl implements CustomerDao {
                 """;
         int rowsAffected = namedParameterJdbcTemplate.update(sql,
                 new MapSqlParameterSource()
-                        .addValue("memberNumber", customer.getMemberNumber()));
+                        .addValue(MEMBER_NUMBER_PARAM, customer.getMemberNumber()));
         log.info("CUSTOMER DELETE RESULT = " + rowsAffected);
         return rowsAffected > 0;
     }
 
     @Override
-    public boolean existsCustomerWithEmail(String email) {
+    public Boolean existsCustomerWithEmail(String email) {
         final String sql = "SELECT COUNT(*) FROM t_customer WHERE email = :email";
-        Integer count = namedParameterJdbcTemplate.queryForObject(sql, new MapSqlParameterSource().addValue("email", email), Integer.class);
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, new MapSqlParameterSource().addValue(EMAIL_PARAM, email), Integer.class);
         return count != null && count > 0;
     }
 }

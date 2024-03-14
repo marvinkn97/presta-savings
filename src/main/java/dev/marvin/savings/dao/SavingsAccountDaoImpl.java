@@ -1,4 +1,4 @@
-package dev.marvin.savings.dao.impl;
+package dev.marvin.savings.dao;
 
 import dev.marvin.savings.dao.SavingsAccountDao;
 import dev.marvin.savings.dao.rowmapper.SavingsAccountRowMapper;
