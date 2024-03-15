@@ -1,14 +1,14 @@
-package dev.marvin.savings.service.impl;
+package dev.marvin.savings.service;
 
 import dev.marvin.savings.dao.SavingsAccountDao;
 import dev.marvin.savings.dao.TransactionDao;
-import dev.marvin.savings.dto.transaction.TransactionRequest;
-import dev.marvin.savings.dto.transaction.TransactionResponse;
+import dev.marvin.savings.model.dto.TransactionRequest;
+import dev.marvin.savings.model.dto.TransactionResponse;
 import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.model.savingsaccount.SavingsAccount;
-import dev.marvin.savings.model.transaction.PaymentMethod;
-import dev.marvin.savings.model.transaction.Transaction;
-import dev.marvin.savings.model.transaction.TransactionType;
+import dev.marvin.savings.model.SavingsAccount;
+import dev.marvin.savings.model.enums.PaymentMethod;
+import dev.marvin.savings.model.Transaction;
+import dev.marvin.savings.model.enums.TransactionType;
 import dev.marvin.savings.service.TransactionService;
 import org.springframework.stereotype.Service;
 

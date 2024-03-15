@@ -1,7 +1,7 @@
-package dev.marvin.savings.service.impl;
+package dev.marvin.savings.service;
 
-import dev.marvin.savings.dto.sms.SmsResponse;
-import dev.marvin.savings.service.SmsService;
+import dev.marvin.savings.model.dto.SmsResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -13,9 +13,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 @Service
-public class TiaraConnectService implements SmsService {
+@Slf4j
+@RequiredArgsConstructor
+public class TiaraConnectSmsServiceImpl implements SmsService {
     private final RestTemplate restTemplate;
 
     @Value(value = "${sms.gateway.endpoint}")
@@ -24,9 +25,6 @@ public class TiaraConnectService implements SmsService {
     @Value(value = "${sms.gateway.apikey}")
     private String authorizationToken;
 
-    public TiaraConnectService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
 
     @Override
     public String sendSMS(String from, String to, String message) {

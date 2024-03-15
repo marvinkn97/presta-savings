@@ -1,7 +1,7 @@
 package dev.marvin.savings.dao;
 
 import dev.marvin.savings.dao.rowmapper.CustomerRowMapper;
-import dev.marvin.savings.model.customer.Customer;
+import dev.marvin.savings.model.Customer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -22,6 +22,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
     private static final String MEMBER_NUMBER_PARAM = "memberNumber";
     private static final String EMAIL_PARAM = "email";
+    private static final String NAME_PARAM = "name";
 
     @Override
     public void insertCustomer(Customer customer) {
@@ -33,7 +34,7 @@ public class CustomerDaoImpl implements CustomerDao {
         int rowsAffected = namedParameterJdbcTemplate.update(sql,
                 new MapSqlParameterSource()
                         .addValue(MEMBER_NUMBER_PARAM, customer.getMemberNumber(), Types.VARCHAR)
-                        .addValue("name", customer.getName(), Types.VARCHAR)
+                        .addValue(NAME_PARAM, customer.getName(), Types.VARCHAR)
                         .addValue(EMAIL_PARAM, customer.getEmail(), Types.VARCHAR)
                         .addValue("password", customer.getPassword(), Types.LONGVARCHAR)
                         .addValue("createdDate", customer.getCreatedDate(), Types.BIGINT)
@@ -42,12 +43,21 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Customer> getAllCustomers(int pageNumber, int pageSize) {
+        int offset = (pageNumber - 1) * pageSize;
+
         String sql = """
                 SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
+                 ORDER BY created_date DESC
+                 LIMIT :pageSize OFFSET :offset
                 """;
-        return namedParameterJdbcTemplate.query(sql, customerRowMapper);
+
+        return namedParameterJdbcTemplate.query(sql,
+                new MapSqlParameterSource()
+                        .addValue("pageSize", pageSize)
+                        .addValue("offset", offset),
+                customerRowMapper);
     }
 
     @Override
@@ -73,8 +83,22 @@ public class CustomerDaoImpl implements CustomerDao {
                 """;
 
         return namedParameterJdbcTemplate.query(sql,
-                new MapSqlParameterSource().addValue(EMAIL_PARAM, email)
-                , customerRowMapper)
+                        new MapSqlParameterSource().addValue(EMAIL_PARAM, email)
+                        , customerRowMapper)
+                .stream()
+                .findFirst();
+    }
+
+    @Override
+    public Optional<Customer> getCustomerByName(String name) {
+        String sql = """
+                SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
+                FROM t_customer
+                WHERE customer_name = :name
+                """;
+        return namedParameterJdbcTemplate.query(sql,
+                        new MapSqlParameterSource().addValue(NAME_PARAM, name),
+                        customerRowMapper)
                 .stream()
                 .findFirst();
     }
@@ -106,7 +130,7 @@ public class CustomerDaoImpl implements CustomerDao {
         parameterSource.addValue(MEMBER_NUMBER_PARAM, update.getMemberNumber());
 
         // Execute the SQL update statement
-       int rowsAffected = namedParameterJdbcTemplate.update(sqlBuilder.toString(), parameterSource);
+        int rowsAffected = namedParameterJdbcTemplate.update(sqlBuilder.toString(), parameterSource);
 
         // Log the result of the update operation
         log.info("CUSTOMER UPDATE RESULT = " + rowsAffected);

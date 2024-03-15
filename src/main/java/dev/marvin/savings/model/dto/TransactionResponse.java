@@ -1,4 +1,4 @@
-package dev.marvin.savings.dto.transaction;
+package dev.marvin.savings.model.dto;
 
 import lombok.Builder;
 

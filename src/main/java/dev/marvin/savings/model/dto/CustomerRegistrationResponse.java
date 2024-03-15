@@ -1,4 +1,4 @@
-package dev.marvin.savings.dto.customer;
+package dev.marvin.savings.model.dto;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,5 @@
-package dev.marvin.savings.dto.customer;
+package dev.marvin.savings.model.dto;
 
-import dev.marvin.savings.dto.savingsaccount.SavingsAccountResponse;
 import lombok.Builder;
 
 import java.util.List;

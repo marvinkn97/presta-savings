@@ -1,9 +1,10 @@
 package dev.marvin.savings.util;
 
-import dev.marvin.savings.model.customer.Customer;
-import dev.marvin.savings.model.savingsaccount.SavingsAccount;
-import dev.marvin.savings.model.transaction.Transaction;
+import dev.marvin.savings.model.Customer;
+import dev.marvin.savings.model.SavingsAccount;
+import dev.marvin.savings.model.Transaction;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 import java.util.function.Supplier;

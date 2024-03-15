@@ -1,9 +1,9 @@
 package dev.marvin.savings.controller;
 
-import dev.marvin.savings.dto.customer.CustomerRegistrationRequest;
-import dev.marvin.savings.dto.customer.CustomerRegistrationResponse;
-import dev.marvin.savings.dto.customer.CustomerResponse;
-import dev.marvin.savings.dto.customer.CustomerUpdateRequest;
+import dev.marvin.savings.model.dto.CustomerRegistrationRequest;
+import dev.marvin.savings.model.dto.CustomerRegistrationResponse;
+import dev.marvin.savings.model.dto.CustomerResponse;
+import dev.marvin.savings.model.dto.CustomerUpdateRequest;
 import dev.marvin.savings.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,9 +36,10 @@ public class CustomerController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<CustomerResponse>> getAllCustomers() {
-
-        List<CustomerResponse> customers = customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers(@RequestParam("pageNo") int pageNumber, @RequestParam("pageSize") int pageSize ) {
+        System.out.println(pageNumber);
+        System.out.println(pageSize);
+        List<CustomerResponse> customers = customerService.getAllCustomers(pageNumber, pageSize);
         try {
             //trigger loader for client side
             Thread.sleep(1000);

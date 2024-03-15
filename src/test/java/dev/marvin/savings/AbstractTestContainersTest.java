@@ -9,4 +9,5 @@ public abstract class AbstractTestContainersTest {
             .withDatabaseName("test_db")
             .withUsername("root")
             .withPassword("1234");
+
 }

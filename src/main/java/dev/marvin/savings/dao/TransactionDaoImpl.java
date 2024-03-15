@@ -1,8 +1,7 @@
 package dev.marvin.savings.dao;
 
-import dev.marvin.savings.dao.TransactionDao;
 import dev.marvin.savings.dao.rowmapper.TransactionRowMapper;
-import dev.marvin.savings.model.transaction.Transaction;
+import dev.marvin.savings.model.Transaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

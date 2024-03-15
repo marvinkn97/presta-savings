@@ -1,4 +1,4 @@
-package dev.marvin.savings.dto.savingsaccount;
+package dev.marvin.savings.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

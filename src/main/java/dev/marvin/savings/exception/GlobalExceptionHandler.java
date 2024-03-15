@@ -1,4 +1,4 @@
-package dev.marvin.savings.exception.advice;
+package dev.marvin.savings.exception;
 
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ErrorMessage;

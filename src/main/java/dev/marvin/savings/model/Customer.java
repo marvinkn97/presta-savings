@@ -1,6 +1,8 @@
-package dev.marvin.savings.model.customer;
+package dev.marvin.savings.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 

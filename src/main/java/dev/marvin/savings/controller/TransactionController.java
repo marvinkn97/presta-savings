@@ -1,7 +1,7 @@
 package dev.marvin.savings.controller;
 
-import dev.marvin.savings.dto.transaction.TransactionRequest;
-import dev.marvin.savings.dto.transaction.TransactionResponse;
+import dev.marvin.savings.model.dto.TransactionRequest;
+import dev.marvin.savings.model.dto.TransactionResponse;
 import dev.marvin.savings.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

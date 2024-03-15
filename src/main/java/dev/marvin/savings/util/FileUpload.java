@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class FileUploadUtil {
+public class FileUpload {
 
     public static String uploadFile(MultipartFile multipartFile){
 

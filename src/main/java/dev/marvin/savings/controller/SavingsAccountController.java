@@ -1,8 +1,8 @@
 package dev.marvin.savings.controller;
 
-import dev.marvin.savings.dto.savingsaccount.NewSavingsAccountRequest;
-import dev.marvin.savings.dto.savingsaccount.SavingsAccountResponse;
-import dev.marvin.savings.dto.savingsaccount.SavingsAccountUpdateRequest;
+import dev.marvin.savings.model.dto.NewSavingsAccountRequest;
+import dev.marvin.savings.model.dto.SavingsAccountResponse;
+import dev.marvin.savings.model.dto.SavingsAccountUpdateRequest;
 import dev.marvin.savings.service.SavingsAccountService;
 import org.springframework.web.bind.annotation.*;
 

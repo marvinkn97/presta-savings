@@ -1,6 +1,6 @@
-package dev.marvin.savings.model.savingsaccount;
+package dev.marvin.savings.model;
 
-import dev.marvin.savings.model.customer.Customer;
+import dev.marvin.savings.model.enums.SavingsAccountType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

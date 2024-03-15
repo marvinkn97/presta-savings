@@ -1,12 +1,12 @@
-package dev.marvin.savings.service.impl;
+package dev.marvin.savings.service;
 
 import dev.marvin.savings.dao.CustomerDao;
-import dev.marvin.savings.dto.customer.CustomerRegistrationRequest;
-import dev.marvin.savings.dto.customer.CustomerResponse;
-import dev.marvin.savings.dto.customer.CustomerUpdateRequest;
+import dev.marvin.savings.model.dto.CustomerRegistrationRequest;
+import dev.marvin.savings.model.dto.CustomerResponse;
+import dev.marvin.savings.model.dto.CustomerUpdateRequest;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
-import dev.marvin.savings.model.customer.Customer;
+import dev.marvin.savings.model.Customer;
 import dev.marvin.savings.service.CustomerService;
 import dev.marvin.savings.service.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
@@ -26,6 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;
     private final SmsService smsService;
+    private final UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
     /*
      collecting only the necessary information from users while ensuring a seamless
@@ -41,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 //        String memberNumber = generateCustomerMemberNumber();
 
-        UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
+//        UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
         //Register New Customer
         Customer customer = new Customer();
@@ -59,8 +60,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResponse> getAllCustomers() {
-        List<Customer> customerList = customerDao.getAllCustomers();
+    public List<CustomerResponse> getAllCustomers(int pageNumber, int pageSize) {
+        System.out.println(pageNumber);
+        System.out.println(pageSize);
+        List<Customer> customerList = customerDao.getAllCustomers(pageNumber, pageSize);
         List<CustomerResponse> customerDTOList = null;
 
         if (!customerList.isEmpty()) {

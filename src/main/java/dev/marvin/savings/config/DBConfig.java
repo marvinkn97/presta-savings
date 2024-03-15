@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 import javax.sql.DataSource;
 
@@ -17,7 +16,6 @@ import javax.sql.DataSource;
 public class DBConfig {
 
     @Bean
-    @Primary
     @ConfigurationProperties(prefix = "app.datasource")
     public DataSource dataSource() {
         return DataSourceBuilder.create()
@@ -39,10 +37,4 @@ public class DBConfig {
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate(){
         return new NamedParameterJdbcTemplate(dataSource());
     }
-
-    @Bean
-    public SimpleJdbcCall simpleJdbcCall(){
-        return new SimpleJdbcCall(dataSource());
-    }
-
 }

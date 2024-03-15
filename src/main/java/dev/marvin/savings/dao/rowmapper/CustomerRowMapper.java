@@ -1,6 +1,6 @@
 package dev.marvin.savings.dao.rowmapper;
 
-import dev.marvin.savings.model.customer.Customer;
+import dev.marvin.savings.model.Customer;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

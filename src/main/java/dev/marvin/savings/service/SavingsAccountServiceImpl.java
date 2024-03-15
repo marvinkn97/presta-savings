@@ -1,14 +1,16 @@
-package dev.marvin.savings.service.impl;
+package dev.marvin.savings.service;
 
 import dev.marvin.savings.dao.CustomerDao;
 import dev.marvin.savings.dao.SavingsAccountDao;
-import dev.marvin.savings.dto.savingsaccount.NewSavingsAccountRequest;
-import dev.marvin.savings.dto.savingsaccount.SavingsAccountResponse;
-import dev.marvin.savings.dto.savingsaccount.SavingsAccountUpdateRequest;
-import dev.marvin.savings.model.customer.Customer;
-import dev.marvin.savings.model.savingsaccount.SavingsAccount;
-import dev.marvin.savings.model.savingsaccount.SavingsAccountType;
+import dev.marvin.savings.model.dto.NewSavingsAccountRequest;
+import dev.marvin.savings.model.dto.SavingsAccountResponse;
+import dev.marvin.savings.model.dto.SavingsAccountUpdateRequest;
+import dev.marvin.savings.model.Customer;
+import dev.marvin.savings.model.SavingsAccount;
+import dev.marvin.savings.model.enums.SavingsAccountType;
 import dev.marvin.savings.service.SavingsAccountService;
+import dev.marvin.savings.util.UniqueIDSupplier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,16 +18,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class SavingsAccountServiceImpl implements SavingsAccountService {
+
     private final SavingsAccountDao savingsAccountDao;
     private final CustomerDao customerDao;
-
-    //TODO: refactor to functional style
-
-    public SavingsAccountServiceImpl(SavingsAccountDao savingsAccountDao, CustomerDao customerDao) {
-        this.savingsAccountDao = savingsAccountDao;
-        this.customerDao = customerDao;
-    }
+    private final UniqueIDSupplier<SavingsAccount> savingsAccountUniqueIDSupplier = new UniqueIDSupplier<>(SavingsAccount.class);
 
     @Override
     public String createAccount(NewSavingsAccountRequest accountRequest) {

@@ -1,14 +1,14 @@
 package dev.marvin.savings.service;
 
-import dev.marvin.savings.dto.customer.CustomerRegistrationRequest;
-import dev.marvin.savings.dto.customer.CustomerResponse;
-import dev.marvin.savings.dto.customer.CustomerUpdateRequest;
+import dev.marvin.savings.model.dto.CustomerRegistrationRequest;
+import dev.marvin.savings.model.dto.CustomerResponse;
+import dev.marvin.savings.model.dto.CustomerUpdateRequest;
 
 import java.util.List;
 
 public interface CustomerService {
     String registerCustomer(CustomerRegistrationRequest registrationRequest);
-    List<CustomerResponse> getAllCustomers();
+    List<CustomerResponse> getAllCustomers(int pageNumber, int pageSize);
     CustomerResponse getCustomerByMemberNumber(String memberNumber);
     String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest);
     String deleteCustomer(String memberNumber);

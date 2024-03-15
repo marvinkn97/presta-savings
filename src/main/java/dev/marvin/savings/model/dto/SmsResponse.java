@@ -1,4 +1,4 @@
-package dev.marvin.savings.dto.sms;
+package dev.marvin.savings.model.dto;
 
 import lombok.*;
 
