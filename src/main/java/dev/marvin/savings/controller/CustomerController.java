@@ -39,6 +39,7 @@ public class CustomerController {
     public ResponseEntity<List<CustomerResponse>> getAllCustomers(@RequestParam("pageNo") int pageNumber, @RequestParam("pageSize") int pageSize ) {
         System.out.println(pageNumber);
         System.out.println(pageSize);
+
         List<CustomerResponse> customers = customerService.getAllCustomers(pageNumber, pageSize);
         try {
             //trigger loader for client side

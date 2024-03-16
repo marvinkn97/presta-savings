@@ -26,7 +26,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;
     private final SmsService smsService;
-    private final UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
     /*
      collecting only the necessary information from users while ensuring a seamless
@@ -40,9 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new DuplicateResourceException("email already taken");
         }
 
-//        String memberNumber = generateCustomerMemberNumber();
-
-//        UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
+        UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
         //Register New Customer
         Customer customer = new Customer();
@@ -50,6 +47,9 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setName(registrationRequest.name());
         customer.setEmail(registrationRequest.email());
         customer.setPassword(registrationRequest.password());
+        customer.setCreatedDate(System.currentTimeMillis());
+
+        System.out.println(customer.getMemberNumber());
 
         customerDao.insertCustomer(customer);
 
@@ -61,8 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerResponse> getAllCustomers(int pageNumber, int pageSize) {
-        System.out.println(pageNumber);
-        System.out.println(pageSize);
+
         List<Customer> customerList = customerDao.getAllCustomers(pageNumber, pageSize);
         List<CustomerResponse> customerDTOList = null;
 
@@ -175,12 +174,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .createdDate(customer.getCreatedDate())
                 .build();
     }
-
-    private String generateCustomerMemberNumber() {
-        String memberNumber = "MEM" + UUID.randomUUID().toString().substring(0, 6);
-        return memberNumber.toUpperCase();
-    }
-
 
     private String generateOTP(int length) {
         SecureRandom secureRandom = new SecureRandom();
