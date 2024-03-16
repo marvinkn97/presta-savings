@@ -25,7 +25,7 @@ public class CustomerDaoImpl implements CustomerDao {
     private static final String NAME_PARAM = "name";
 
     @Override
-    public void insertCustomer(Customer customer) {
+    public Boolean insertCustomer(Customer customer) {
         String sql = """
                 INSERT INTO t_customer (member_number, customer_name, email, password, created_date)
                 VALUES(:memberNumber, :name, :email, :password, :createdDate)
@@ -40,6 +40,7 @@ public class CustomerDaoImpl implements CustomerDao {
                         .addValue("createdDate", customer.getCreatedDate(), Types.BIGINT)
         );
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
+        return rowsAffected > 0;
     }
 
     @Override

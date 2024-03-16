@@ -27,21 +27,15 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerDao customerDao;
     private final SmsService smsService;
 
-    /*
-     collecting only the necessary information from users while ensuring a seamless
-      and secure registration experience.
-    */
     @Override
     public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
 
-        // checks if a customer with the given email already exists in the system
-        if (customerDao.existsCustomerWithEmail(registrationRequest.email())) {
+        if (Boolean.TRUE.equals(customerDao.existsCustomerWithEmail(registrationRequest.email()))) {
             throw new DuplicateResourceException("email already taken");
         }
 
         UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
-        //Register New Customer
         Customer customer = new Customer();
         customer.setMemberNumber(customerUniqueIDSupplier.get());
         customer.setName(registrationRequest.name());
@@ -49,13 +43,12 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPassword(registrationRequest.password());
         customer.setCreatedDate(System.currentTimeMillis());
 
-        System.out.println(customer.getMemberNumber());
-
-        customerDao.insertCustomer(customer);
-
-//        CustomerRegistrationResponse response = new CustomerRegistrationResponse("Customer registered successfully", LocalDateTime.now());
-
-        return "Customer registered successfully";
+        Boolean isInserted = customerDao.insertCustomer(customer);
+        if(Boolean.TRUE.equals(isInserted)){
+            return "Customer registered successfully";
+        }else {
+            throw new RuntimeException("Failed to register customer");
+        }
 
     }
 
@@ -81,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
         return mapEntityToDTO(customer);
     }
 
-    //TODO: update customer update functionality
+
     @Override
     public String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
 
