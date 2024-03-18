@@ -1,6 +1,8 @@
 package dev.marvin.savings.service;
 
 import dev.marvin.savings.dao.CustomerDao;
+import dev.marvin.savings.model.Role;
+import dev.marvin.savings.model.UserRole;
 import dev.marvin.savings.model.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.model.dto.CustomerResponse;
 import dev.marvin.savings.model.dto.CustomerUpdateRequest;
@@ -42,6 +44,15 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setEmail(registrationRequest.email());
         customer.setPassword(registrationRequest.password());
         customer.setCreatedDate(System.currentTimeMillis());
+
+        Role role = new Role();
+        role.setRoleName("CUSTOMER");
+
+        UserRole userRole = new UserRole();
+        userRole.setCustomer(customer);
+        userRole.setRole(role);
+
+
 
         Boolean isInserted = customerDao.insertCustomer(customer);
         if(Boolean.TRUE.equals(isInserted)){
