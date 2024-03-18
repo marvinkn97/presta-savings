@@ -36,17 +36,9 @@ public class CustomerController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<CustomerResponse>> getAllCustomers(@RequestParam("pageNo") int pageNumber, @RequestParam("pageSize") int pageSize ) {
-        System.out.println(pageNumber);
-        System.out.println(pageSize);
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers() {
 
-        List<CustomerResponse> customers = customerService.getAllCustomers(pageNumber, pageSize);
-        try {
-            //trigger loader for client side
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        List<CustomerResponse> customers = customerService.getAllCustomers();
         return ResponseEntity.status(HttpStatus.OK).body(customers);
     }
 

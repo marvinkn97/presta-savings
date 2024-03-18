@@ -53,9 +53,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResponse> getAllCustomers(int pageNumber, int pageSize) {
+    public List<CustomerResponse> getAllCustomers() {
 
-        List<Customer> customerList = customerDao.getAllCustomers(pageNumber, pageSize);
+        List<Customer> customerList = customerDao.getAllCustomers();
         List<CustomerResponse> customerDTOList = null;
 
         if (!customerList.isEmpty()) {

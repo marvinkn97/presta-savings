@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CustomerDao {
     Boolean insertCustomer(Customer customer);
-    List<Customer> getAllCustomers(int pageNumber, int pageSize);
+    List<Customer> getAllCustomers();
     Optional<Customer> getCustomerByMemberNumber(String memberNumber);
     Optional<Customer> getCustomerByEmail(String email);
     Optional<Customer> getCustomerByName(String name);

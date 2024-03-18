@@ -44,20 +44,16 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public List<Customer> getAllCustomers(int pageNumber, int pageSize) {
-        int offset = (pageNumber - 1) * pageSize;
-
+    public List<Customer> getAllCustomers() {
         String sql = """
                 SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
                  ORDER BY created_date DESC
-                 LIMIT :pageSize OFFSET :offset
+  
                 """;
 
         return namedParameterJdbcTemplate.query(sql,
-                new MapSqlParameterSource()
-                        .addValue("pageSize", pageSize)
-                        .addValue("offset", offset),
+                new MapSqlParameterSource(),
                 customerRowMapper);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CustomerService {
     String registerCustomer(CustomerRegistrationRequest registrationRequest);
-    List<CustomerResponse> getAllCustomers(int pageNumber, int pageSize);
+    List<CustomerResponse> getAllCustomers();
     CustomerResponse getCustomerByMemberNumber(String memberNumber);
     String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest);
     String deleteCustomer(String memberNumber);
