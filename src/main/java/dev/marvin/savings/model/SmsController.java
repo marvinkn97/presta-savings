@@ -1,4 +1,4 @@
-package dev.marvin.savings.notifications.sms;
+package dev.marvin.savings.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

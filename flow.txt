@@ -71,3 +71,27 @@ Feat 3.10: Set/change baker notification templates
 Feat 3.11: View baker profile (admin and baker roles)
 
 
+users:
+- id (PK)
+- username
+- password
+- email
+- ...
+
+customers:
+- id (PK, FK referencing users.id)
+- member_number
+- address
+- phone_number
+- ...
+
+roles:
+- id (PK)
+- name
+
+user_roles:
+- user_id (FK referencing users.id)
+- role_id (FK referencing roles.id)
+
+
+

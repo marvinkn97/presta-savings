@@ -1,7 +1,7 @@
 package dev.marvin.savings.service;
 
 import dev.marvin.savings.dao.CustomerDao;
-import dev.marvin.savings.model.Role;
+import dev.marvin.savings.model.User;
 import dev.marvin.savings.model.UserRole;
 import dev.marvin.savings.model.dto.CustomerRegistrationRequest;
 import dev.marvin.savings.model.dto.CustomerResponse;
@@ -9,10 +9,9 @@ import dev.marvin.savings.model.dto.CustomerUpdateRequest;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.model.Customer;
-import dev.marvin.savings.service.CustomerService;
-import dev.marvin.savings.service.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +19,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;
     private final SmsService smsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
@@ -45,14 +44,15 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPassword(registrationRequest.password());
         customer.setCreatedDate(System.currentTimeMillis());
 
-        Role role = new Role();
-        role.setRoleName("CUSTOMER");
+        User user = new User();
+        user.setName(registrationRequest.name());
+        user.setEmail(registrationRequest.email());
+        user.setPassword(passwordEncoder.encode(registrationRequest.password()));
+        user.setCreatedDate(System.currentTimeMillis());
 
-        UserRole userRole = new UserRole();
-        userRole.setCustomer(customer);
-        userRole.setRole(role);
+        customer.setMemberNumber(customerUniqueIDSupplier.get());
 
-
+        customer.setUser(user);
 
         Boolean isInserted = customerDao.insertCustomer(customer);
         if(Boolean.TRUE.equals(isInserted)){

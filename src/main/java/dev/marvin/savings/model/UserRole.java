@@ -11,6 +11,6 @@ import java.io.Serializable;
 @Setter
 public class UserRole implements Serializable {
     private Integer userRoleId;
-    private Customer customer;
+    private User user;
     private Role role;
 }

@@ -9,15 +9,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Customer implements Serializable {
+public class Customer1 implements Serializable {
     private String memberNumber;
-    private String name;
-    private String email;
-    private String password;
     private String mobile;
     private Integer governmentId;
-    private Long createdDate;
-    private Long updatedDate;
     private String profileImageId;
     private User user;
 }
