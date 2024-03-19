@@ -1,4 +1,4 @@
-package dev.marvin.savings.user;
+package dev.marvin.savings.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

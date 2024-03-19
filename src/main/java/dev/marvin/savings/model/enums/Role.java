@@ -1,15 +1,13 @@
 package dev.marvin.savings.model.enums;
 
-import dev.marvin.savings.user.Permission;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static dev.marvin.savings.user.Permission.*;
+import static dev.marvin.savings.model.enums.Permission.*;
 
 @RequiredArgsConstructor
 @Getter
