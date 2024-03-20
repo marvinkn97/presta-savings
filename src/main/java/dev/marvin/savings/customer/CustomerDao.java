@@ -1,4 +1,4 @@
-package dev.marvin.savings.dao;
+package dev.marvin.savings.customer;
 
 import java.util.List;
 import java.util.Optional;

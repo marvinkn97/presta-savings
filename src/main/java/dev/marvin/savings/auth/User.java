@@ -1,4 +1,4 @@
-package dev.marvin.savings.appuser;
+package dev.marvin.savings.auth;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -6,12 +6,13 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
     private Integer userId;
     private String name;
     private String email;
@@ -19,9 +20,15 @@ public class User implements UserDetails {
     private Long createdDate;
     private Role role;
 
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return role.grantedAuthorities();
     }
 
     @Override

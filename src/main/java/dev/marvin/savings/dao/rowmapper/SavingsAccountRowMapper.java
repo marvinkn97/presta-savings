@@ -1,6 +1,5 @@
 package dev.marvin.savings.dao.rowmapper;
 
-import dev.marvin.savings.model.Customer;
 import dev.marvin.savings.model.SavingsAccount;
 import dev.marvin.savings.model.enums.SavingsAccountType;
 import org.springframework.jdbc.core.RowMapper;

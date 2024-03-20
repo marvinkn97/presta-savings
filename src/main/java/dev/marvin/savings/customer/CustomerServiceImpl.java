@@ -1,15 +1,18 @@
-package dev.marvin.savings.service;
+package dev.marvin.savings.customer;
 
-import dev.marvin.savings.dao.CustomerDao;
-import dev.marvin.savings.customer.CustomerRegistrationRequest;
-import dev.marvin.savings.model.dto.CustomerResponse;
-import dev.marvin.savings.customer.CustomerUpdateRequest;
+import dev.marvin.savings.auth.Role;
+import dev.marvin.savings.auth.User;
+import dev.marvin.savings.auth.UserDao;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import dev.marvin.savings.exception.GlobalException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
+import dev.marvin.savings.model.dto.CustomerResponse;
+import dev.marvin.savings.service.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.SecureRandom;
@@ -19,9 +22,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerDao customerDao;
+    private final UserDao userDao;
     private final SmsService smsService;
     private final PasswordEncoder passwordEncoder;
 
@@ -34,21 +39,28 @@ public class CustomerServiceImpl implements CustomerService {
 
         UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
-        Customer customer = new Customer();
-        customer.setMemberNumber(customerUniqueIDSupplier.get());
-        customer.setName(registrationRequest.name());
-        customer.setEmail(registrationRequest.email());
-        customer.setPassword(registrationRequest.password());
-        customer.setCreatedDate(System.currentTimeMillis());
+        User user = new User();
+        user.setName(registrationRequest.name());
+        user.setEmail(registrationRequest.email());
+        user.setPassword(passwordEncoder.encode(registrationRequest.password()));
+        user.setRole(Role.CUSTOMER);
+        user.setCreatedDate(System.currentTimeMillis());
 
+        Boolean userInserted = userDao.insertUser(user);
 
-        Boolean isInserted = customerDao.insertCustomer(customer);
-        if(Boolean.TRUE.equals(isInserted)){
-            return "Customer registered successfully";
-        }else {
-            throw new RuntimeException("Failed to register customer");
+        if(Boolean.TRUE.equals(userInserted)){
+            Customer customer = new Customer(user);
+            customer.setMemberNumber(customerUniqueIDSupplier.get());
+            Boolean customerInserted = customerDao.insertCustomer(customer);
+
+            if(Boolean.TRUE.equals(customerInserted)){
+                return "Customer registered successfully";
+            }else {
+                throw new GlobalException("Failed to create user");
+            }
+        }else{
+            throw new GlobalException("Failed to create customer");
         }
-
     }
 
     @Override
@@ -130,12 +142,11 @@ public class CustomerServiceImpl implements CustomerService {
             return "no data changes found";
         }
 
-        update.setUpdatedDate(System.currentTimeMillis());
         Boolean result = customerDao.updateCustomer(update);
-        if (result) {
+        if (Boolean.TRUE.equals(result)) {
             return "customer updated successfully";
         } else {
-            throw new RuntimeException("Failed to update customer");
+            throw new GlobalException("Failed to update customer");
         }
 
     }

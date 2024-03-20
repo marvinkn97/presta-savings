@@ -1,4 +1,4 @@
-package dev.marvin.savings.model.dto;
+package dev.marvin.savings.customer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;

@@ -1,9 +1,7 @@
-package dev.marvin.savings.controller;
+package dev.marvin.savings.customer;
 
-import dev.marvin.savings.customer.CustomerRegistrationRequest;
 import dev.marvin.savings.model.dto.CustomerRegistrationResponse;
 import dev.marvin.savings.model.dto.CustomerResponse;
-import dev.marvin.savings.customer.CustomerUpdateRequest;
 import dev.marvin.savings.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,7 +9,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +27,9 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponse(responseCode = "201", description = "Customer registered successfully")
-    @Operation(summary = "Register Customer", description = "Register customer is used to save customer in database")
+    @Operation(summary = "Register Customer", description = "Register customer is used to save customer in database",
+            responses = {@ApiResponse(responseCode = "201", description = "201 Created")
+    })
     public ResponseEntity<CustomerRegistrationResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
         String response = customerService.registerCustomer(registrationRequest);
         CustomerRegistrationResponse registrationResponse = new CustomerRegistrationResponse(LocalDateTime.now(), HttpStatus.CREATED.toString(), response);

@@ -1,4 +1,35 @@
 
+  +-------------------+          +-------------------+
+  |      t_user       |          |    t_customer     |
+  +-------------------+          +-------------------+
+  | user_id (PK)      |          | member_number (PK)|
+  | name              |1         | user_id (FK)      |
+  | email    ---------|----------| mobile            |
+  | password          |          | government_id     |
+  | role              |          | profile_image_id  |
+  | created_date      |          +-------------------+
+  +-------------------+
+         |1
+         |
+         |
+         |
+         |
+         |
+         |
+         |
+         V
+  +-------------------+          +-------------------+
+  |t_savings_account  |          |  t_transaction    |
+  +-------------------+          +-------------------+
+  | account_number(PK)|1         | transaction_code  |
+  | account_name      |----------| transaction_type  |
+  | account_type      |          | payment_method    |
+  | balance           |          | amount            |
+  | created_date      |          | created_date      |
+  | member_no   -----|----------| account_no (FK)   |
+  +-------------------+          +-------------------+
+
+
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>

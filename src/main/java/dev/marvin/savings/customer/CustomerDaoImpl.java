@@ -1,6 +1,5 @@
-package dev.marvin.savings.dao;
+package dev.marvin.savings.customer;
 
-import dev.marvin.savings.customer.CustomerRowMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
