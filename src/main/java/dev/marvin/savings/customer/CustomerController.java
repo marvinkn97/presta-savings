@@ -1,8 +1,6 @@
 package dev.marvin.savings.customer;
 
-import dev.marvin.savings.model.dto.CustomerRegistrationResponse;
 import dev.marvin.savings.model.dto.CustomerResponse;
-import dev.marvin.savings.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -25,18 +25,13 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Boolean insertCustomer(Customer customer) {
         String sql = """
-                INSERT INTO t_customer (member_number, customer_name, email, password, created_date)
-                VALUES(:memberNumber, :name, :email, :password, :createdDate)
+                INSERT INTO t_customer (member_number)
+                VALUES(:memberNumber)
                 """;
 
         int rowsAffected = namedParameterJdbcTemplate.update(sql,
                 new MapSqlParameterSource()
-                        .addValue(MEMBER_NUMBER_PARAM, customer.getMemberNumber(), Types.VARCHAR)
-                        .addValue(NAME_PARAM, customer.getName(), Types.VARCHAR)
-                        .addValue(EMAIL_PARAM, customer.getEmail(), Types.VARCHAR)
-                        .addValue("password", customer.getPassword(), Types.LONGVARCHAR)
-                        .addValue("createdDate", customer.getCreatedDate(), Types.BIGINT)
-        );
+                        .addValue(MEMBER_NUMBER_PARAM, customer.getMemberNumber(), Types.VARCHAR));
         log.info("CUSTOMER INSERT RESULT = " + rowsAffected);
         return rowsAffected > 0;
     }
@@ -47,7 +42,7 @@ public class CustomerDaoImpl implements CustomerDao {
                 SELECT member_number, customer_name, email, password, mobile_no, government_id, created_date
                 FROM t_customer
                  ORDER BY created_date DESC
-  
+                  
                 """;
 
         return namedParameterJdbcTemplate.query(sql,
@@ -120,8 +115,7 @@ public class CustomerDaoImpl implements CustomerDao {
         }
 
         // Add updated_date and member_number to the SQL statement
-        sqlBuilder.append("updated_date = :updatedDate WHERE member_number = :memberNumber");
-        parameterSource.addValue("updatedDate", update.getUpdatedDate());
+        sqlBuilder.append("WHERE member_number = :memberNumber");
         parameterSource.addValue(MEMBER_NUMBER_PARAM, update.getMemberNumber());
 
         // Execute the SQL update statement

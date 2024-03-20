@@ -13,12 +13,14 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public Boolean insertUser(User user) {
-        String sql = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
+        String sql = "INSERT INTO users (name, email, password, created_date, role) VALUES (:name, :email, :password, :createdDate, :role)";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("name", user.getName());
         params.addValue("email", user.getEmail());
         params.addValue("password", user.getPassword());
+        params.addValue("createdDate", user.getCreatedDate());
+        params.addValue("role", user.getRole().name());
 
         int rowsAffected = namedParameterJdbcTemplate.update(sql, params);
 
