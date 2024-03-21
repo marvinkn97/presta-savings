@@ -1,15 +1,15 @@
-CREATE TABLE presta_savings.t_user (
+CREATE TABLE presta_savings.t_users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
-    role VARCHAR(25) NOT NULL,
+    role VARCHAR(15) NOT NULL,
     created_date BIGINT NOT NULL,
     UNIQUE KEY email_UNIQUE (email)
 );
 
-CREATE TABLE presta_savings.t_customer (
+CREATE TABLE presta_savings.t_customers (
     member_number VARCHAR(25) PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
     mobile VARCHAR(25),
     government_id INT,
     profile_image_id VARCHAR(255),

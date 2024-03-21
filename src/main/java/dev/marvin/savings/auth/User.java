@@ -14,17 +14,10 @@ import java.util.Collection;
 @Setter
 public class User implements UserDetails, Serializable {
     private Integer userId;
-    private String name;
     private String email;
     private String password;
     private Long createdDate;
     private Role role;
-
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -35,6 +28,7 @@ public class User implements UserDetails, Serializable {
     public String getUsername() {
         return email;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

@@ -8,14 +8,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Customer extends User {
+public class Customer {
     private String memberNumber;
+    private String name;
     private String mobile;
     private Integer governmentId;
     private String profileImageId;
-
-    public Customer(User user) {
-     super(user.getName(), user.getEmail(), user.getPassword());
-    }
-
+    private User user;
 }
