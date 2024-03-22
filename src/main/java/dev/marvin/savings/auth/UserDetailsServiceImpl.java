@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userDao.getUserByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("user with given email [%s] does not exist".formatted(email)));
+                .orElseThrow(() -> new UsernameNotFoundException("user with given email [%s] does not exist".formatted(email)));
 
         List<SimpleGrantedAuthority> grantedAuthorities = user.getRole().grantedAuthorities();
 

@@ -97,17 +97,17 @@ public class CustomerDaoImpl implements CustomerDao {
     public Boolean updateCustomer(Customer update) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         StringBuilder sqlBuilder = new StringBuilder("UPDATE t_customer SET ");
+//
+//        if (update.getName() != null) {
+//            sqlBuilder.append("customer_name = :name, ");
+//            parameterSource.addValue("name", update.getName());
+//        }
 
-        if (update.getName() != null) {
-            sqlBuilder.append("customer_name = :name, ");
-            parameterSource.addValue("name", update.getName());
-        }
-
-        if (update.getEmail() != null) {
-            sqlBuilder.append("email = :email, ");
-            parameterSource.addValue(EMAIL_PARAM, update.getEmail());
-
-        }
+//        if (update.getEmail() != null) {
+//            sqlBuilder.append("email = :email, ");
+//            parameterSource.addValue(EMAIL_PARAM, update.getEmail());
+//
+//        }
 
         if (update.getMobile() != null) {
             sqlBuilder.append("mobile_no = :mobile, ");

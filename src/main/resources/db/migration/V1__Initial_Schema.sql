@@ -1,5 +1,6 @@
 CREATE TABLE presta_savings.t_users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
     role VARCHAR(15) NOT NULL,
@@ -9,12 +10,11 @@ CREATE TABLE presta_savings.t_users (
 
 CREATE TABLE presta_savings.t_customers (
     member_number VARCHAR(25) PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
     mobile VARCHAR(25),
     government_id INT,
     profile_image_id VARCHAR(255),
     user_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES t_user(user_id)
+    CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES t_users(user_id)
 );
 
 --CREATE TABLE t_savings_account (

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,7 @@ public class CustomerController {
     @Operation(summary = "Register Customer", description = "Register customer is used to save customer in database",
             responses = {@ApiResponse(responseCode = "201", description = "201 Created")
     })
+    @PreAuthorize(value = "hasAuthority('')")
     public ResponseEntity<CustomerRegistrationResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
         String response = customerService.registerCustomer(registrationRequest);
         CustomerRegistrationResponse registrationResponse = new CustomerRegistrationResponse(LocalDateTime.now(), HttpStatus.CREATED.toString(), response);
@@ -48,10 +50,6 @@ public class CustomerController {
 
     @PutMapping(value = "/update/{memberNumber}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam(value = "profileImage", required = false) MultipartFile multipartFile) {
-
-        System.out.println(memberNumber);
-//        String fileName = multipartFile.getName();
-//        System.out.println(fileName);
 
         return customerService.updateCustomer(memberNumber, updateRequest);
     }

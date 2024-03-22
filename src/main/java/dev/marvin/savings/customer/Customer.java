@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @Getter
 @Setter
-public class Customer {
+public class Customer implements Serializable {
     private String memberNumber;
-    private String name;
     private String mobile;
     private Integer governmentId;
     private String profileImageId;

@@ -40,6 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
         UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
         User user = new User();
+        user.setName(registrationRequest.name());
         user.setEmail(registrationRequest.email());
         user.setPassword(passwordEncoder.encode(registrationRequest.password()));
         user.setRole(Role.CUSTOMER);
@@ -50,7 +51,6 @@ public class CustomerServiceImpl implements CustomerService {
             user.setUserId(generatedId);
             Customer customer = new Customer();
             customer.setMemberNumber(customerUniqueIDSupplier.get());
-            customer.setName(registrationRequest.name());
             customer.setUser(user);
 
             Boolean customerInserted = customerDao.insertCustomer(customer);
