@@ -19,24 +19,7 @@
            +  REST API Documentation with SpringDoc OPENAPI
            +  Flyway for seamless database migrations
            +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
-     
-      +  Features
-           +  Customer Management
-              +  Create customer
-              +  Update customer details
-              +  Delete customer
-              +  View customer
-          +  Account Management
-              +  Create Account
-              +  Update Account details
-              +  Delete Account
-              +  View Account
-          +  Payment/Transaction Management
-              +  Record payment (positive adjustment)
-              +  Negative adjustment
-              +  View Payment
-          +  Notification Service
-              +  sms notification - integrated Tiara Connect
+           
   +    TODO
        +  Implement Testing
        +  Implement Security
