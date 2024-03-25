@@ -14,27 +14,24 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DBConfig {
-
     @Bean
     @ConfigurationProperties(prefix = "app.datasource")
     public DataSource dataSource() {
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .build();
+        return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
     @Bean(initMethod = "migrate")
-    public Flyway flyway(){
+    public Flyway flyway() {
         return Flyway.configure().dataSource(dataSource()).load();
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(){
+    public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
 
     @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(){
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource());
     }
 }

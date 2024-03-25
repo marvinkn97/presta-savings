@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 
@@ -22,11 +24,12 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public Optional<Integer> insertUser(User user) {
-        String sql = "INSERT INTO users (email, password, created_date, role) VALUES (:email, :password, :createdDate, :role)";
+        String sql = "INSERT INTO users (name, email, password, created_date, role) VALUES (:name, :email, :password, :createdDate, :role)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("name", user.getName());
         params.addValue(EMAIL_PARAM, user.getEmail());
         params.addValue("password", user.getPassword());
         params.addValue("createdDate", user.getCreatedDate());
@@ -49,6 +52,7 @@ public class UserDaoImpl implements UserDao{
         List<User> users =namedParameterJdbcTemplate.query(sql, params, (rs, rowNum) -> {
             User user = new User();
             user.setUserId(rs.getInt("user_id"));
+            user.setName(rs.getString("name"));
             user.setEmail(rs.getString(EMAIL_PARAM));
             user.setPassword(rs.getString("password"));
             user.setRole(Role.valueOf(rs.getString("role")));

@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static dev.marvin.savings.auth.Permission.*;
 
@@ -17,11 +18,11 @@ public enum Role {
 
     private final Set<Permission> permissions;
 
-    public List<SimpleGrantedAuthority> grantedAuthorities() {
+    public Set<SimpleGrantedAuthority> grantedAuthorities() {
 
         var grantedAuthorities = getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.name()))
-                .toList();
+                .collect(Collectors.toSet());
 
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
 

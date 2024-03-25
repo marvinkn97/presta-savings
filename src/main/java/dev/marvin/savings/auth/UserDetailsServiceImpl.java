@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userDao.getUserByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("user with given email [%s] does not exist".formatted(email)));
 
-        List<SimpleGrantedAuthority> grantedAuthorities = user.getRole().grantedAuthorities();
+        Set<SimpleGrantedAuthority> grantedAuthorities = user.getRole().grantedAuthorities();
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
