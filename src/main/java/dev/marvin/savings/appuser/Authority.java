@@ -1,10 +1,8 @@
-package dev.marvin.savings.auth;
+package dev.marvin.savings.appuser;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public enum Authority {
+
+    //These are basically privileges
     CUSTOMER_CREATE,
     CUSTOMER_READ,
     CUSTOMER_UPDATE,

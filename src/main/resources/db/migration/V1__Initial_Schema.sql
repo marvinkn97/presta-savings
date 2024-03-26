@@ -3,6 +3,7 @@ CREATE TABLE presta_savings.t_users (
     name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
+    -- mobile VARCHAR(25),
     role VARCHAR(15) NOT NULL,
     created_date BIGINT NOT NULL,
     UNIQUE KEY email_UNIQUE (email)

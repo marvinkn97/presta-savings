@@ -1,11 +1,10 @@
 package dev.marvin.savings.customer;
 
-import dev.marvin.savings.auth.Role;
-import dev.marvin.savings.auth.User;
+import dev.marvin.savings.appuser.Role;
+import dev.marvin.savings.appuser.User;
 import dev.marvin.savings.auth.UserDao;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.GlobalException;
-import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.model.dto.CustomerResponse;
 import dev.marvin.savings.service.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
@@ -13,12 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
