@@ -11,11 +11,10 @@
            +  Document the APIs using Swagger, providing clear descriptions and examples for each endpoint.
 
        +   Technologies Used
-           +  Spring Boot 3, Data JDBC, DevTools, Actuator, Security
+           +  Spring - Boot 3, JPA, Security with JWT
            +  MySQL on Docker
            +  TestContainers for DAO Layer unit testing
            +  Lombok
-           +  Hibernate Validator
            +  REST API Documentation with SpringDoc OPENAPI
            +  Flyway for seamless database migrations
            +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
