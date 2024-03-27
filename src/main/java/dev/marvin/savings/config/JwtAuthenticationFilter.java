@@ -15,16 +15,18 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    //you can also implement Filter Interface for this use case;
-
+    private final JwtService jwtService;
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String authenticationHeader = request.getHeader("Authorization");
         final String jwt;
+        final String userEmail;
         if(authenticationHeader == null || !authenticationHeader.startsWith("Bearer ")){
             filterChain.doFilter(request, response);
             return;
         }
         jwt = authenticationHeader.substring(7);
+        userEmail = jwtService.extractUsername(jwt);
+
     }
 }

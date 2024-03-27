@@ -3,6 +3,10 @@ package dev.marvin.savings.appuser;
 public enum Authority {
 
     //These are basically privileges
+    USER_CREATE,
+    USER_READ,
+    USER_UPDATE,
+    USER_DELETE,
     CUSTOMER_CREATE,
     CUSTOMER_READ,
     CUSTOMER_UPDATE,
