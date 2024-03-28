@@ -16,7 +16,6 @@
            +  TestContainers for DAO Layer unit testing
            +  Lombok
            +  REST API Documentation with SpringDoc OPENAPI
-           +  Flyway for seamless database migrations
            +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
            
   +    TODO

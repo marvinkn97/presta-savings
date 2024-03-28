@@ -34,10 +34,10 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime joinDate;
 
-
-    private LocalDateTime lastLoginDate;
-    private LocalDate lastLoginDateDisplay;
+    @Column(name = "is_active", nullable = false)
     private boolean isActive;
+
+    @Column(name = "is_not_locked", nullable = false)
     private boolean isNotLocked;
 
     @Enumerated(EnumType.STRING)

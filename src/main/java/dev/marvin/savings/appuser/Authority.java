@@ -17,5 +17,4 @@ public enum Authority {
     ACCOUNT_DELETE,
     TRANSACTION_PERFORM,
     TRANSACTION_READ;
-
 }

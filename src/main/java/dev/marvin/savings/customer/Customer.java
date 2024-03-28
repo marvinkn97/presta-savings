@@ -22,7 +22,11 @@ public class Customer implements Serializable {
 
     @Column(name = "member_number", updatable = false, nullable = false)
     private String memberNumber;
+
+    @Column(name = "government_id")
     private Integer governmentId;
+
+    @Column(name = "profile_image_id")
     private String profileImageId;
 
     @ManyToOne(cascade = CascadeType.ALL)
