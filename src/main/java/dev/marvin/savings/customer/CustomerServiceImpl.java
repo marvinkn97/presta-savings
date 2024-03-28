@@ -2,6 +2,8 @@ package dev.marvin.savings.customer;
 
 import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.User;
+import dev.marvin.savings.appuser.UserRepository;
+import dev.marvin.savings.appuser.UserService;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.GlobalException;
 import dev.marvin.savings.model.dto.CustomerResponse;
@@ -19,42 +21,40 @@ import java.util.List;
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerDao customerDao;
-    private final UserDao userDao;
-    private final SmsService smsService;
+    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SmsService smsService;
 
     @Override
-    public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
+    public void createCustomer(CustomerRegistrationRequest registrationRequest) {
 
-        if (Boolean.TRUE.equals(customerDao.existsCustomerWithEmail(registrationRequest.email()))) {
+        if (userRepository.existsUserWithEmail(registrationRequest.email())) {
             throw new DuplicateResourceException("email already taken");
         }
 
         UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
-        User user = new User();
-        user.setName(registrationRequest.name());
-        user.setEmail(registrationRequest.email());
-        user.setPassword(passwordEncoder.encode(registrationRequest.password()));
-        user.setRole(Role.CUSTOMER);
-        user.setCreatedDate(System.currentTimeMillis());
+        User user = User.builder()
+                .name(registrationRequest.name())
+                .email(registrationRequest.email())
+                .password(passwordEncoder.encode(registrationRequest.password()))
+                .isActive(false)
+                .isNotLocked(true)
+                .joinDate(System.currentTimeMillis())
+                .role(Role.CUSTOMER)
+                .build();
 
-        Integer generatedId = userDao.insertUser(user).orElseThrow(() -> new GlobalException("failed to create customer"));
+        User savedUser = userRepository.save(user);
 
-            user.setUserId(generatedId);
-            Customer customer = new Customer();
-            customer.setMemberNumber(customerUniqueIDSupplier.get());
-            customer.setUser(user);
+        Customer customer = Customer.builder()
+                .memberNumber(customerUniqueIDSupplier.get())
+                .user(savedUser).
+                build();
 
-            Boolean customerInserted = customerDao.insertCustomer(customer);
-
-            if(Boolean.TRUE.equals(customerInserted)){
-                return "Customer registered successfully";
-            }else {
-                throw new GlobalException("Failed to create user");
-            }
-        }
+        customerRepository.saveCustomer(customer)
+                .orElseThrow(() -> new GlobalException("Failed to create customer"));
+    }
 
     @Override
     public List<CustomerResponse> getAllCustomers() {

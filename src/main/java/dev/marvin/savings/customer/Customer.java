@@ -2,16 +2,14 @@ package dev.marvin.savings.customer;
 
 import dev.marvin.savings.appuser.User;
 import jakarta.persistence.*;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "t_customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
 public class Customer implements Serializable {
@@ -22,6 +20,9 @@ public class Customer implements Serializable {
 
     @Column(name = "member_number", updatable = false, nullable = false)
     private String memberNumber;
+
+    @Column(name = "mobile_number")
+    private String mobileNumber;
 
     @Column(name = "government_id")
     private Integer governmentId;

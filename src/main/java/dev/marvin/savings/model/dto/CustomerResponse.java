@@ -1,18 +1,15 @@
 package dev.marvin.savings.model.dto;
 
+import dev.marvin.savings.appuser.UserResponse;
 import lombok.Builder;
 
 import java.util.List;
 
-@Builder  //remove this builder
 public record CustomerResponse(
+        UserResponse userResponse,
         String memberNumber,
-        String name,
-        String email,
         String mobile,
         Integer governmentId,
-        Long createdDate,
-        Long updatedDate,
         String profileImageId,
         List<SavingsAccountResponse> accounts) {
 }

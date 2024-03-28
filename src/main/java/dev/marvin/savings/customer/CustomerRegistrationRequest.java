@@ -17,5 +17,7 @@ public record CustomerRegistrationRequest(
 
         @NotBlank(message = "password is required")
         @Schema(name = "password", defaultValue = "password")
-        String password) {
+        String password
+
+) {
 }

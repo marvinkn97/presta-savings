@@ -1,7 +1,6 @@
 package dev.marvin.savings.service;
 
 import dev.marvin.savings.customer.Customer;
-import dev.marvin.savings.customer.CustomerDao;
 import dev.marvin.savings.dao.SavingsAccountDao;
 import dev.marvin.savings.model.dto.NewSavingsAccountRequest;
 import dev.marvin.savings.model.dto.SavingsAccountResponse;

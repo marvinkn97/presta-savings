@@ -1,5 +1,6 @@
 package dev.marvin.savings.customer;
 
+import dev.marvin.savings.advice.HttpResponse;
 import dev.marvin.savings.model.dto.CustomerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,14 +27,21 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Register Customer", description = "Register customer is used to save customer in database",
+    @Operation(summary = "Customer Registration", description = "Register customer is used to save customer in database",
             responses = {@ApiResponse(responseCode = "201", description = "201 Created")
     })
-    @PreAuthorize(value = "hasAuthority('')")
-    public ResponseEntity<CustomerRegistrationResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-        String response = customerService.registerCustomer(registrationRequest);
-        CustomerRegistrationResponse registrationResponse = new CustomerRegistrationResponse(LocalDateTime.now(), HttpStatus.CREATED.toString(), response);
-        return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
+    @PreAuthorize(value = "hasAuthority('CUSTOMER_CREATE')")
+    public ResponseEntity<HttpResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
+         customerService.createCustomer(registrationRequest);
+
+         HttpResponse response = new HttpResponse(
+                 HttpStatus.CREATED.value(),
+                 HttpStatus.CREATED,
+                 HttpStatus.CREATED.getReasonPhrase(),
+                 "Customer registered successfully"
+         );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping(path = "/all")
