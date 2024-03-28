@@ -3,7 +3,6 @@ package dev.marvin.savings.customer;
 import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.User;
 import dev.marvin.savings.appuser.UserRepository;
-import dev.marvin.savings.appuser.UserService;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.GlobalException;
 import dev.marvin.savings.model.dto.CustomerResponse;
