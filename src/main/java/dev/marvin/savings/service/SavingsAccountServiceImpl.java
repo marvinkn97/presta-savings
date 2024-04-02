@@ -5,7 +5,7 @@ import dev.marvin.savings.dao.SavingsAccountDao;
 import dev.marvin.savings.model.dto.NewSavingsAccountRequest;
 import dev.marvin.savings.model.dto.SavingsAccountResponse;
 import dev.marvin.savings.model.dto.SavingsAccountUpdateRequest;
-import dev.marvin.savings.model.SavingsAccount;
+import dev.marvin.savings.savingsaccount.SavingsAccount;
 import dev.marvin.savings.model.enums.SavingsAccountType;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;

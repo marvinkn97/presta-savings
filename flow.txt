@@ -1,50 +1,4 @@
 
-  +-------------------+          +-------------------+
-  |      t_user       |          |    t_customer     |
-  +-------------------+          +-------------------+
-  | user_id (PK)      |          | member_number (PK)|
-  | name              |1         | user_id (FK)      |
-  | email    ---------|----------| mobile            |
-  | password          |          | government_id     |
-  | role              |          | profile_image_id  |
-  | created_date      |          +-------------------+
-  +-------------------+
-         |1
-         |
-         |
-         |
-         |
-         |
-         |
-         |
-         V
-  +-------------------+          +-------------------+
-  |t_savings_account  |          |  t_transaction    |
-  +-------------------+          +-------------------+
-  | account_number(PK)|1         | transaction_code  |
-  | account_name      |----------| transaction_type  |
-  | account_type      |          | payment_method    |
-  | balance           |          | amount            |
-  | created_date      |          | created_date      |
-  | member_no   -----|----------| account_no (FK)   |
-  +-------------------+          +-------------------+
-
-
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-mysql</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-docker-compose</artifactId>
-      <scope>runtime</scope>
-      <optional>true</optional>
-    </dependency>
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
@@ -100,29 +54,5 @@ Feat 3.8: Set/change baker profile logo
 Feat 3.9: Set/change baker notification settings
 Feat 3.10: Set/change baker notification templates
 Feat 3.11: View baker profile (admin and baker roles)
-
-
-users:
-- id (PK)
-- username
-- password
-- email
-- ...
-
-customers:
-- id (PK, FK referencing users.id)
-- member_number
-- address
-- phone_number
-- ...
-
-roles:
-- id (PK)
-- name
-
-user_roles:
-- user_id (FK referencing users.id)
-- role_id (FK referencing roles.id)
-
 
 

@@ -5,11 +5,10 @@ import dev.marvin.savings.dao.TransactionDao;
 import dev.marvin.savings.model.dto.TransactionRequest;
 import dev.marvin.savings.model.dto.TransactionResponse;
 import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.model.SavingsAccount;
+import dev.marvin.savings.savingsaccount.SavingsAccount;
 import dev.marvin.savings.model.enums.PaymentMethod;
 import dev.marvin.savings.model.Transaction;
 import dev.marvin.savings.model.enums.TransactionType;
-import dev.marvin.savings.service.TransactionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

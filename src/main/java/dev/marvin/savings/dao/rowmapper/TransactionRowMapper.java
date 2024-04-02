@@ -1,6 +1,6 @@
 package dev.marvin.savings.dao.rowmapper;
 
-import dev.marvin.savings.model.SavingsAccount;
+import dev.marvin.savings.savingsaccount.SavingsAccount;
 import dev.marvin.savings.model.enums.PaymentMethod;
 import dev.marvin.savings.model.Transaction;
 import dev.marvin.savings.model.enums.TransactionType;

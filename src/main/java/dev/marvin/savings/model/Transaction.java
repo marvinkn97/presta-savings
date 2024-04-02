@@ -2,6 +2,7 @@ package dev.marvin.savings.model;
 
 import dev.marvin.savings.model.enums.PaymentMethod;
 import dev.marvin.savings.model.enums.TransactionType;
+import dev.marvin.savings.savingsaccount.SavingsAccount;
 import lombok.Builder;
 import lombok.Data;
 
