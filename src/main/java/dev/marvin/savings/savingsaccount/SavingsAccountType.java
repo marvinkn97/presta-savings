@@ -1,4 +1,4 @@
-package dev.marvin.savings.model.enums;
+package dev.marvin.savings.savingsaccount;
 
 public enum SavingsAccountType {
     EDUCATION, PERSONAL, VACATION

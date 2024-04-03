@@ -1,7 +1,5 @@
 package dev.marvin.savings.customer;
 
-import dev.marvin.savings.model.dto.CustomerResponse;
-
 import java.util.List;
 
 public interface CustomerService {

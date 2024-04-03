@@ -1,7 +1,6 @@
 package dev.marvin.savings.appuser;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,14 +13,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepository.findByEmail(email).orElseThrow(
-                ()-> new UsernameNotFoundException("user with email [%s] not found".formatted(email)));
+                ()-> new UsernameNotFoundException("user details not found for [%s]".formatted(email)));
 
-        var grantedAuthorities = user.getRole().grantedAuthorities();
-
-        return User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .authorities(grantedAuthorities)
-                .build();
+        return new UserPrincipal(user);
     }
 }

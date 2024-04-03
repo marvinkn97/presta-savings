@@ -22,17 +22,19 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 
+        Authentication auth = null;
+
         UserDetails user = userDetailsService.loadUserByUsername(email);
 
         if(passwordEncoder.matches(password, user.getPassword())){
-            return new UsernamePasswordAuthenticationToken(
+            auth =  new UsernamePasswordAuthenticationToken(
                     email,
                     password,
                     user.getAuthorities()
             );
         }
+        return auth;
 
-        return null;
     }
 
     @Override

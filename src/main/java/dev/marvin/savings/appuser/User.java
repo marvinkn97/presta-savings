@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 
@@ -29,7 +30,8 @@ public class User implements Serializable {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
 
-    @Column(nullable = false)
+    @Column(name = "join_date", nullable = false)
+    @CreationTimestamp
     private Long joinDate;
 
     @Column(name = "is_active", nullable = false)
@@ -38,6 +40,10 @@ public class User implements Serializable {
     @Column(name = "is_not_locked", nullable = false)
     private boolean isNotLocked;
 
+    @Column(name = "last_seen_on", nullable = false)
+    private Long lastSeenOn;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 }

@@ -5,7 +5,6 @@ import dev.marvin.savings.appuser.User;
 import dev.marvin.savings.appuser.UserRepository;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.GlobalException;
-import dev.marvin.savings.model.dto.CustomerResponse;
 import dev.marvin.savings.service.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;

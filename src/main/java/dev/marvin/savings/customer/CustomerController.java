@@ -1,7 +1,6 @@
 package dev.marvin.savings.customer;
 
 import dev.marvin.savings.advice.HttpResponse;
-import dev.marvin.savings.model.dto.CustomerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,12 +24,12 @@ import java.util.List;
 public class CustomerController {
     private final CustomerService customerService;
 
-    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Customer Registration", description = "Register customer is used to save customer in database",
+    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create Customer", description = "Create customer is used to save customer in database",
             responses = {@ApiResponse(responseCode = "201", description = "201 Created")
     })
     @PreAuthorize(value = "hasAuthority('CUSTOMER_CREATE')")
-    public ResponseEntity<HttpResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
+    public ResponseEntity<HttpResponse> createCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
          customerService.createCustomer(registrationRequest);
 
          HttpResponse response = new HttpResponse(

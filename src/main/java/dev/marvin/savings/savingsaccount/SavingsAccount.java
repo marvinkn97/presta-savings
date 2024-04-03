@@ -1,12 +1,12 @@
 package dev.marvin.savings.savingsaccount;
 
 import dev.marvin.savings.customer.Customer;
-import dev.marvin.savings.model.enums.SavingsAccountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 @Builder
@@ -26,8 +26,19 @@ public class SavingsAccount implements Serializable {
 
     @Column(name = "account_name", nullable = false)
     private String accountName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_type", nullable = false)
     private SavingsAccountType savingsAccountType;
+
+    @Column(nullable = false)
     private Double balance;
+
+    @CreationTimestamp
+    @Column(name = "created_date", nullable = false)
     private Long createdDate;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "customer_id_fk"))
     private Customer customer;
 }

@@ -27,6 +27,9 @@ public class Customer implements Serializable {
     @Column(name = "government_id")
     private Integer governmentId;
 
+    @Column(name = "kra_pin", nullable = false)
+    private String kraPin;
+
     @Column(name = "profile_image_id")
     private String profileImageId;
 

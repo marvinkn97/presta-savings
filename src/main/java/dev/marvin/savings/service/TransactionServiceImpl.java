@@ -1,6 +1,5 @@
 package dev.marvin.savings.service;
 
-import dev.marvin.savings.dao.SavingsAccountDao;
 import dev.marvin.savings.dao.TransactionDao;
 import dev.marvin.savings.model.dto.TransactionRequest;
 import dev.marvin.savings.model.dto.TransactionResponse;
