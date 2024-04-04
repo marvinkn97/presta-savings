@@ -3,7 +3,7 @@ package dev.marvin.savings.appuser;
 import java.util.List;
 
 public interface UserService {
-    User createUser(User user);
+    User createUser(UserRegistrationRequest userRegistrationRequest);
     List<User> getAllUsers();
 //    void lockUserAccount();
 

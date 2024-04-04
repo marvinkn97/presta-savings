@@ -23,7 +23,7 @@ import java.util.List;
 public class CustomerController {
     private final CustomerService customerService;
 
-    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create Customer", description = "Create customer is used to save customer in database",
             responses = {@ApiResponse(responseCode = "201", description = "201 Created")
             })
@@ -33,7 +33,7 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(customer);
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping
     public ResponseEntity<List<Customer>> getAllCustomers() {
         List<Customer> customers = customerService.getAllCustomers();
         return ResponseEntity.status(HttpStatus.OK).body(customers);
@@ -44,13 +44,13 @@ public class CustomerController {
         return customerService.getCustomerByMemberNumber(memberNumber);
     }
 
-    @PutMapping(value = "/update/{memberNumber}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{memberNumber}/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam(value = "profileImage", required = false) MultipartFile multipartFile) {
          customerService.updateCustomer(memberNumber, updateRequest);
          return null;
     }
 
-    @DeleteMapping("/delete/{memberNumber}")
+    @DeleteMapping("/{memberNumber}/delete/")
     public ResponseEntity<String> deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
         customerService.deleteCustomer(memberNumber);
         return ResponseEntity.ok("customer deleted successfully");

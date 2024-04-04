@@ -22,8 +22,8 @@ public class UserController {
     @PreAuthorize(value = "hasAuthority('USER_CREATE')")
     @Operation(method = "POST", summary = "Create User", description = "Create User is used to save user in database")
     @ApiResponse(responseCode = "201")
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User savedUser = userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody UserRegistrationRequest registrationRequest){
+        User savedUser = userService.createUser(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
