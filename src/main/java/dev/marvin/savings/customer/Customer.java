@@ -21,10 +21,10 @@ public class Customer implements Serializable {
     @Column(name = "member_number", updatable = false, nullable = false)
     private String memberNumber;
 
-    @Column(name = "mobile_number")
+    @Column(name = "mobile_number", nullable = false)
     private String mobileNumber;
 
-    @Column(name = "government_id")
+    @Column(name = "government_id", nullable = false)
     private Integer governmentId;
 
     @Column(name = "kra_pin", nullable = false)

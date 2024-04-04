@@ -7,6 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-    Optional<Customer> saveCustomer(Customer customer);
     Optional<Customer> findByMemberNumber(String memberNumber);
 }

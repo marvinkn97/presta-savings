@@ -11,7 +11,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
         description = "Spring Boot  REST API Documentation", version = "v1.0",
         contact = @Contact(name = "Marvin", email = "marvin.nyingi97@gmail.com")))
 public class SavingsApplication {
-
     public static void main(String[] args) {
         new SpringApplicationBuilder()
                 .profiles("dev")

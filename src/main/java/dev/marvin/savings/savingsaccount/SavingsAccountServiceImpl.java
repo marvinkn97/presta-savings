@@ -8,6 +8,7 @@ import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
                     .accountNumber(savingsAccountUniqueIDSupplier.get())
                     .accountName(accountRequest.accountName())
                     .savingsAccountType(SavingsAccountType.valueOf(accountRequest.accountType().toUpperCase()))
-                    .balance(0.0)
+                    .balance(BigDecimal.ZERO)
                     .createdDate(System.currentTimeMillis())
                     .customer(customer)
                     .build();

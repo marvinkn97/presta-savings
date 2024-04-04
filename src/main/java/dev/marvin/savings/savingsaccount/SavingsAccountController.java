@@ -1,55 +1,55 @@
-package dev.marvin.savings.controller;
+package dev.marvin.savings.savingsaccount;
 
-import dev.marvin.savings.savingsaccount.NewSavingsAccountRequest;
 import dev.marvin.savings.model.dto.SavingsAccountUpdateRequest;
-import dev.marvin.savings.savingsaccount.SavingsAccountService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/account")
+@RequestMapping("api/v1/accounts")
+@RequiredArgsConstructor
 public class SavingsAccountController {
-
     private final SavingsAccountService savingsAccountService;
 
-    public SavingsAccountController(SavingsAccountService savingsAccountService) {
-        this.savingsAccountService = savingsAccountService;
+    @PostMapping
+    public ResponseEntity<SavingsAccount> createAccount(@RequestBody NewSavingsAccountRequest accountRequest) {
+        SavingsAccount savingsAccount = savingsAccountService.createAccount(accountRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savingsAccount);
     }
 
-    @PostMapping(value = "/create")
-    public String createAccount(@RequestBody NewSavingsAccountRequest accountRequest) {
-        return savingsAccountService.createAccount(accountRequest);
-    }
-
-    @GetMapping("/all")
-    public List<SavingsAccountResponse> getAllAccounts() {
+    @GetMapping
+    public List<SavingsAccount> getAllAccounts() {
         return savingsAccountService.getAllAccounts();
     }
 
     @GetMapping("/member/{memberNo}")
-    public List<SavingsAccountResponse> getAccountsByMemberNumber(@PathVariable("memberNo") String memberNumber) {
+    public List<SavingsAccount> getAccountsByMemberNumber(@PathVariable("memberNo") String memberNumber) {
         return savingsAccountService.getAccountsByMemberNumber(memberNumber);
     }
 
     @GetMapping("/type/{accountType}")
-    public List<SavingsAccountResponse> getAccountsByAccountType(@PathVariable("accountType") String accountType) {
+    public List<SavingsAccount> getAccountsByAccountType(@PathVariable("accountType") String accountType) {
         return savingsAccountService.getAccountsByAccountType(accountType);
     }
 
     @GetMapping("/{accountNo}")
-    public SavingsAccountResponse getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber) {
+    public SavingsAccount getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber) {
         return savingsAccountService.getAccountByAccountNumber(accountNumber);
     }
 
-    @PutMapping("/update/{accountNo}")
+    @PutMapping("/{accountNo}/update")
     public String updateAccount(@PathVariable("accountNo") String accountNumber, @RequestBody SavingsAccountUpdateRequest updateRequest) {
-        return savingsAccountService.updateAccount(accountNumber, updateRequest);
+        savingsAccountService.updateAccount(accountNumber, updateRequest);
+        return null;
     }
 
-    @DeleteMapping("/delete/{accountNo}")
+    @DeleteMapping("/{accountNo}/delete")
     public String deleteAccount(@PathVariable("accountNo") String accountNumber) {
-        return savingsAccountService.deleteAccount(accountNumber);
+        savingsAccountService.deleteAccount(accountNumber);
+        return null;
     }
 
     @GetMapping("/member/{memberNo}/balance")

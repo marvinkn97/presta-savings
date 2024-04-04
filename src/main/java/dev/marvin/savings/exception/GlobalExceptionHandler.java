@@ -1,9 +1,5 @@
 package dev.marvin.savings.exception;
 
-import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.exception.ErrorMessage;
-import dev.marvin.savings.exception.InsufficientAmountException;
-import dev.marvin.savings.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,7 +8,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -24,29 +19,49 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorMessage handleDatabaseOperationException(Exception e, WebRequest webRequest) {
-        return new ErrorMessage(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), webRequest.getDescription(false));
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception e) {
+        var error = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .httpStatusCode(HttpStatus.INSUFFICIENT_STORAGE.value())
+                .reason(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
     @ExceptionHandler(InsufficientAmountException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleInsufficientAmountException(InsufficientAmountException e, WebRequest webRequest) {
-        return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST, e.getMessage(), webRequest.getDescription(false));
+    public ResponseEntity<ErrorResponse> handleInsufficientAmountException(InsufficientAmountException e) {
+        var error = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .httpStatusCode(HttpStatus.BAD_REQUEST.value())
+                .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    @ResponseStatus(code = HttpStatus.CONFLICT)
-    public ErrorMessage handleDuplicateResourceException(DuplicateResourceException e, WebRequest webRequest) {
-        return new ErrorMessage(LocalDateTime.now(), HttpStatus.CONFLICT, e.getMessage(), webRequest.getDescription(false));
+    public ResponseEntity<ErrorResponse> handleDuplicateResourceException(DuplicateResourceException e) {
+        var error = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .httpStatusCode(HttpStatus.CONFLICT.value())
+                .reason(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ErrorMessage handleResourceNotFoundException(ResourceNotFoundException e, WebRequest webRequest) {
-        return new ErrorMessage(LocalDateTime.now(), HttpStatus.NOT_FOUND, e.getMessage(), webRequest.getDescription(false));
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        var error = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .httpStatusCode(HttpStatus.NOT_FOUND.value())
+                .reason(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+
     }
 
     @Override
@@ -55,7 +70,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         List<ObjectError> errorList = ex.getBindingResult().getAllErrors();
 
-        errorList.forEach((error)-> {
+        errorList.forEach(error -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);

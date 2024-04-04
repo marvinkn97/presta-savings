@@ -1,11 +1,9 @@
-package dev.marvin.savings.dao;
-
-import dev.marvin.savings.model.Transaction;
+package dev.marvin.savings.transaction;
 
 import java.util.List;
 
-public interface TransactionDao {
-    void performTransaction(Transaction transaction);
+public interface TransactionService {
+    Transaction performTransaction(TransactionRequest transactionRequest);
     List<Transaction> getAllTransactions();
     List<Transaction> getAllTransactionsByAccountNumber(String accountNumber);
     Transaction getTransactionByTransactionCode(String transactionCode);

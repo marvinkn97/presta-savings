@@ -4,7 +4,6 @@ import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.User;
 import dev.marvin.savings.appuser.UserRepository;
 import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.exception.GlobalException;
 import dev.marvin.savings.service.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CustomerServiceImpl implements CustomerService {
 
     private final UserRepository userRepository;
@@ -25,7 +23,8 @@ public class CustomerServiceImpl implements CustomerService {
     private final SmsService smsService;
 
     @Override
-    public void createCustomer(CustomerRegistrationRequest registrationRequest) {
+    @Transactional
+    public Customer createCustomer(CustomerRegistrationRequest registrationRequest) {
 
         if (userRepository.existsUserWithEmail(registrationRequest.email())) {
             throw new DuplicateResourceException("email already taken");
@@ -50,56 +49,31 @@ public class CustomerServiceImpl implements CustomerService {
                 .user(savedUser).
                 build();
 
-        customerRepository.saveCustomer(customer)
-                .orElseThrow(() -> new GlobalException("Failed to create customer"));
+        return customerRepository.save(customer);
     }
 
     @Override
-    public List<CustomerResponse> getAllCustomers() {
+    public List<Customer> getAllCustomers() {
         return null;
     }
 
     @Override
-    public CustomerResponse getCustomerByMemberNumber(String memberNumber) {
+    public Customer getCustomerByMemberNumber(String memberNumber) {
         return null;
     }
 
     @Override
-    public String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
+    @Transactional
+    public Customer updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
         return null;
     }
 
     @Override
-    public String deleteCustomer(String memberNumber) {
-        return null;
+    @Transactional
+    public void deleteCustomer(String memberNumber) {
     }
 }
 
-//    @Override
-//    public List<CustomerResponse> getAllCustomers() {
-////
-////        List<Customer> customerList = customerDao.getAllCustomers();
-////        List<CustomerResponse> customerDTOList = null;
-////
-////        if (!customerList.isEmpty()) {
-////            customerDTOList = new ArrayList<>();
-////            for (Customer customer : customerList) {
-////                CustomerResponse customerResponse = mapEntityToDTO(customer);
-////                customerDTOList.add(customerResponse);
-////            }
-////        }
-////        return customerDTOList;
-//        return null;
-//    }
-//
-//    @Override
-//    public CustomerResponse getCustomerByMemberNumber(String memberNumber) {
-////        Customer customer = customerDao.getCustomerByMemberNumber(memberNumber).orElseThrow(() -> new ResourceNotFoundException("customer does not exist"));
-////        return mapEntityToDTO(customer);
-//        return null;
-//    }
-//
-//
 //    @Override
 //    public String updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
 ////

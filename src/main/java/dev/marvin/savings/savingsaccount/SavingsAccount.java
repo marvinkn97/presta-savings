@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -31,8 +33,8 @@ public class SavingsAccount implements Serializable {
     @Column(name = "account_type", nullable = false)
     private SavingsAccountType savingsAccountType;
 
-    @Column(nullable = false)
-    private Double balance;
+    @Column(nullable = false, columnDefinition = "DECIMAL(15,2)")
+    private BigDecimal balance;
 
     @CreationTimestamp
     @Column(name = "created_date", nullable = false)
