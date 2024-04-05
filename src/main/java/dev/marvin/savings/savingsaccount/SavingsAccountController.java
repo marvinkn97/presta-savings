@@ -1,6 +1,5 @@
 package dev.marvin.savings.savingsaccount;
 
-import dev.marvin.savings.model.dto.SavingsAccountUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

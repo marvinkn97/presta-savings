@@ -1,7 +1,5 @@
 package dev.marvin.savings.savingsaccount;
 
-import dev.marvin.savings.model.dto.SavingsAccountUpdateRequest;
-
 import java.util.List;
 
 public interface SavingsAccountService {

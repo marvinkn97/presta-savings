@@ -1,4 +1,4 @@
-package dev.marvin.savings.model.dto;
+package dev.marvin.savings.notifications;
 
 import lombok.*;
 
