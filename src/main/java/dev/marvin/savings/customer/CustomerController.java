@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,9 +26,10 @@ public class CustomerController {
     @Operation(summary = "Create Customer", description = "Create customer is used to save customer in database",
             responses = {@ApiResponse(responseCode = "201", description = "201 Created")
             })
-    @PreAuthorize(value = "hasAuthority('CUSTOMER_CREATE')")
+//    @PreAuthorize(value = "hasAuthority('CUSTOMER_CREATE')")
     public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
         try {
+            System.out.println(registrationRequest);
             Customer customer = customerService.createCustomer(registrationRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(customer);
         } catch (Exception e) {

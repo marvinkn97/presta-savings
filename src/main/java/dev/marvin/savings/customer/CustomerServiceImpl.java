@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,8 +28,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public Customer createCustomer(CustomerRegistrationRequest registrationRequest) {
 
-        if (userRepository.existsUserWithUsername(registrationRequest.username())) {
-            throw new DuplicateResourceException("email already taken");
+        if (userRepository.existsByUserName(registrationRequest.username())) {
+            throw new DuplicateResourceException("username already taken");
         }
 
         UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
@@ -38,9 +39,11 @@ public class CustomerServiceImpl implements CustomerService {
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .isActive(false)
                 .isNotLocked(true)
-                .joinDate(System.currentTimeMillis())
+                .joinDate(LocalDateTime.now())
                 .role(Role.CUSTOMER)
                 .build();
+
+        System.out.println(user);
 
         User savedUser = userRepository.save(user);
 
@@ -50,6 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .user(savedUser).
                 build();
 
+        System.out.println(customer);
         return customerRepository.save(customer);
     }
 

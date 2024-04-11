@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
                 .userName(registrationRequest.username())
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .role(Role.valueOf(registrationRequest.role().toUpperCase()))
-                .joinDate(System.currentTimeMillis())
+                .joinDate(LocalDateTime.now())
                 .isActive(true)
                 .isNotLocked(true)
                 .build();

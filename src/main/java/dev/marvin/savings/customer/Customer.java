@@ -24,13 +24,13 @@ public class Customer implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "mobile_number", nullable = false)
+    @Column(name = "mobile_number")
     private String mobileNumber;
 
-    @Column(name = "government_id", nullable = false)
+    @Column(name = "government_id")
     private Integer governmentId;
 
-    @Column(name = "kra_pin", nullable = false)
+    @Column(name = "kra_pin")
     private String kraPin;
 
     @Column(name = "profile_image_id")

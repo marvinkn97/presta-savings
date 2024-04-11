@@ -13,8 +13,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT u FROM User u WHERE u.userName = :username")
     Optional<User> findByUsername(@Param(value = "username") String username);
 
-    @Query(value = "SELECT u FROM User u WHERE u.userName = :username")
-    boolean existsUserWithUsername(@Param(value = "username") String username);
+    boolean existsByUserName(String userName);
 
 //   void changePassword(String oldPassword, String newPassword);
 //   boolean userExists(String email);

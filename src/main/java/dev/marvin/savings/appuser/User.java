@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,28 +18,25 @@ import java.io.Serializable;
 @Table(name = "t_users")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(nullable = false, updatable = false)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(25)")
     private String userName;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "VARCHAR(65)")
     private String password;
 
     @Column(name = "join_date", nullable = false)
     @CreationTimestamp
-    private Long joinDate;
+    private LocalDateTime joinDate;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
     @Column(name = "is_not_locked", nullable = false)
     private boolean isNotLocked;
-
-    @Column(name = "last_seen_on", nullable = false)
-    private Long lastSeenOn;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
