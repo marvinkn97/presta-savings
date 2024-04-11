@@ -9,10 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    Optional<User> findByEmail(String email);
 
-    @Query(value = "SELECT u FROM User u WHERE u.email = :email")
-    boolean existsUserWithEmail(@Param(value = "email") String email);
+    @Query(value = "SELECT u FROM User u WHERE u.userName = :username")
+    Optional<User> findByUsername(@Param(value = "username") String username);
+
+    @Query(value = "SELECT u FROM User u WHERE u.userName = :username")
+    boolean existsUserWithUsername(@Param(value = "username") String username);
 
 //   void changePassword(String oldPassword, String newPassword);
 //   boolean userExists(String email);

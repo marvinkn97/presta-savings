@@ -22,10 +22,7 @@ public class User implements Serializable {
     private Integer id;
 
     @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false, unique = true)
-    private String email;
+    private String userName;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String password;

@@ -4,6 +4,7 @@ import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.User;
 import dev.marvin.savings.appuser.UserRepository;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +27,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public Customer createCustomer(CustomerRegistrationRequest registrationRequest) {
 
-        if (userRepository.existsUserWithEmail(registrationRequest.email())) {
+        if (userRepository.existsUserWithUsername(registrationRequest.username())) {
             throw new DuplicateResourceException("email already taken");
         }
 
         UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
         User user = User.builder()
-                .name(registrationRequest.name())
-                .email(registrationRequest.email())
+                .userName(registrationRequest.username())
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .isActive(false)
                 .isNotLocked(true)
@@ -46,6 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer customer = Customer.builder()
                 .memberNumber(customerUniqueIDSupplier.get())
+                .email(registrationRequest.email())
                 .user(savedUser).
                 build();
 
@@ -64,7 +65,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public Customer updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest) {
+    public Customer updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest) {
+        String name = updateRequest.name();
+
+        Customer customer = customerRepository.findByMemberNumber(memberNumber)
+                .orElseThrow(()-> new ResourceNotFoundException("customer with given member number [%s] not found".formatted(memberNumber)));
+
         return null;
     }
 
@@ -186,3 +192,5 @@ public class CustomerServiceImpl implements CustomerService {
 ////    }
 //}
 //
+
+

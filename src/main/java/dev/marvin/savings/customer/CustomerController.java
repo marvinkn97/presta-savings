@@ -28,9 +28,13 @@ public class CustomerController {
             responses = {@ApiResponse(responseCode = "201", description = "201 Created")
             })
     @PreAuthorize(value = "hasAuthority('CUSTOMER_CREATE')")
-    public ResponseEntity<Customer> createCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-        Customer customer = customerService.createCustomer(registrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+    public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
+        try {
+            Customer customer = customerService.createCustomer(registrationRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @GetMapping
@@ -46,8 +50,8 @@ public class CustomerController {
 
     @PutMapping(value = "/{memberNumber}/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam(value = "profileImage", required = false) MultipartFile multipartFile) {
-         customerService.updateCustomer(memberNumber, updateRequest);
-         return null;
+        customerService.updateCustomer(memberNumber, updateRequest);
+        return null;
     }
 
     @DeleteMapping("/{memberNumber}/delete/")

@@ -14,12 +14,15 @@ import java.io.Serializable;
 @Table(name = "t_customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
 public class Customer implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(updatable = false, nullable = false)
     private Integer id;
 
     @Column(name = "member_number", updatable = false, nullable = false)
     private String memberNumber;
+
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(name = "mobile_number", nullable = false)
     private String mobileNumber;

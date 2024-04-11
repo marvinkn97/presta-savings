@@ -8,7 +8,6 @@ public interface SavingsAccountService {
     List<SavingsAccount> getAccountsByMemberNumber(String memberNumber);
     List<SavingsAccount> getAccountsByAccountType(String accountType);
     SavingsAccount getAccountByAccountNumber(String accountNumber);
-    void updateAccount(String accountNumber, SavingsAccountUpdateRequest updateRequest);
     void deleteAccount(String accountNumber);
     Double getAllCustomerAccountsTotalBalance(String memberNumber);
     Double getAllCustomersAccountTotalBalance();

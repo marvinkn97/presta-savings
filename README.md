@@ -12,7 +12,7 @@
 
        +   Technologies Used
            +  Spring - Boot 3, JPA, Security with JWT
-           +  MySQL on Docker
+           +  Postgres on Docker
            +  TestContainers for DAO Layer unit testing
            +  Lombok
            +  REST API Documentation with SpringDoc OPENAPI

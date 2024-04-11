@@ -6,6 +6,6 @@ public interface CustomerService {
     Customer createCustomer(CustomerRegistrationRequest registrationRequest);
     List<Customer> getAllCustomers();
     Customer getCustomerByMemberNumber(String memberNumber);
-    Customer updateCustomer(String memberNumber, CustomerUpdateRequest customerUpdateRequest);
+    Customer updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest);
     void deleteCustomer(String memberNumber);
 }

@@ -55,10 +55,6 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     }
 
     @Override
-    public void updateAccount(String accountNumber, SavingsAccountUpdateRequest updateRequest) {
-    }
-
-    @Override
     public void deleteAccount(String accountNumber) {
     }
 

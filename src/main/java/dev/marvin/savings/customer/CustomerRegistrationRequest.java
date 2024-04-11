@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 public record CustomerRegistrationRequest(
         @NotBlank(message = "customer name is required")
         @Schema(name = "name", defaultValue = "Foo Bar")
-        String name,
+        String username,
 
         @Email(message = "customer email is invalid")
         @NotBlank(message = "email is required")

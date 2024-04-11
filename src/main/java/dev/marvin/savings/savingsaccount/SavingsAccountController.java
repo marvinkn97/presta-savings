@@ -39,12 +39,6 @@ public class SavingsAccountController {
         return savingsAccountService.getAccountByAccountNumber(accountNumber);
     }
 
-    @PutMapping("/{accountNo}/update")
-    public String updateAccount(@PathVariable("accountNo") String accountNumber, @RequestBody SavingsAccountUpdateRequest updateRequest) {
-        savingsAccountService.updateAccount(accountNumber, updateRequest);
-        return null;
-    }
-
     @DeleteMapping("/{accountNo}/delete")
     public String deleteAccount(@PathVariable("accountNo") String accountNumber) {
         savingsAccountService.deleteAccount(accountNumber);

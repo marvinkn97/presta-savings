@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Table(name = "t_savings_accounts")
 public class SavingsAccount implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(updatable = false, nullable = false)
     private Integer id;
 
