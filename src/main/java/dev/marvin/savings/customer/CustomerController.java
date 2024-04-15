@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,22 +20,18 @@ import java.util.List;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5, maxFileSize = 1024 * 1024 * 10)
 @RequiredArgsConstructor
 @Tag(name = "Customer Resource", description = "CRUD REST APIs for Customer Management")
+@Slf4j
 public class CustomerController {
     private final CustomerService customerService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create Customer", description = "Create customer is used to save customer in database",
             responses = {@ApiResponse(responseCode = "201", description = "201 Created")
             })
-//    @PreAuthorize(value = "hasAuthority('CUSTOMER_CREATE')")
-    public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-        try {
-            System.out.println(registrationRequest);
-            Customer customer = customerService.createCustomer(registrationRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(customer);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+    public ResponseEntity<String> createCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
+            log.info("Incoming request {}", registrationRequest);
+            customerService.createCustomer(registrationRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Customer registered successfully");
     }
 
     @GetMapping

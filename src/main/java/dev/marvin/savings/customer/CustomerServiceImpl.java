@@ -8,6 +8,7 @@ import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
     private final UserRepository userRepository;
@@ -26,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public Customer createCustomer(CustomerRegistrationRequest registrationRequest) {
+    public void createCustomer(CustomerRegistrationRequest registrationRequest) {
 
         if (userRepository.existsByUserName(registrationRequest.username())) {
             throw new DuplicateResourceException("username already taken");
@@ -37,13 +39,13 @@ public class CustomerServiceImpl implements CustomerService {
         User user = User.builder()
                 .userName(registrationRequest.username())
                 .password(passwordEncoder.encode(registrationRequest.password()))
-                .isActive(false)
+                .isActive(true)
                 .isNotLocked(true)
                 .joinDate(LocalDateTime.now())
                 .role(Role.CUSTOMER)
                 .build();
 
-        System.out.println(user);
+        log.info("Saving User: {}", user);
 
         User savedUser = userRepository.save(user);
 
@@ -53,8 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
                 .user(savedUser).
                 build();
 
-        System.out.println(customer);
-        return customerRepository.save(customer);
+        log.info("Saving Customer: {}", customer);
+        customerRepository.save(customer);
     }
 
     @Override
