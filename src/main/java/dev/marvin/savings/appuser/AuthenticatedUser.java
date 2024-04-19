@@ -1,29 +1,28 @@
 package dev.marvin.savings.appuser;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@RequiredArgsConstructor
-public class UserPrincipal implements UserDetails {
-
-    private final User user;
+@AllArgsConstructor
+public class AuthenticatedUser implements UserDetails {
+    private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.user.getRole().grantedAuthorities();
+        return user.getRole().grantedAuthorities();
     }
 
     @Override
     public String getPassword() {
-        return this.user.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.user.getUserName();
+        return user.getUserName();
     }
 
     @Override
@@ -33,7 +32,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.user.isNotLocked();
+        return user.isNotLocked();
     }
 
     @Override
@@ -43,6 +42,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.user.isActive();
+        return user.isActive();
     }
 }

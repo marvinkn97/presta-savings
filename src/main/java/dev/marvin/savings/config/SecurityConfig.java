@@ -1,8 +1,11 @@
 package dev.marvin.savings.config;
 
+import dev.marvin.savings.jwt.JwtTokenGeneratorFilter;
+import dev.marvin.savings.jwt.JwtTokenValidatorFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collections;
@@ -40,16 +44,20 @@ public class SecurityConfig {
                     corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                     corsConfiguration.setAllowCredentials(true);
                     corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+                    corsConfiguration.setExposedHeaders(List.of(HttpHeaders.AUTHORIZATION));
                     corsConfiguration.setMaxAge(3600L);
                     return corsConfiguration;
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize
+                                .requestMatchers("api/v1/auth/**").permitAll()
                                 .requestMatchers("api/v1/customers/register").permitAll()
                                 .requestMatchers("api/v1/customers", HttpMethod.GET.name()).hasRole("CUSTOMER")
-//                                .requestMatchers("api/v1/users").hasRole("ADMIN")
+                                .requestMatchers("api/v1/users/**").hasRole("ADMIN")
                                 .anyRequest().permitAll())
+                .addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

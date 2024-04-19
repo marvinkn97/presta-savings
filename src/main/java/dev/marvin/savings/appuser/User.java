@@ -38,7 +38,11 @@ public class User implements Serializable {
     @Column(name = "is_not_locked", nullable = false)
     private boolean isNotLocked;
 
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "role_id_fk"))
+//    private Role role;
+
+    @Column(nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 }
