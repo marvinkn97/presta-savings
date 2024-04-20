@@ -8,21 +8,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
+    @SuppressWarnings("NullableProblems")
     @Override
     protected void doFilterInternal(
-            HttpServletRequest request,
+             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
+             FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
@@ -30,7 +32,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
 
             Map<String, Object> claims = new HashMap<>();
             claims.put("username", authentication.getName());
-            claims.put("authorities", commaSeparatedStringFromAuthorityList(authentication.getAuthorities()));
+            claims.put("authorities", authentication.getAuthorities().toString());
 
             String jwt = Jwts.builder()
                     .setIssuer("PRESTA SAVINGS")
@@ -51,15 +53,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getServletPath().equals("/auth");
+        return !request.getServletPath().equals("api/v1/auth");
     }
 
-    private String commaSeparatedStringFromAuthorityList(Collection<? extends GrantedAuthority> grantedAuthorities) {
-        Set<String> authorities = new HashSet<>();
-
-        for (var authority : grantedAuthorities) {
-            authorities.add(authority.getAuthority());
-        }
-        return String.join("", authorities);
-    }
 }

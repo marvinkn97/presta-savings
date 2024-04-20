@@ -26,6 +26,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
         String keyValue = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (keyValue == null || !keyValue.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -57,4 +58,11 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        return !request.getServletPath().equals("api/v1/auth");
+//    }
+
+
 }

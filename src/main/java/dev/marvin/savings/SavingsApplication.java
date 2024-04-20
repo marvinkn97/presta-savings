@@ -10,10 +10,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "dev.marvin.savings")
 @OpenAPIDefinition(info = @Info(title = "Presta Savings App Documentation",
         description = "Spring Boot  REST API Documentation", version = "v1.0",
         contact = @Contact(name = "Marvin", email = "marvin.nyingi97@gmail.com")))
@@ -26,11 +27,11 @@ public class SavingsApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserRepository userRepository){
+    public CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder){
         return args -> {
             User admin = User.builder()
                     .userName("Admin")
-                    .password("admin@123")
+                    .password(passwordEncoder.encode("admin@123"))
                     .role(Role.ADMIN)
                     .isActive(true)
                     .isNotLocked(true)
