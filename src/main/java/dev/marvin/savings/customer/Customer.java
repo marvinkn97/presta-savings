@@ -1,6 +1,6 @@
 package dev.marvin.savings.customer;
 
-import dev.marvin.savings.appuser.User;
+import dev.marvin.savings.appuser.AppUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +40,6 @@ public class Customer implements Serializable {
     private String profileImageId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "user_id_fk"))
-    private User user;
+    @JoinColumn(name = "app_user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "app_user_id_fk"))
+    private AppUser appUser;
 }

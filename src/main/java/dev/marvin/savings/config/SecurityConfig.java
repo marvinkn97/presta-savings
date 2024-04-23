@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -51,9 +50,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("api/v1/auth/**").permitAll()
-                                .requestMatchers("api/v1/customers/register").permitAll()
-                                .requestMatchers("api/v1/customers", HttpMethod.GET.name()).hasRole("CUSTOMER")
-                                .requestMatchers("api/v1/users/**").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .addFilterBefore(new JwtTokenValidatorFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())

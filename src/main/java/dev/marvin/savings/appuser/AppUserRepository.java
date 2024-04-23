@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
 
-    @Query(value = "SELECT u FROM User u WHERE u.userName = :username")
-    Optional<User> findByUsername(@Param(value = "username") String username);
+    @Query(value = "SELECT u FROM AppUser u WHERE u.userName = :username")
+    Optional<AppUser> findByUsername(@Param(value = "username") String username);
     boolean existsByUserName(String userName);
 
 //   void changePassword(String oldPassword, String newPassword);

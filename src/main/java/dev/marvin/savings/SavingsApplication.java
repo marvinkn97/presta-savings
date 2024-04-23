@@ -1,8 +1,8 @@
 package dev.marvin.savings;
 
+import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.Role;
-import dev.marvin.savings.appuser.User;
-import dev.marvin.savings.appuser.UserRepository;
+import dev.marvin.savings.appuser.AppUserRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -27,9 +27,9 @@ public class SavingsApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder){
         return args -> {
-            User admin = User.builder()
+            AppUser admin = AppUser.builder()
                     .userName("Admin")
                     .password(passwordEncoder.encode("admin@123"))
                     .role(Role.ADMIN)
@@ -38,7 +38,7 @@ public class SavingsApplication {
                     .joinDate(LocalDateTime.now())
                     .build();
 
-            userRepository.save(admin);
+            appUserRepository.save(admin);
         };
     }
 

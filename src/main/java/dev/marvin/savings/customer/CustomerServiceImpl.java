@@ -1,8 +1,8 @@
 package dev.marvin.savings.customer;
 
 import dev.marvin.savings.appuser.Role;
-import dev.marvin.savings.appuser.User;
-import dev.marvin.savings.appuser.UserRepository;
+import dev.marvin.savings.appuser.AppUser;
+import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.SmsService;
@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
-    private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final SmsService smsService;
@@ -30,13 +30,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void createCustomer(CustomerRegistrationRequest registrationRequest) {
 
-        if (userRepository.existsByUserName(registrationRequest.username())) {
+        if (appUserRepository.existsByUserName(registrationRequest.username())) {
             throw new DuplicateResourceException("username already taken");
         }
 
         UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
 
-        User user = User.builder()
+        AppUser appUser = AppUser.builder()
                 .userName(registrationRequest.username())
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .isActive(true)
@@ -45,14 +45,14 @@ public class CustomerServiceImpl implements CustomerService {
                 .role(Role.CUSTOMER)
                 .build();
 
-        log.info("Saving User: {}", user);
+        log.info("Saving User: {}", appUser);
 
-        User savedUser = userRepository.save(user);
+        AppUser savedAppUser = appUserRepository.save(appUser);
 
         Customer customer = Customer.builder()
                 .memberNumber(customerUniqueIDSupplier.get())
                 .email(registrationRequest.email())
-                .user(savedUser).
+                .appUser(savedAppUser).
                 build();
 
         log.info("Saving Customer: {}", customer);
