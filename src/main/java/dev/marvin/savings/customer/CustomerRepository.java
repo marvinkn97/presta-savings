@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query(value = "SELECT c FROM Customer c WHERE c.memberNumber = :memNo")
     Optional<Customer> findByMemberNumber(@Param(value = "memNo") String memberNumber);
+
+    boolean existsByEmail(String email);
 }

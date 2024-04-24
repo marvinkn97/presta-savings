@@ -15,15 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "api/v1/auth")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final RegistrationService registrationService;
 
-    @PostMapping
-    public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
-        System.out.println(authenticationRequest);
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.username(), authenticationRequest.password()));
+    @PostMapping("/register")
+    public String registerCustomer(@RequestBody RegistrationRequest registrationRequest){
+        System.out.println(registrationRequest);
+
+       return registrationService.registerCustomer(registrationRequest);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateToken(authentication);
         System.out.println(token);

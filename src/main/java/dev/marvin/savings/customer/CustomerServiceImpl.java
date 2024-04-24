@@ -1,19 +1,13 @@
 package dev.marvin.savings.customer;
 
-import dev.marvin.savings.appuser.Role;
-import dev.marvin.savings.appuser.AppUser;
-import dev.marvin.savings.appuser.AppUserRepository;
-import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,47 +15,34 @@ import java.util.List;
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
-    private final AppUserRepository appUserRepository;
     private final CustomerRepository customerRepository;
-    private final PasswordEncoder passwordEncoder;
     private final SmsService smsService;
 
     @Override
-    @Transactional
-    public void createCustomer(CustomerRegistrationRequest registrationRequest) {
+    public void saveCustomer(Customer customer) {
+        try {
+            //generate member number
+            UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
+            customer.setMemberNumber(customerUniqueIDSupplier.get());
+            customerRepository.save(customer);
 
-        if (appUserRepository.existsByUserName(registrationRequest.username())) {
-            throw new DuplicateResourceException("username already taken");
+            log.info("Customer saved: {}", customer);
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new RuntimeException("Error saving customer");
         }
 
-        UniqueIDSupplier<Customer> customerUniqueIDSupplier = new UniqueIDSupplier<>(Customer.class);
+    }
 
-        AppUser appUser = AppUser.builder()
-                .userName(registrationRequest.username())
-                .password(passwordEncoder.encode(registrationRequest.password()))
-                .isActive(true)
-                .isNotLocked(true)
-                .joinDate(LocalDateTime.now())
-                .role(Role.CUSTOMER)
-                .build();
-
-        log.info("Saving User: {}", appUser);
-
-        AppUser savedAppUser = appUserRepository.save(appUser);
-
-        Customer customer = Customer.builder()
-                .memberNumber(customerUniqueIDSupplier.get())
-                .email(registrationRequest.email())
-                .appUser(savedAppUser).
-                build();
-
-        log.info("Saving Customer: {}", customer);
-        customerRepository.save(customer);
+    @Override
+    public boolean existCustomerWithEmail(String email) {
+        return customerRepository.existsByEmail(email);
     }
 
     @Override
     public List<Customer> getAllCustomers() {
-       return customerRepository.findAll();
+        return customerRepository.findAll();
     }
 
     @Override
@@ -75,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
         String name = updateRequest.name();
 
         Customer customer = customerRepository.findByMemberNumber(memberNumber)
-                .orElseThrow(()-> new ResourceNotFoundException("customer with given member number [%s] not found".formatted(memberNumber)));
+                .orElseThrow(() -> new ResourceNotFoundException("customer with given member number [%s] not found".formatted(memberNumber)));
 
         return null;
     }

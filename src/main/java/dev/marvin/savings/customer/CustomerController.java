@@ -1,7 +1,5 @@
 package dev.marvin.savings.customer;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
@@ -19,20 +17,10 @@ import java.util.List;
 @RequestMapping(value = "api/v1/customers")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5, maxFileSize = 1024 * 1024 * 10)
 @RequiredArgsConstructor
-@Tag(name = "Customer Resource", description = "CRUD REST APIs for Customer Management")
+@Tag(name = "Customer Resource", description = "Customer Management")
 @Slf4j
 public class CustomerController {
     private final CustomerService customerService;
-
-    @PostMapping(value = "/register",consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Create Customer", description = "Create customer is used to save customer in database",
-            responses = {@ApiResponse(responseCode = "201", description = "201 Created")
-            })
-    public ResponseEntity<String> createCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-            log.info("Incoming request {}", registrationRequest);
-            customerService.createCustomer(registrationRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Customer registered successfully");
-    }
 
     @GetMapping
     public ResponseEntity<List<Customer>> getAllCustomers() {

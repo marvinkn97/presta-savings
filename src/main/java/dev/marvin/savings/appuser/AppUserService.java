@@ -1,6 +1,7 @@
 package dev.marvin.savings.appuser;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
 
@@ -19,7 +21,17 @@ public class AppUserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
 
+    public AppUser saveAppUser(AppUser appUser){
+        var savedUser = appUserRepository.save(appUser);
+        log.info("AppUser saved {}", savedUser);
+        return savedUser;
+    }
+
     public List<AppUser> getAllAppUsers(){
        return appUserRepository.findAll();
+    }
+
+    public boolean existsByUserName(String username) {
+        return appUserRepository.existsByUserName(username);
     }
 }
