@@ -1,6 +1,6 @@
 package dev.marvin.savings.auth.confimationtoken;
 
-import dev.marvin.savings.appuser.AppUser;
+import dev.marvin.savings.customer.Customer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +32,6 @@ public class ConfirmationToken {
     private LocalDateTime confirmedAt;
 
     @ManyToOne
-    @JoinColumn(name = "app_user_id")
-    private AppUser appUser;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }

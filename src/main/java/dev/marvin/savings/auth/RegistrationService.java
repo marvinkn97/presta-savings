@@ -3,6 +3,7 @@ package dev.marvin.savings.auth;
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserService;
 import dev.marvin.savings.appuser.Role;
+import dev.marvin.savings.auth.confimationtoken.ConfirmationTokenService;
 import dev.marvin.savings.customer.Customer;
 import dev.marvin.savings.customer.CustomerService;
 import dev.marvin.savings.exception.DuplicateResourceException;
@@ -19,6 +20,7 @@ public class RegistrationService {
     private final CustomerService customerService;
     private final AppUserService appUserService;
     private final PasswordEncoder passwordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
     public String registerCustomer(RegistrationRequest registrationRequest){
 
@@ -48,10 +50,11 @@ public class RegistrationService {
 
         customerService.saveCustomer(customer);
 
-        //return token
+        String token = confirmationTokenService.generateToken(customer);
+
         //send email
 
-        return "token";
+        return token;
     }
 
 }

@@ -30,8 +30,8 @@ public class SavingsApplication {
     public CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder){
         return args -> {
             AppUser admin = AppUser.builder()
-                    .userName("Admin")
-                    .password(passwordEncoder.encode("admin@123"))
+                    .userName("admin")
+                    .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
                     .isActive(true)
                     .isNotLocked(true)
