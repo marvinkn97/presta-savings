@@ -1,4 +1,4 @@
-package dev.marvin.savings.auth.confimationtoken;
+package dev.marvin.savings.auth.confirmationtoken;
 
 import dev.marvin.savings.customer.Customer;
 import lombok.RequiredArgsConstructor;
