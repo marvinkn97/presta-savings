@@ -30,4 +30,12 @@ public class ConfirmationTokenService {
         }
         return "token not generated";
     }
+
+    public boolean validateToken(String token){
+        //check is token exists
+        ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token)
+                .orElseThrow(()-> new IllegalArgumentException("invalid token"));
+
+        return true;
+    }
 }

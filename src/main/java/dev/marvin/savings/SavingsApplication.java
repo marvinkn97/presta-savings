@@ -33,7 +33,7 @@ public class SavingsApplication {
                     .userName("admin")
                     .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
-                    .isActive(true)
+                    .isEnabled(true)
                     .isNotLocked(true)
                     .joinDate(LocalDateTime.now())
                     .build();

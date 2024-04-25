@@ -6,9 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 
 @Schema(name = "Registration Request")
 public record RegistrationRequest(
-        @NotBlank(message = "name is required")
-        @Schema(name = "name", defaultValue = "foobar")
+        @NotBlank(message = "username is required")
+        @Schema(name = "username", defaultValue = "foobar")
         String username,
+
+        @NotBlank(message = "name is required")
+        @Schema(name = "name", defaultValue = "Foo Bar")
+        String fullName,
 
         @Email(message = "email is invalid")
         @NotBlank(message = "email is required")

@@ -37,8 +37,8 @@ public class AppUser implements Serializable, UserDetails {
     @CreationTimestamp
     private LocalDateTime joinDate;
 
-    @Column(name = "active", nullable = false)
-    private boolean isActive;
+    @Column(name = "enabled", nullable = false)
+    private boolean isEnabled;
 
     @Column(name = "locked", nullable = false)
     private boolean isNotLocked;
@@ -75,6 +75,6 @@ public class AppUser implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return isEnabled;
     }
 }

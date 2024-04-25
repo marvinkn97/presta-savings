@@ -14,18 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final AuthService authService;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final RegistrationService registrationService;
 
     @PostMapping("/register")
     public String registerCustomer(@RequestBody RegistrationRequest registrationRequest){
-       return registrationService.registerCustomer(registrationRequest);
+       return authService.registerCustomer(registrationRequest);
     }
 
     @RequestMapping(value = "/register/confirm", method = {RequestMethod.GET, RequestMethod.POST})
-    public String confirmEmail(@RequestParam(name = "token") String token){
-        return "confirmed";
+    public String confirmEmailToken(@RequestParam(name = "token") String token){
+        System.out.println(token);
+        return authService.confirmEmailToken(token);
     }
 
     @PostMapping("/login")

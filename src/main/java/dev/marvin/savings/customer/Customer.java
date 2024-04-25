@@ -21,6 +21,9 @@ public class Customer implements Serializable {
     @Column(updatable = false, nullable = false)
     private Integer id;
 
+    @Column(name = "full_name", nullable = false)
+    private String name;
+
     @Column(name = "member_number", updatable = false, nullable = false)
     private String memberNumber;
 

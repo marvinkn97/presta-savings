@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class RegistrationService {
-
+public class AuthService {
     private final CustomerService customerService;
     private final AppUserService appUserService;
     private final PasswordEncoder passwordEncoder;
@@ -46,6 +45,7 @@ public class RegistrationService {
         var savedAppUser = appUserService.saveAppUser(appUser);
 
         Customer customer = Customer.builder()
+                .name(registrationRequest.fullName())
                 .email(registrationRequest.email())
                 .appUser(savedAppUser)
                 .build();
@@ -82,9 +82,17 @@ public class RegistrationService {
                                 </body>
                                 </html>
                 
-                """.formatted(registrationRequest.username(), link);
+                """.formatted(registrationRequest.fullName(), link);
         emailService.sendEmail(registrationRequest.email(), emailTemplate);
         return token;
     }
 
+    public String confirmEmailToken(String token){
+         boolean isValidToken = confirmationTokenService.validateToken(token);
+
+         if(isValidToken){
+
+         }
+        return null;
+    }
 }
