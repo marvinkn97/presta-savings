@@ -1,4 +1,4 @@
-package dev.marvin.savings.customer;
+package dev.marvin.savings.appuser.customer;
 
 import java.util.List;
 

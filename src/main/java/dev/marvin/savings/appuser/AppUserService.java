@@ -21,17 +21,21 @@ public class AppUserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
 
-    public AppUser saveAppUser(AppUser appUser){
+    public AppUser saveAppUser(AppUser appUser) {
         var savedUser = appUserRepository.save(appUser);
         log.info("AppUser saved {}", savedUser);
         return savedUser;
     }
 
-    public List<AppUser> getAllAppUsers(){
-       return appUserRepository.findAll();
+    public List<AppUser> getAllAppUsers() {
+        return appUserRepository.findAll();
     }
 
     public boolean existsByUserName(String username) {
-        return appUserRepository.existsByUserName(username);
+        return appUserRepository.existsByUsername(username);
+    }
+
+    public void setAppUserToEnabled(Boolean enabled, String username) {
+        appUserRepository.setAppUserToEnabled(enabled, username);
     }
 }

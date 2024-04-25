@@ -3,14 +3,15 @@ package dev.marvin.savings.auth;
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserService;
 import dev.marvin.savings.appuser.Role;
+import dev.marvin.savings.appuser.customer.Customer;
+import dev.marvin.savings.appuser.customer.CustomerService;
 import dev.marvin.savings.auth.confirmationtoken.ConfirmationTokenService;
-import dev.marvin.savings.customer.Customer;
-import dev.marvin.savings.customer.CustomerService;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +32,7 @@ public class AuthService {
         }
 
         AppUser appUser = AppUser.builder()
-                .userName(registrationRequest.username())
+                .username(registrationRequest.username())
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .role(Role.CUSTOMER)
                 .joinDate(LocalDateTime.now())
@@ -81,18 +82,32 @@ public class AuthService {
                                     </div>
                                 </body>
                                 </html>
-                
+                                
                 """.formatted(registrationRequest.fullName(), link);
         emailService.sendEmail(registrationRequest.email(), emailTemplate);
         return token;
     }
 
-    public String confirmEmailToken(String token){
-         boolean isValidToken = confirmationTokenService.validateToken(token);
+    @Transactional
+    public String confirmEmailToken(String token) {
+        try {
+            boolean isValidToken = confirmationTokenService.validateToken(token);
+            if (!isValidToken) {
+                return "token not valid";
+            }
 
-         if(isValidToken){
+            var confirmationToken = confirmationTokenService.getToken(token);
+            var appUser = confirmationToken.getCustomer().getAppUser();
 
-         }
-        return null;
+            confirmationToken.setConfirmedAt(LocalDateTime.now());
+            confirmationTokenService.saveToken(confirmationToken);
+
+            appUserService.setAppUserToEnabled(Boolean.TRUE, appUser.getUsername());
+            appUserService.saveAppUser(appUser);
+
+            return "Email Confirmed Successfully";
+        } catch (Exception e) {
+            return "Error confirming email";
+        }
     }
 }

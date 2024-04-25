@@ -17,6 +17,7 @@
            +  Lombok
            +  REST API Documentation with SpringDoc OPENAPI
            +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
+           +  MailDev [https://github.com/maildev/maildev]
            
   +    TODO
        +  Implement Testing

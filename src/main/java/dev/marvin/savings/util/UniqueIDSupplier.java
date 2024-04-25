@@ -1,6 +1,6 @@
 package dev.marvin.savings.util;
 
-import dev.marvin.savings.customer.Customer;
+import dev.marvin.savings.appuser.customer.Customer;
 import dev.marvin.savings.savingsaccount.SavingsAccount;
 import dev.marvin.savings.transaction.Transaction;
 import lombok.RequiredArgsConstructor;

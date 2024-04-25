@@ -1,6 +1,6 @@
 package dev.marvin.savings.auth.confirmationtoken;
 
-import dev.marvin.savings.customer.Customer;
+import dev.marvin.savings.appuser.customer.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,28 +14,49 @@ public class ConfirmationTokenService {
 
     public String generateToken(Customer customer) {
 
-        if(customer != null) {
-
-            String token = UUID.randomUUID().toString();
-
-            ConfirmationToken confirmationToken = ConfirmationToken
-                    .builder()
-                    .token(token)
-                    .issuedAt(LocalDateTime.now())
-                    .expiresAt(LocalDateTime.now().plusMinutes(15))
-                    .customer(customer)
-                    .build();
-            confirmationTokenRepository.save(confirmationToken);
-            return token;
+        if (customer == null) {
+            throw new IllegalArgumentException("customer cannot be null");
         }
-        return "token not generated";
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = ConfirmationToken
+                .builder()
+                .token(token)
+                .issuedAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(15))
+                .customer(customer)
+                .build();
+        confirmationTokenRepository.save(confirmationToken);
+        return token;
     }
 
-    public boolean validateToken(String token){
+    public ConfirmationToken getToken(String token) {
+        return confirmationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("token does not exist"));
+    }
+
+    public boolean validateToken(String token) {
+
         //check is token exists
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token)
-                .orElseThrow(()-> new IllegalArgumentException("invalid token"));
+                .orElseThrow(() -> new RuntimeException("invalid token"));
 
-        return true;
+
+        //check if token is already confirmed
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new RuntimeException("token already confirmed");
+        }
+
+        //check if token is expired
+        if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("token already expired");
+        }
+
+        return true; //token is valid
+    }
+
+    public void saveToken(ConfirmationToken confirmationToken) {
+        confirmationTokenRepository.save(confirmationToken);
     }
 }

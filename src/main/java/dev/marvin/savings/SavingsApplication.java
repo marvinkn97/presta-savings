@@ -1,8 +1,8 @@
 package dev.marvin.savings;
 
 import dev.marvin.savings.appuser.AppUser;
-import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.AppUserRepository;
+import dev.marvin.savings.appuser.Role;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -30,7 +30,7 @@ public class SavingsApplication {
     public CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder){
         return args -> {
             AppUser admin = AppUser.builder()
-                    .userName("admin")
+                    .username("admin")
                     .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
                     .isEnabled(true)

@@ -20,7 +20,7 @@ import java.util.Collections;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_users")
+@Table(name = "app_users")
 public class AppUser implements Serializable, UserDetails {
     @Id
     @GeneratedValue
@@ -28,7 +28,7 @@ public class AppUser implements Serializable, UserDetails {
     private Integer id;
 
     @Column(nullable = false)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
@@ -55,7 +55,7 @@ public class AppUser implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override

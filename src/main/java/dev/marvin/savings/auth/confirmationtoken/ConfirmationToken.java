@@ -1,6 +1,6 @@
 package dev.marvin.savings.auth.confirmationtoken;
 
-import dev.marvin.savings.customer.Customer;
+import dev.marvin.savings.appuser.customer.Customer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_tokens")
+@Table(name = "confirmation_tokens")
 public class ConfirmationToken {
     @Id
     @GeneratedValue

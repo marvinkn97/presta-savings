@@ -1,7 +1,7 @@
 package dev.marvin.savings.savingsaccount;
 
-import dev.marvin.savings.customer.Customer;
-import dev.marvin.savings.customer.CustomerRepository;
+import dev.marvin.savings.appuser.customer.Customer;
+import dev.marvin.savings.appuser.customer.CustomerRepository;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;

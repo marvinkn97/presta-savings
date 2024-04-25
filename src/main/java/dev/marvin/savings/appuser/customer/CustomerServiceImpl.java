@@ -1,4 +1,4 @@
-package dev.marvin.savings.customer;
+package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.SmsService;

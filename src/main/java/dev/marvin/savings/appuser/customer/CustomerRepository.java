@@ -1,4 +1,4 @@
-package dev.marvin.savings.customer;
+package dev.marvin.savings.appuser.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

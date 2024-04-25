@@ -1,4 +1,4 @@
-package dev.marvin.savings.customer;
+package dev.marvin.savings.appuser.customer;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.annotation.MultipartConfig;
