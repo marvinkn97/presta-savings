@@ -11,7 +11,6 @@ import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -88,26 +87,7 @@ public class AuthService {
         return token;
     }
 
-    @Transactional
     public String confirmEmailToken(String token) {
-        try {
-            boolean isValidToken = confirmationTokenService.validateToken(token);
-            if (!isValidToken) {
-                return "token not valid";
-            }
-
-            var confirmationToken = confirmationTokenService.getToken(token);
-            var appUser = confirmationToken.getCustomer().getAppUser();
-
-            confirmationToken.setConfirmedAt(LocalDateTime.now());
-            confirmationTokenService.saveToken(confirmationToken);
-
-            appUserService.setAppUserToEnabled(Boolean.TRUE, appUser.getUsername());
-            appUserService.saveAppUser(appUser);
-
-            return "Email Confirmed Successfully";
-        } catch (Exception e) {
-            return "Error confirming email";
-        }
+        return confirmationTokenService.validateAndConfirmToken(token);
     }
 }

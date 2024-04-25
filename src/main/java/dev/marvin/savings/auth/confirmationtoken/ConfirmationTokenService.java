@@ -1,8 +1,10 @@
 package dev.marvin.savings.auth.confirmationtoken;
 
+import dev.marvin.savings.appuser.AppUserService;
 import dev.marvin.savings.appuser.customer.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,6 +13,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final AppUserService appUserService;
 
     public String generateToken(Customer customer) {
 
@@ -36,7 +39,8 @@ public class ConfirmationTokenService {
                 .orElseThrow(() -> new RuntimeException("token does not exist"));
     }
 
-    public boolean validateToken(String token) {
+    @Transactional
+    public String validateAndConfirmToken(String token) {
 
         //check is token exists
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token)
@@ -53,10 +57,20 @@ public class ConfirmationTokenService {
             throw new RuntimeException("token already expired");
         }
 
-        return true; //token is valid
+        try {
+            var appUser = confirmationToken.getCustomer().getAppUser();
+
+            confirmationToken.setConfirmedAt(LocalDateTime.now());
+            confirmationTokenRepository.save(confirmationToken);
+
+            appUserService.setAppUserToEnabled(Boolean.TRUE, appUser.getUsername());
+            appUserService.saveAppUser(appUser);
+            return "Email Confirmed Successfully";
+
+        }catch (Exception e){
+            return "Error confirming email";
+        }
+
     }
 
-    public void saveToken(ConfirmationToken confirmationToken) {
-        confirmationTokenRepository.save(confirmationToken);
-    }
 }
