@@ -1,7 +1,7 @@
 package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.exception.ResourceNotFoundException;
-import dev.marvin.savings.notifications.SmsService;
+import dev.marvin.savings.notifications.sms.SmsService;
 import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

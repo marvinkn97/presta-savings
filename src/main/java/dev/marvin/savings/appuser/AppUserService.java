@@ -35,7 +35,4 @@ public class AppUserService implements UserDetailsService {
         return appUserRepository.existsByUsername(username);
     }
 
-    public void setAppUserToEnabled(Boolean enabled, String username) {
-        appUserRepository.setAppUserToEnabled(enabled, username);
-    }
 }

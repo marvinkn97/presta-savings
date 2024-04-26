@@ -1,4 +1,4 @@
-package dev.marvin.savings.notifications;
+package dev.marvin.savings.notifications.sms;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class TiaraConnectSmsServiceImpl extends SmsService {
+public class TiaraConnectSmsService implements SmsService {
     private final RestTemplate restTemplate;
 
     @Value(value = "${sms.gateway.endpoint}")
@@ -26,7 +26,7 @@ public class TiaraConnectSmsServiceImpl extends SmsService {
 
 
     @Override
-    public String sendNotification(NotificationRequest notificationRequest) {
+    public String sendSMS(String from, String to, String message) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -36,9 +36,9 @@ public class TiaraConnectSmsServiceImpl extends SmsService {
 
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("from", notificationRequest.from());
-        requestBody.put("to", notificationRequest.to());
-        requestBody.put("message", notificationRequest.message());
+        requestBody.put("from", from);
+        requestBody.put("to", to);
+        requestBody.put("message", message);
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, httpHeaders);
 

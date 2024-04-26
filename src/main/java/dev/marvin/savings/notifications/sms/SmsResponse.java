@@ -1,4 +1,4 @@
-package dev.marvin.savings.notifications;
+package dev.marvin.savings.notifications.sms;
 
 import lombok.*;
 

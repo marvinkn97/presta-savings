@@ -2,6 +2,7 @@ package dev.marvin.savings.auth.confirmationtoken;
 
 import dev.marvin.savings.appuser.AppUserService;
 import dev.marvin.savings.appuser.customer.Customer;
+import dev.marvin.savings.appuser.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final AppUserService appUserService;
+    private final CustomerService customerService;
 
     public String generateToken(Customer customer) {
 
@@ -58,12 +60,16 @@ public class ConfirmationTokenService {
         }
 
         try {
-            var appUser = confirmationToken.getCustomer().getAppUser();
+            var customer = confirmationToken.getCustomer();
+            var appUser = customer.getAppUser();
 
             confirmationToken.setConfirmedAt(LocalDateTime.now());
             confirmationTokenRepository.save(confirmationToken);
 
-            appUserService.setAppUserToEnabled(Boolean.TRUE, appUser.getUsername());
+            customer.setEmailConfirmed(true);
+            customerService.saveCustomer(customer);
+
+            appUser.setEnabled(true);
             appUserService.saveAppUser(appUser);
             return "Email Confirmed Successfully";
 

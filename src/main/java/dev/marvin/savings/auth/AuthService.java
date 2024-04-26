@@ -34,6 +34,7 @@ public class AuthService {
                 .username(registrationRequest.username())
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .role(Role.CUSTOMER)
+                .isNotLocked(true)
                 .joinDate(LocalDateTime.now())
                 .build();
 

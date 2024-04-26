@@ -37,10 +37,10 @@ public class AppUser implements Serializable, UserDetails {
     @CreationTimestamp
     private LocalDateTime joinDate;
 
-    @Column(name = "enabled", nullable = false)
+    @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
 
-    @Column(name = "locked", nullable = false)
+    @Column(name = "is_not_locked", nullable = false)
     private boolean isNotLocked;
 
 

@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
+@Table(name = "customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
 public class Customer implements Serializable {
     @Id
     @GeneratedValue
@@ -30,8 +30,14 @@ public class Customer implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "email_verified")
+    private boolean isEmailConfirmed;
+
     @Column(name = "mobile_number")
     private String mobileNumber;
+
+    @Column(name = "mobile_verified")
+    private boolean isMobileConfirmed;
 
     @Column(name = "government_id")
     private Integer governmentId;
