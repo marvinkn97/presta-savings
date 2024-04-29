@@ -1,6 +1,5 @@
 package dev.marvin.savings.appuser;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.CacheControl;
@@ -21,8 +20,6 @@ public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping
-//    @PreAuthorize(value = "hasRole('ADMIN')")
-    @Operation(method = "GET", description = "Get All App Users")
     public ResponseEntity<List<AppUser>> getAllAppUsers() {
         List<AppUser> users = appUserService.getAllAppUsers();
         return ResponseEntity.status(HttpStatus.OK)
