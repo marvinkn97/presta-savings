@@ -77,16 +77,23 @@ public class JwtService {
             var tokenIssuer = claims.getIssuer();
 
             if (!tokenIssuer.equals("savings@presta")) {
+                log.info("Issuer does not match");
                 return false;
             }
 
             //extract and check expiration date
             var expirationDate = claims.getExpiration();
 
-            return !expirationDate.before(new Date());
+            if (expirationDate.before(new Date())) {
+                log.info("token expired");
+                return false;
+            }
+
+            return true;
 
         } catch (Exception e) {
-            throw new RuntimeException("error");
+            log.error(e.getMessage());
+            return false;
         }
     }
 }

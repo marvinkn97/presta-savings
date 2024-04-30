@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -53,31 +54,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (authentication == null) {
-
-                var existingUser = userDetailsService.loadUserByUsername(userDetails.get("username").toString());
-
-                System.out.println(existingUser);
-
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        existingUser, null, existingUser.getAuthorities()
-                );
-
-                System.out.println(usernamePasswordAuthenticationToken);
-
-                WebAuthenticationDetails webAuthenticationDetails = new WebAuthenticationDetailsSource().buildDetails(request);
-                usernamePasswordAuthenticationToken.setDetails(webAuthenticationDetails);
-
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                System.out.println(usernamePasswordAuthenticationToken);
-                authentication = SecurityContextHolder.getContext().getAuthentication();
-                System.out.println("Auth: "+(authentication == null));
+            if (authentication != null) {
+                filterChain.doFilter(request, response);
             }
-        } catch (Exception e) {
-              response.setHeader("Error", e.getMessage());
-        }
 
+            var existingUser = userDetailsService.loadUserByUsername(userDetails.get("username").toString());
+
+            System.out.println(existingUser);
+
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    existingUser, null, existingUser.getAuthorities()
+            );
+
+            System.out.println(usernamePasswordAuthenticationToken);
+
+            WebAuthenticationDetails webAuthenticationDetails = new WebAuthenticationDetailsSource().buildDetails(request);
+            usernamePasswordAuthenticationToken.setDetails(webAuthenticationDetails);
+
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            System.out.println(usernamePasswordAuthenticationToken);
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println("Auth: " + (authentication == null));
+
+
+        } catch (Exception e) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.getWriter().println("Invalid Token");
+            return;
+        }
         filterChain.doFilter(request, response);
+
     }
 
 }
