@@ -12,28 +12,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception e) {
-        var error = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .httpStatusCode(HttpStatus.INSUFFICIENT_STORAGE.value())
-                .reason(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-                .message(e.getMessage())
-                .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
 
     @ExceptionHandler(InsufficientAmountException.class)
     public ResponseEntity<ErrorResponse> handleInsufficientAmountException(InsufficientAmountException e) {
         var error = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(new Date())
                 .httpStatusCode(HttpStatus.BAD_REQUEST.value())
                 .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(e.getMessage())
@@ -44,7 +34,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateResourceException(DuplicateResourceException e) {
         var error = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(new Date())
                 .httpStatusCode(HttpStatus.CONFLICT.value())
                 .reason(HttpStatus.CONFLICT.getReasonPhrase())
                 .message(e.getMessage())
@@ -55,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
         var error = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(new Date())
                 .httpStatusCode(HttpStatus.NOT_FOUND.value())
                 .reason(HttpStatus.NOT_FOUND.getReasonPhrase())
                 .message(e.getMessage())

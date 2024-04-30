@@ -1,5 +1,7 @@
 package dev.marvin.savings.config;
 
+import dev.marvin.savings.auth.handler.AccessDeniedHandler;
+import dev.marvin.savings.auth.handler.AuthenticationEntryPoint;
 import dev.marvin.savings.auth.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,12 +28,14 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -50,9 +54,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("api/v1/auth/**").permitAll()
+//                                .requestMatchers("api/v1/users/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authenticationProvider(authenticationProvider())
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
+                    httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(authenticationEntryPoint);
+                    httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(accessDeniedHandler);
+                })
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
