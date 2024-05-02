@@ -3,6 +3,7 @@ package dev.marvin.savings.auth;
 import dev.marvin.savings.auth.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,19 +22,21 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public String registerCustomer(@RequestBody RegistrationRequest registrationRequest){
-       return authenticationService.registerCustomer(registrationRequest);
+    public ResponseEntity<RegistrationResponse> registerCustomer(@RequestBody RegistrationRequest registrationRequest) {
+        String token = authenticationService.registerCustomer(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(token));
     }
 
     @RequestMapping(value = "/register/confirm", method = {RequestMethod.GET, RequestMethod.POST})
-    public String confirmEmailToken(@RequestParam(name = "token") String token){
-        return authenticationService.confirmEmailToken(token);
+    public ResponseEntity<String> confirmEmailToken(@RequestParam(name = "token") String token) {
+        authenticationService.confirmEmailToken(token);
+        return ResponseEntity.ok("Email Confirmed Successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request) {
-       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.username(), authenticationRequest.password()));
-       SecurityContextHolder.getContext().setAuthentication(authentication);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.username(), authenticationRequest.password()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateJwtToken(authentication);
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }

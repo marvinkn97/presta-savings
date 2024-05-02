@@ -20,11 +20,22 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(RequestValidationException.class)
+    public ResponseEntity<ErrorResponse> handleRequestValidationException(RequestValidationException e) {
+        var error = ErrorResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
     @ExceptionHandler(InsufficientAmountException.class)
     public ResponseEntity<ErrorResponse> handleInsufficientAmountException(InsufficientAmountException e) {
         var error = ErrorResponse.builder()
                 .timestamp(new Date())
-                .httpStatusCode(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.BAD_REQUEST.value())
                 .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(e.getMessage())
                 .build();
@@ -35,7 +46,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDuplicateResourceException(DuplicateResourceException e) {
         var error = ErrorResponse.builder()
                 .timestamp(new Date())
-                .httpStatusCode(HttpStatus.CONFLICT.value())
+                .status(HttpStatus.CONFLICT.value())
                 .reason(HttpStatus.CONFLICT.getReasonPhrase())
                 .message(e.getMessage())
                 .build();
@@ -46,7 +57,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
         var error = ErrorResponse.builder()
                 .timestamp(new Date())
-                .httpStatusCode(HttpStatus.NOT_FOUND.value())
+                .status(HttpStatus.NOT_FOUND.value())
                 .reason(HttpStatus.NOT_FOUND.getReasonPhrase())
                 .message(e.getMessage())
                 .build();

@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -35,7 +33,6 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .role(Role.CUSTOMER)
                 .isNotLocked(true)
-                .joinDate(LocalDateTime.now())
                 .build();
 
         //check if email exists
@@ -58,7 +55,13 @@ public class AuthenticationService {
         String link = "http://localhost:8081/savings/api/v1/auth/register/confirm?token=%s".formatted(token);
 
         //send email
-        String emailTemplate = """
+        String emailTemplate = buildEmailTemplate(registrationRequest.fullName(), link);
+        emailService.sendEmail(registrationRequest.email(), emailTemplate);
+        return token;
+    }
+
+    private String buildEmailTemplate(String name, String link) {
+        return """
                   <!DOCTYPE html>
                                 <html lang="en">
                                 <head>
@@ -83,12 +86,10 @@ public class AuthenticationService {
                                 </body>
                                 </html>
                                 
-                """.formatted(registrationRequest.fullName(), link);
-        emailService.sendEmail(registrationRequest.email(), emailTemplate);
-        return token;
+                """.formatted(name, link);
     }
 
-    public String confirmEmailToken(String token) {
-        return confirmationTokenService.validateAndConfirmToken(token);
+    public void confirmEmailToken(String token) {
+       confirmationTokenService.validateAndConfirmToken(token);
     }
 }

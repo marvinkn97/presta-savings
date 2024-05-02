@@ -1,21 +1,20 @@
 package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.appuser.AppUser;
+import dev.marvin.savings.config.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
-public class Customer implements Serializable {
+public class Customer extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(updatable = false, nullable = false)

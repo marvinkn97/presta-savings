@@ -3,7 +3,9 @@ package dev.marvin.savings.auth.confirmationtoken;
 import dev.marvin.savings.appuser.AppUserService;
 import dev.marvin.savings.appuser.customer.Customer;
 import dev.marvin.savings.appuser.customer.CustomerService;
+import dev.marvin.savings.exception.RequestValidationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final AppUserService appUserService;
@@ -42,21 +45,21 @@ public class ConfirmationTokenService {
     }
 
     @Transactional
-    public String validateAndConfirmToken(String token) {
+    public void validateAndConfirmToken(String token) {
 
         //check is token exists
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("invalid token"));
+                .orElseThrow(() -> new RequestValidationException("invalid token"));
 
 
         //check if token is already confirmed
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new RuntimeException("token already confirmed");
+            throw new RequestValidationException("token already confirmed");
         }
 
         //check if token is expired
         if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("token already expired");
+            throw new RequestValidationException("token already expired, request new activation token");
         }
 
         try {
@@ -71,10 +74,9 @@ public class ConfirmationTokenService {
 
             appUser.setEnabled(true);
             appUserService.saveAppUser(appUser);
-            return "Email Confirmed Successfully";
 
-        }catch (Exception e){
-            return "Error confirming email";
+        } catch (Exception e) {
+            throw new RequestValidationException("token could not be validated");
         }
 
     }

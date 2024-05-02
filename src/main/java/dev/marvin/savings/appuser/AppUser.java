@@ -1,27 +1,23 @@
 package dev.marvin.savings.appuser;
 
+import dev.marvin.savings.config.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
-
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "app_users")
-public class AppUser implements Serializable, UserDetails {
+public class AppUser extends BaseEntity implements Serializable, UserDetails {
     @Id
     @GeneratedValue
     @Column(nullable = false, updatable = false)
@@ -32,10 +28,6 @@ public class AppUser implements Serializable, UserDetails {
 
     @Column(nullable = false)
     private String password;
-
-    @Column(name = "join_date", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime joinDate;
 
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;

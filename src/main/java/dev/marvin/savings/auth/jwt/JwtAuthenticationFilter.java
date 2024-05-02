@@ -90,7 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             ErrorResponse errorResponse = ErrorResponse.builder()
                     .timestamp(new Date())
-                    .httpStatusCode(HttpStatus.BAD_REQUEST.value())
+                    .status(HttpStatus.BAD_REQUEST.value())
                     .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
                     .message("Invalid token")
                     .build();

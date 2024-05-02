@@ -9,7 +9,7 @@ import java.util.Date;
 public record ErrorResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yy hh:mm:ss", timezone = "UTC+3")
         Date timestamp,
-        Integer httpStatusCode,
+        Integer status,
         String reason,
         String message) {
 }

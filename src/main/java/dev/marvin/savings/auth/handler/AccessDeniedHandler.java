@@ -25,7 +25,7 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(new Date())
-                .httpStatusCode(HttpStatus.FORBIDDEN.value())
+                .status(HttpStatus.FORBIDDEN.value())
                 .reason(HttpStatus.FORBIDDEN.getReasonPhrase())
                 .message("You do not have permission to access this data")
                 .build();

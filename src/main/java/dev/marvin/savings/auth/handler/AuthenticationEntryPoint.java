@@ -23,7 +23,7 @@ public class AuthenticationEntryPoint implements org.springframework.security.we
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(new Date())
-                .httpStatusCode(HttpStatus.UNAUTHORIZED.value())
+                .status(HttpStatus.UNAUTHORIZED.value())
                 .reason(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                 .message("You need to login to access this data")
                 .build();
