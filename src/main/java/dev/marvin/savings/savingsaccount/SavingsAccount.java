@@ -1,23 +1,22 @@
 package dev.marvin.savings.savingsaccount;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.marvin.savings.appuser.customer.Customer;
+import dev.marvin.savings.shared.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "t_savings_accounts")
-public class SavingsAccount implements Serializable {
+public class SavingsAccount extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(updatable = false, nullable = false)
@@ -36,10 +35,7 @@ public class SavingsAccount implements Serializable {
     @Column(nullable = false, columnDefinition = "DECIMAL(15,2)")
     private BigDecimal balance;
 
-    @CreationTimestamp
-    @Column(name = "created_date", nullable = false)
-    private Long createdDate;
-
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "customer_id_fk"))
     private Customer customer;

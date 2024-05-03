@@ -1,11 +1,13 @@
 package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.appuser.AppUser;
-import dev.marvin.savings.config.BaseEntity;
+import dev.marvin.savings.savingsaccount.SavingsAccount;
+import dev.marvin.savings.shared.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -50,4 +52,7 @@ public class Customer extends BaseEntity implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "app_user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "app_user_id_fk"))
     private AppUser appUser;
+
+    @OneToMany(mappedBy = "customer")
+    private List<SavingsAccount> savingsAccounts;
 }

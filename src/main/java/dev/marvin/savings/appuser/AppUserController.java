@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 @Tag(name = "User Resource", description = "User Management")
 public class AppUserController {
     private final AppUserService appUserService;
-
     @GetMapping
     @PreAuthorize(value = "hasAuthority('ADMIN')")
     public ResponseEntity<List<AppUser>> getAllAppUsers() {
@@ -28,5 +27,6 @@ public class AppUserController {
                 .cacheControl(CacheControl.maxAge(2, TimeUnit.MINUTES))
                 .body(users);
     }
+
 
 }

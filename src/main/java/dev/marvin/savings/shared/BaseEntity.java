@@ -1,4 +1,4 @@
-package dev.marvin.savings.config;
+package dev.marvin.savings.shared;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

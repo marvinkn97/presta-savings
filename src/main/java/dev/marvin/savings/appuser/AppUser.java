@@ -1,6 +1,6 @@
 package dev.marvin.savings.appuser;
 
-import dev.marvin.savings.config.BaseEntity;
+import dev.marvin.savings.shared.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,7 +34,6 @@ public class AppUser extends BaseEntity implements Serializable, UserDetails {
 
     @Column(name = "is_not_locked", nullable = false)
     private boolean isNotLocked;
-
 
     @Column(nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)

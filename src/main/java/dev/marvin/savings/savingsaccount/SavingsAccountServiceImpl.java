@@ -27,7 +27,6 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
                     .accountName(accountRequest.accountName())
                     .savingsAccountType(SavingsAccountType.valueOf(accountRequest.accountType().toUpperCase()))
                     .balance(BigDecimal.ZERO)
-                    .createdDate(System.currentTimeMillis())
                     .customer(customer)
                     .build();
 
