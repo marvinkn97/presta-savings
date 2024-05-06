@@ -10,5 +10,4 @@ public class HttpClientConfig {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
-    
 }

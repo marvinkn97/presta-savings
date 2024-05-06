@@ -10,7 +10,6 @@
            +  Implemented unit tests to validate the functionality of the API endpoints.
            +  Documented the APIs using Swagger, providing clear descriptions and examples for each endpoint.
            +  Implemented Authentication and Authorization with Spring Security and JWT
-           +  
 
        +   Technologies Used
            +  Spring - Boot 3, JPA, Security with JWT
@@ -18,6 +17,4 @@
            +  REST API Documentation with SpringDoc OPENAPI
            +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
            +  MailDev [https://github.com/maildev/maildev]
-           
-  +    TODO
-       +  Implement Testing
+           +  Testcontainers for Persistence Layer Unit tests
