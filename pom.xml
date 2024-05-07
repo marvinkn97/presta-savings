@@ -11,7 +11,7 @@
     <groupId>dev.marvin</groupId>
     <artifactId>savings</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>savingsapp</name>
+    <name>Savings Management System</name>
     <description>Spring Boot API for a simple savings management system</description>
     <properties>
         <java.version>17</java.version>
@@ -49,12 +49,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-<!--                <dependency>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                    <artifactId>spring-boot-docker-compose</artifactId>-->
-<!--                    <scope>runtime</scope>-->
-<!--                    <optional>true</optional>-->
-<!--                </dependency>-->
+        <!--                <dependency>-->
+        <!--                    <groupId>org.springframework.boot</groupId>-->
+        <!--                    <artifactId>spring-boot-docker-compose</artifactId>-->
+        <!--                    <scope>runtime</scope>-->
+        <!--                    <optional>true</optional>-->
+        <!--                </dependency>-->
 
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -63,10 +63,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>1.19.7</version>
-        <scope>test</scope>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.19.7</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -89,32 +89,26 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.3.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>3.1.1</version>
         </dependency>
         <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-mail</artifactId>
-    </dependency>
-
-        <!-- Spring Security JWT -->
-        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>0.11.5</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>

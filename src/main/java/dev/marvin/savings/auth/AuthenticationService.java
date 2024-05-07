@@ -2,6 +2,7 @@ package dev.marvin.savings.auth;
 
 import dev.marvin.savings.appuser.customer.CustomerService;
 import dev.marvin.savings.auth.confirmationtoken.ConfirmationTokenService;
+import dev.marvin.savings.exception.NotificationException;
 import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,14 @@ public class AuthenticationService {
 
         //send email
         String emailTemplate = buildEmailTemplate(registrationRequest.fullName(), link);
-        emailService.sendEmail(registrationRequest.email(), emailTemplate);
+        try {
+            emailService.sendEmail(registrationRequest.email(), emailTemplate);
+            //return A verification email has been sent. Please verify email to activate account.
+        }catch (Exception e){
+            throw new NotificationException("Mail Service is Down");
+        }
+
+
         return token;
     }
 

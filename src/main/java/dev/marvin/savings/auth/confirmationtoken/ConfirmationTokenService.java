@@ -1,8 +1,8 @@
 package dev.marvin.savings.auth.confirmationtoken;
 
-import dev.marvin.savings.appuser.AppUserService;
+import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.customer.Customer;
-import dev.marvin.savings.appuser.customer.CustomerService;
+import dev.marvin.savings.appuser.customer.CustomerRepository;
 import dev.marvin.savings.exception.RequestValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +17,8 @@ import java.util.UUID;
 @Slf4j
 public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final AppUserService appUserService;
-    private final CustomerService CustomerService;
+    private final AppUserRepository appUserRepository;
+    private final CustomerRepository customerRepository;
 
     public String generateToken(Customer customer) {
 
@@ -37,11 +37,6 @@ public class ConfirmationTokenService {
                 .build();
         confirmationTokenRepository.save(confirmationToken);
         return token;
-    }
-
-    public ConfirmationToken getToken(String token) {
-        return confirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("token does not exist"));
     }
 
     @Transactional
@@ -70,10 +65,10 @@ public class ConfirmationTokenService {
             confirmationTokenRepository.save(confirmationToken);
 
             customer.setEmailConfirmed(true);
-            CustomerService.saveCustomer(customer);
+            customerRepository.save(customer);
 
             appUser.setEnabled(true);
-            appUserService.saveAppUser(appUser);
+            appUserRepository.save(appUser);
 
         } catch (Exception e) {
             throw new RequestValidationException("token could not be validated");

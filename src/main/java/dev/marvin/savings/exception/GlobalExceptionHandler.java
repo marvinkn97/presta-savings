@@ -65,6 +65,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler(NotificationException.class)
+    public ResponseEntity<ErrorResponse> handleNotificationException(NotificationException e) {
+        var error = ErrorResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.EXPECTATION_FAILED.value())
+                .reason(HttpStatus.EXPECTATION_FAILED.getReasonPhrase())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(error);
+
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();

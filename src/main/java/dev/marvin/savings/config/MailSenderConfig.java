@@ -24,6 +24,6 @@ public class MailSenderConfig {
         props.put("mail.smtp.starttls.required", "false");
         props.put("mail.debug", "true"); // Enable debug mode if needed
 
-        return new JavaMailSenderImpl();
+        return mailSender;
     }
 }

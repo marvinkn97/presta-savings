@@ -1,5 +1,6 @@
 package dev.marvin.savings.notifications.email;
 
+import dev.marvin.savings.exception.NotificationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class MailDevEmailService implements EmailService {
             javaMailSender.send(mailMessage);
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new NotificationException("Email not sent");
         }
 
     }

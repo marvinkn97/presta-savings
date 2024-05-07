@@ -32,7 +32,7 @@ class AppUserRepositoryTest extends AbstractTestContainersTest {
 
     @Test
     @DisplayName(value = "Test Case for Saving AppUser")
-    void givenAppUserObject_whenSave_thenReturnSavedAppUser(){
+    void givenAppUserObject_whenSave_thenReturnSavedAppUser() {
 
         //when
         var actual = appUserRepository.save(appUser);
@@ -43,10 +43,35 @@ class AppUserRepositoryTest extends AbstractTestContainersTest {
     }
 
     @Test
+    @DisplayName(value = "Test Case for find all AppUsers")
+    void givenAppUserList_whenFindAll_thenReturnAppUserList() {
+
+        appUserRepository.deleteAll();
+
+        var user = AppUser.builder()
+                .username("csr")
+                .password("password")
+                .role(Role.CSR)
+                .isEnabled(true)
+                .isNotLocked(true)
+                .build();
+
+        appUserRepository.save(appUser);
+        appUserRepository.save(user);
+
+        //when
+        var actual = appUserRepository.findAll();
+
+        //then
+        Assertions.assertThat(actual.size()).isGreaterThan(0);
+        Assertions.assertThat(actual.size()).isEqualTo(2);
+    }
+
+    @Test
     @DisplayName(value = "Test Case for Positive find AppUser by username")
     void givenUsername_whenFindByUsername_thenReturnSavedAppUser() {
         //given
-         appUserRepository.save(appUser);
+        appUserRepository.save(appUser);
 
         //when
         var actualOptional = appUserRepository.findByUsername(appUser.getUsername());
