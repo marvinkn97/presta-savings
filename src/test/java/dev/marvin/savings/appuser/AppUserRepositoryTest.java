@@ -1,37 +1,41 @@
 package dev.marvin.savings.appuser;
 
+import dev.marvin.savings.AbstractTestContainersTest;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.NoSuchElementException;
 
-@ExtendWith(value = SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class AppUserRepositoryTest {
+class AppUserRepositoryTest extends AbstractTestContainersTest {
     @Autowired
     AppUserRepository appUserRepository;
 
-    @Test
-    @DisplayName(value = "Test Case for Saving AppUser")
-    void givenAppUserObject_whenSave_thenReturnSavedAppUser(){
-        //given
-        var admin = AppUser.builder()
-                .username("admin@presta")
+    private AppUser appUser;
+
+    @BeforeEach
+    void setUp() {
+        appUser = AppUser.builder()
+                .username("admin")
                 .password("password")
                 .role(Role.ADMIN)
                 .isEnabled(true)
                 .isNotLocked(true)
                 .build();
+    }
+
+    @Test
+    @DisplayName(value = "Test Case for Saving AppUser")
+    void givenAppUserObject_whenSave_thenReturnSavedAppUser(){
 
         //when
-        var actual = appUserRepository.save(admin);
+        var actual = appUserRepository.save(appUser);
 
         //then
         Assertions.assertThat(actual).isNotNull();
@@ -42,32 +46,22 @@ class AppUserRepositoryTest {
     @DisplayName(value = "Test Case for Positive find AppUser by username")
     void givenUsername_whenFindByUsername_thenReturnSavedAppUser() {
         //given
-        String username = "newuser@presta";
-
-        var user = AppUser.builder()
-                .username(username)
-                .password("password")
-                .role(Role.ADMIN)
-                .isEnabled(true)
-                .isNotLocked(true)
-                .build();
-
-         appUserRepository.save(user);
+         appUserRepository.save(appUser);
 
         //when
-        var actualOptional = appUserRepository.findByUsername(username);
+        var actualOptional = appUserRepository.findByUsername(appUser.getUsername());
         var actual = actualOptional.get();
 
         //then
         Assertions.assertThat(actualOptional).isPresent();
-        Assertions.assertThat(actual.getUsername()).isEqualTo(username);
+        Assertions.assertThat(actual.getUsername()).isEqualTo(appUser.getUsername());
     }
 
     @Test
     @DisplayName(value = "Test Case for Negative find AppUser by username")
     void givenNonExistentUsername_whenFindByUsername_thenThrowUserNameNotFoundException() {
         //given
-        String username = "username";
+        String username = "000";
 
         //when
         var actualOptional = appUserRepository.findByUsername(username);
@@ -81,7 +75,29 @@ class AppUserRepositoryTest {
     }
 
     @Test
-    void existsByUsername() {
+    @DisplayName(value = "Test Case for Positive Exists AppUser by Username ")
+    void givenUsername_whenExistsByUsername_thenReturnTrue() {
+        //given
 
+        appUserRepository.save(appUser);
+
+        //when
+        var actual = appUserRepository.existsByUsername(appUser.getUsername());
+
+        //then
+        Assertions.assertThat(actual).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName(value = "Test Case for Negative Exists AppUser by Username ")
+    void givenNonExistentUsername_whenExistsByUsername_thenReturnFalse() {
+        //given
+        String username = "000";
+
+        //when
+        var actual = appUserRepository.existsByUsername(username);
+
+        //then
+        Assertions.assertThat(actual).isEqualTo(false);
     }
 }

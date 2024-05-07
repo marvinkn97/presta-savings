@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AppUserService implements UserDetailsService {
+public class AppUserService implements UserDetailsService, IAppUserService {
     private final AppUserRepository appUserRepository;
 
     @Override

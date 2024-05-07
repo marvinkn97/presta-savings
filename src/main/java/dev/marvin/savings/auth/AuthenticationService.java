@@ -1,54 +1,21 @@
 package dev.marvin.savings.auth;
 
-import dev.marvin.savings.appuser.AppUser;
-import dev.marvin.savings.appuser.AppUserService;
-import dev.marvin.savings.appuser.Role;
-import dev.marvin.savings.appuser.customer.Customer;
 import dev.marvin.savings.appuser.customer.CustomerService;
 import dev.marvin.savings.auth.confirmationtoken.ConfirmationTokenService;
-import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final CustomerService customerService;
-    private final AppUserService appUserService;
-    private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
 
     public String registerCustomer(RegistrationRequest registrationRequest) {
 
-        //check if username exists
-        if (appUserService.existsByUserName(registrationRequest.username())) {
-            throw new DuplicateResourceException("username already taken");
-        }
-
-        AppUser appUser = AppUser.builder()
-                .username(registrationRequest.username())
-                .password(passwordEncoder.encode(registrationRequest.password()))
-                .role(Role.CUSTOMER)
-                .isNotLocked(true)
-                .build();
-
-        //check if email exists
-        if (customerService.existCustomerWithEmail(registrationRequest.email())) {
-            throw new DuplicateResourceException("email already taken");
-        }
-
-        var savedAppUser = appUserService.saveAppUser(appUser);
-
-        Customer customer = Customer.builder()
-                .name(registrationRequest.fullName())
-                .email(registrationRequest.email())
-                .appUser(savedAppUser)
-                .build();
-
-        customerService.saveCustomer(customer);
+        var customer = customerService.registerCustomer(registrationRequest);
 
         String token = confirmationTokenService.generateToken(customer);
 

@@ -21,29 +21,29 @@ import java.util.List;
 @Tag(name = "Customer Resource", description = "Customer Management")
 @Slf4j
 public class CustomerController {
-    private final CustomerService customerService;
+    private final CustomerService CustomerService;
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('CSR')")
     public ResponseEntity<List<Customer>> getAllCustomers() {
-        List<Customer> customers = customerService.getAllCustomers();
+        List<Customer> customers = CustomerService.getAllCustomers();
         return ResponseEntity.status(HttpStatus.OK).body(customers);
     }
 
     @GetMapping(value = "/{memberNumber}")
     public Customer getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
-        return customerService.getCustomerByMemberNumber(memberNumber);
+        return CustomerService.getCustomerByMemberNumber(memberNumber);
     }
 
     @PutMapping(value = "/{memberNumber}/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest, @RequestParam(value = "profileImage", required = false) MultipartFile multipartFile) {
-        customerService.updateCustomer(memberNumber, updateRequest);
+        CustomerService.updateCustomer(memberNumber, updateRequest);
         return null;
     }
 
     @DeleteMapping("/{memberNumber}/delete/")
     public ResponseEntity<String> deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
-        customerService.deleteCustomer(memberNumber);
+        CustomerService.deleteCustomer(memberNumber);
         return ResponseEntity.ok("customer deleted successfully");
     }
 

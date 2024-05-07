@@ -18,7 +18,7 @@ import java.util.UUID;
 public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final AppUserService appUserService;
-    private final CustomerService customerService;
+    private final CustomerService CustomerService;
 
     public String generateToken(Customer customer) {
 
@@ -70,7 +70,7 @@ public class ConfirmationTokenService {
             confirmationTokenRepository.save(confirmationToken);
 
             customer.setEmailConfirmed(true);
-            customerService.saveCustomer(customer);
+            CustomerService.saveCustomer(customer);
 
             appUser.setEnabled(true);
             appUserService.saveAppUser(appUser);
