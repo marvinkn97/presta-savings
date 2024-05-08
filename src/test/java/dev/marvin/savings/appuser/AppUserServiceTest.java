@@ -10,8 +10,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,21 +32,18 @@ class AppUserServiceTest {
     void setUp() {
         appUserService = new AppUserService(appUserRepository);
         appUser = AppUser.builder()
-                .username("marvinkn")
+                .username("admin@presta")
                 .password("password")
                 .role(Role.ADMIN)
-                .isEnabled(true)
-                .isNotLocked(true)
-                .createdAt(LocalDateTime.now())
                 .build();
     }
 
     @Test
-    @DisplayName(value = "Test Case for getting AppUser by Username")
+    @DisplayName(value = "Test Case for Positive getting AppUser by Username")
     void givenUsername_whenLoadUserByUsername_thenReturnUser() {
 
         //given
-        String username = "marvinkn";
+        String username = "admin@presta";
 
         //capture the argument
         ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -64,6 +61,17 @@ class AppUserServiceTest {
             assertEquals(appUser.getUsername(), u.getUsername());
             assertEquals(appUser.getAuthorities(), u.getAuthorities());
         });
+    }
+
+    @Test
+    @DisplayName(value = "Test Case for Negative getting AppUser by Username")
+    void givenNonExistentUsername_whenLoadUserByUsername_thenReturnUser() {
+        String username = "000";
+
+        Assertions.assertThatThrownBy(() -> appUserService.loadUserByUsername(username))
+                .isInstanceOf(UsernameNotFoundException.class)
+                .hasMessage("user not found");
+
     }
 
     @Test
