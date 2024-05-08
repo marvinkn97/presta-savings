@@ -21,18 +21,8 @@ public class AppUserService implements UserDetailsService, IAppUserService {
                 .orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
 
-    public AppUser saveAppUser(AppUser appUser) {
-        var savedUser = appUserRepository.save(appUser);
-        log.info("AppUser saved {}", savedUser);
-        return savedUser;
-    }
-
     public List<AppUser> getAllAppUsers() {
         return appUserRepository.findAll();
-    }
-
-    public boolean existsByUserName(String username) {
-        return appUserRepository.existsByUsername(username);
     }
 
 }

@@ -1,13 +1,15 @@
 package dev.marvin.savings.appuser;
 
-import dev.marvin.savings.shared.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 @Builder
@@ -17,7 +19,7 @@ import java.util.Collections;
 @Setter
 @Entity
 @Table(name = "app_users")
-public class AppUser extends BaseEntity implements Serializable, UserDetails {
+public class AppUser implements Serializable, UserDetails {
     @Id
     @GeneratedValue
     @Column(nullable = false, updatable = false)
@@ -38,6 +40,14 @@ public class AppUser extends BaseEntity implements Serializable, UserDetails {
     @Column(nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(insertable = false)
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
