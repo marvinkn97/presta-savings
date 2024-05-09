@@ -3,7 +3,6 @@ package dev.marvin.savings.auth;
 import dev.marvin.savings.auth.jwt.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,11 +20,11 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
 
-    @PostMapping("/register")
-    public ResponseEntity<RegistrationResponse> registerCustomer(@RequestBody RegistrationRequest registrationRequest) {
-        String token = authenticationService.registerCustomer(registrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(token));
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<RegistrationResponse> registerCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
+//        String token = authenticationService.registerCustomer(registrationRequest);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(token));
+//    }
 
     @RequestMapping(value = "/register/confirm", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<String> confirmEmailToken(@RequestParam(name = "token") String token) {

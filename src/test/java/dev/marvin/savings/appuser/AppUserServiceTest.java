@@ -5,11 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
@@ -23,14 +22,13 @@ class AppUserServiceTest {
     @Mock
     AppUserRepository appUserRepository;
 
-    @Autowired
+    @InjectMocks
     AppUserService appUserService;
 
     AppUser appUser;
 
     @BeforeEach
     void setUp() {
-        appUserService = new AppUserService(appUserRepository);
         appUser = AppUser.builder()
                 .username("admin@presta")
                 .password("password")
@@ -45,17 +43,12 @@ class AppUserServiceTest {
         //given
         String username = "admin@presta";
 
-        //capture the argument
-        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
-
         //when
         Mockito.when(appUserRepository.findByUsername(username)).thenReturn(Optional.of(appUser));
 
         var userDetails = appUserService.loadUserByUsername(username);
 
         // then
-        Mockito.verify(appUserRepository).findByUsername(stringArgumentCaptor.capture());
-        assertEquals(username, stringArgumentCaptor.getValue());
         assertEquals(username, userDetails.getUsername());
         org.assertj.core.api.Assertions.assertThat(userDetails).satisfies(u -> {
             assertEquals(appUser.getUsername(), u.getUsername());
@@ -76,7 +69,7 @@ class AppUserServiceTest {
 
     @Test
     @DisplayName(value = "Test Case for getting all AppUsers")
-    void getAllAppUsers() {
+    void givenAppUserList_whenFindAll_thenReturnAppUserList() {
         Mockito.when(appUserRepository.findAll()).thenReturn(List.of(appUser));
 
         var actual = appUserService.getAllAppUsers();

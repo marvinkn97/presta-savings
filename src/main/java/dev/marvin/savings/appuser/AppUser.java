@@ -3,7 +3,6 @@ package dev.marvin.savings.appuser;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,7 +45,6 @@ public class AppUser implements Serializable, UserDetails {
     private LocalDateTime createdAt;
 
     @Column(insertable = false)
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @Override

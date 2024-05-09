@@ -6,6 +6,7 @@ import dev.marvin.savings.appuser.customer.CustomerRepository;
 import dev.marvin.savings.exception.RequestValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,8 @@ public class ConfirmationTokenService {
 
     public String generateToken(Customer customer) {
 
-        if (customer == null) {
-            throw new IllegalArgumentException("customer cannot be null");
+        if (ObjectUtils.isEmpty(customer)) {
+            throw new RequestValidationException("Not Registered");
         }
 
         String token = UUID.randomUUID().toString();
@@ -48,7 +49,7 @@ public class ConfirmationTokenService {
 
 
         //check if token is already confirmed
-        if (confirmationToken.getConfirmedAt() != null) {
+        if (ObjectUtils.isNotEmpty(confirmationToken.getConfirmedAt())) {
             throw new RequestValidationException("token already confirmed");
         }
 
@@ -71,7 +72,7 @@ public class ConfirmationTokenService {
             appUserRepository.save(appUser);
 
         } catch (Exception e) {
-            throw new RequestValidationException("token could not be validated");
+            throw new RequestValidationException("invalid token");
         }
 
     }

@@ -14,5 +14,4 @@ public interface AppUserRepository extends JpaRepository<AppUser, Integer> {
 
     boolean existsByUsername(String username);
 
-//   void changePassword(String oldPassword, String newPassword);
 }

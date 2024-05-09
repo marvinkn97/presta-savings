@@ -2,11 +2,11 @@ package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.savingsaccount.SavingsAccount;
-import dev.marvin.savings.shared.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
-public class Customer extends BaseEntity implements Serializable {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue
     @Column(updatable = false, nullable = false)
@@ -48,6 +48,9 @@ public class Customer extends BaseEntity implements Serializable {
 
     @Column(name = "profile_image_id")
     private String profileImageId;
+
+    @Column(insertable = false)
+    private LocalDateTime updatedAt;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "app_user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "app_user_id_fk"))

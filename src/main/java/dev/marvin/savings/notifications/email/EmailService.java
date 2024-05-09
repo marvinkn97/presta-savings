@@ -1,5 +1,34 @@
 package dev.marvin.savings.notifications.email;
 
-public interface EmailService{
+public interface EmailService {
     void sendEmail(String to, String message);
+
+    default String buildEmailTemplate(String name, String link) {
+        return """
+                  <!DOCTYPE html>
+                                <html lang="en">
+                                <head>
+                                    <meta charset="UTF-8">
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                    <title>Account Registration Confirmation</title>
+                                    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+                                </head>
+                                <body>
+                                    <div class="container">
+                                        <div class="jumbotron mt-4">
+                                            <h2 class="display-4">Welcome to Our Platform!</h2>
+                                            <p class="lead">Dear %s,</p>
+                                            <p>Thank you for registering on our platform. To activate your account, please click the button below:</p>
+                                            <a href="%s" class="btn btn-primary btn-lg">Activate Now</a>
+                                            <p class="mt-4">This activation link will expire in 15 minutes for security reasons. If you do not activate your account within this time frame, you will need to request a new activation link.</p>
+                                            <p>If you did not register on our platform, please ignore this email.</p>
+                                            <hr class="my-4">
+                                            <p class="lead">Best regards,<br> Presta Savings Team</p>
+                                        </div>
+                                    </div>
+                                </body>
+                                </html>
+                                
+                """.formatted(name, link);
+    }
 }

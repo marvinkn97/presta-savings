@@ -3,10 +3,12 @@ package dev.marvin.savings.appuser.customer;
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
-import dev.marvin.savings.auth.RegistrationRequest;
+import dev.marvin.savings.auth.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import dev.marvin.savings.exception.NotificationException;
 import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
+import dev.marvin.savings.notifications.email.EmailService;
 import dev.marvin.savings.notifications.sms.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,12 +28,14 @@ public class CustomerService implements ICustomerService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
+    private final EmailService emailService;
+    private final ConfirmationTokenService confirmationTokenService;
     private final SmsService smsService;
 
 
     @Override
     @Transactional
-    public Customer registerCustomer(RegistrationRequest registrationRequest) {
+    public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
 
         //check if username exists
         if (appUserRepository.existsByUsername(registrationRequest.username())) {
@@ -47,6 +52,7 @@ public class CustomerService implements ICustomerService {
                     .username(registrationRequest.username())
                     .password(passwordEncoder.encode(registrationRequest.password()))
                     .role(Role.CUSTOMER)
+                    .createdAt(LocalDateTime.now())
                     .isNotLocked(true)
                     .build();
 
@@ -59,10 +65,26 @@ public class CustomerService implements ICustomerService {
                     .appUser(savedAppUser)
                     .build();
 
-
             var savedCustomer = customerRepository.save(customer);
             log.info("Customer saved: {}", savedCustomer);
-            return savedCustomer;
+
+            //generate email confirmation token
+            String emailConfirmationToken = confirmationTokenService.generateToken(savedCustomer);
+
+            //TODO: change this link
+            String link = "http://localhost:8081/savings/api/v1/auth/register/confirm?token=%s".formatted(emailConfirmationToken);
+
+
+            //build email template
+            String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), link);
+
+            //send email
+            try {
+                emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
+                return "A verification email has been sent. Please verify email to activate account";
+            } catch (Exception e) {
+                throw new NotificationException("Mail Service is Down");
+            }
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -103,7 +125,7 @@ public class CustomerService implements ICustomerService {
     }
 
     private String generateMemberNumber() {
-        return "MEM" + UUID.randomUUID().toString().substring(0, 7);
+        return "MEM" + UUID.randomUUID().toString().substring(0, 7).toUpperCase();
     }
 }
 
