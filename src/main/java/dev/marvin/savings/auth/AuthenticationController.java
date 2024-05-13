@@ -20,12 +20,6 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
 
-//    @PostMapping("/register")
-//    public ResponseEntity<RegistrationResponse> registerCustomer(@RequestBody CustomerRegistrationRequest registrationRequest) {
-//        String token = authenticationService.registerCustomer(registrationRequest);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(token));
-//    }
-
     @RequestMapping(value = "/register/confirm", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<String> confirmEmailToken(@RequestParam(name = "token") String token) {
         authenticationService.confirmEmailToken(token);

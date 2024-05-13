@@ -9,7 +9,6 @@ import dev.marvin.savings.exception.NotificationException;
 import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
-import dev.marvin.savings.notifications.sms.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +29,6 @@ public class CustomerService implements ICustomerService {
     private final CustomerRepository customerRepository;
     private final EmailService emailService;
     private final ConfirmationTokenService confirmationTokenService;
-    private final SmsService smsService;
 
 
     @Override

@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
-
     @Mock
     CustomerRepository customerRepository;
 
@@ -40,6 +39,8 @@ class CustomerServiceTest {
         String name = "Marvin Nyingi";
         String email = "marvin@example.com";
         String password = "password";
+
+        final String REGISTRATION_RESPONSE = "A verification email has been sent. Please verify email to activate account";
 
         var request = new CustomerRegistrationRequest(username, name, email, password);
 
@@ -72,7 +73,7 @@ class CustomerServiceTest {
         Assertions.assertEquals(request.email(), customerArgumentCaptor.getValue().getEmail());
 
         org.assertj.core.api.Assertions.assertThat(actual).isNotBlank();
-        org.assertj.core.api.Assertions.assertThat(actual).satisfies(s -> Assertions.assertEquals(s, "A verification email has been sent. Please verify email to activate account"));
+        org.assertj.core.api.Assertions.assertThat(actual).satisfies(s -> Assertions.assertEquals(s, REGISTRATION_RESPONSE));
     }
 
     @Test
