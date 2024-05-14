@@ -1,4 +1,4 @@
-package dev.marvin.savings.auth.confirmationtoken;
+package dev.marvin.savings.appuser.confirmationtoken;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

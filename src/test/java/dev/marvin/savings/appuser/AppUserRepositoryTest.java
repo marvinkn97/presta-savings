@@ -2,7 +2,6 @@ package dev.marvin.savings.appuser;
 
 import dev.marvin.savings.AbstractTestContainersTest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,35 +22,7 @@ class AppUserRepositoryTest extends AbstractTestContainersTest {
     @BeforeEach
     void setUp() {
         underTest.deleteAll();
-    }
 
-    @Test
-    @DisplayName(value = "Test Case for Saving AppUser")
-    void givenAppUserObject_whenSave_thenReturnSavedAppUser() {
-        //given
-        var admin = AppUser.builder()
-                .username("admin@presta")
-                .password("password")
-                .role(Role.ADMIN)
-                .build();
-
-        //when
-        var actual = underTest.save(admin);
-
-        //then
-        assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isGreaterThan(0);
-        assertThat(actual).satisfies(appUser -> {
-            assertThat(appUser.getUsername()).isEqualTo(admin.getUsername());
-            assertThat(appUser.getRole()).isEqualTo(admin.getRole());
-        });
-    }
-
-    @Test
-    @DisplayName(value = "Test Case for find all AppUsers")
-    void givenAppUserList_whenFindAll_thenReturnAppUserList() {
-
-        //given
         var admin = AppUser.builder()
                 .username("admin@presta")
                 .password("password")
@@ -73,28 +44,44 @@ class AppUserRepositoryTest extends AbstractTestContainersTest {
         var users = List.of(admin, csr, customer);
 
         underTest.saveAll(users);
+    }
+
+    @Test
+    void givenAppUserObject_whenSave_thenReturnSavedAppUser() {
+        //given
+        var admin = AppUser.builder()
+                .username("admin@presta")
+                .password("password")
+                .role(Role.ADMIN)
+                .build();
+
+        //when
+        var actual = underTest.save(admin);
+
+        //then
+        assertThat(actual).isNotNull();
+        assertThat(actual.getId()).isGreaterThan(0);
+        assertThat(underTest.findAll().size()).isEqualTo(4);
+        assertThat(actual).satisfies(appUser -> {
+            assertThat(appUser.getUsername()).isEqualTo(admin.getUsername());
+            assertThat(appUser.getRole()).isEqualTo(admin.getRole());
+        });
+    }
+
+    @Test
+    void givenAppUserList_whenFindAll_thenReturnAppUserList() {
 
         //when
         var actual = underTest.findAll();
 
         //then
-        assertThat(actual.size()).isGreaterThan(0);
         assertThat(actual.size()).isEqualTo(3);
     }
 
     @Test
-    @DisplayName(value = "Test Case for Positive find AppUser by username")
-    void givenUsername_whenFindByUsername_thenReturnSavedAppUser() {
+    void givenValidUsername_whenFindByUsername_thenReturnAppUser() {
         //given
         String username = "customer@presta";
-
-        AppUser customer = AppUser.builder()
-                .username(username)
-                .password("password")
-                .role(Role.CUSTOMER)
-                .build();
-
-        underTest.save(customer);
 
         //when
         var actualOptional = underTest.findByUsername(username);
@@ -107,7 +94,6 @@ class AppUserRepositoryTest extends AbstractTestContainersTest {
     }
 
     @Test
-    @DisplayName(value = "Test Case for Negative find AppUser by username")
     void givenInvalidUsername_whenFindByUsername_thenThrowException() {
         //given
         String username = "000";

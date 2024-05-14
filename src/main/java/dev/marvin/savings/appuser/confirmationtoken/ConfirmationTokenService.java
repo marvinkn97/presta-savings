@@ -1,4 +1,4 @@
-package dev.marvin.savings.auth.confirmationtoken;
+package dev.marvin.savings.appuser.confirmationtoken;
 
 import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.customer.Customer;

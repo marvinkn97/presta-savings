@@ -13,7 +13,7 @@
 
        +   Technologies Used
            +  Spring - Boot 3, JPA, Security with JWT
-           +  Postgres
+           +  PostgreSQL
            +  REST API Documentation with SpringDoc OPENAPI
            +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
            +  MailDev [https://github.com/maildev/maildev]

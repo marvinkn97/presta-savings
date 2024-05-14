@@ -1,77 +1,138 @@
 package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.AbstractTestContainersTest;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CustomerRepositoryTest extends AbstractTestContainersTest {
     @Autowired
-    CustomerRepository customerRepository;
+    CustomerRepository underTest;
+
+    @BeforeEach
+    void setUp() {
+        underTest.deleteAll();
+
+        var c1 = Customer.builder()
+                .email("customer1@presta.com")
+                .name("Customer One")
+                .memberNumber("MEM123")
+                .build();
+
+        var c2 = Customer.builder()
+                .email("customer2@presta.com")
+                .name("Customer Two")
+                .memberNumber("MEM456")
+                .build();
+
+        var c3 = Customer.builder()
+                .email("customer3@presta.com")
+                .name("Customer Three")
+                .memberNumber("MEM789")
+                .build();
+
+        var customers = List.of(c1, c2, c3);
+
+        underTest.saveAll(customers);
+
+    }
 
     @Test
-    @DisplayName(value = "Test Case for Saving Customer")
-    void givenCustomerObject_whenSave_thenReturnSavedCustomer(){
+    void givenCustomerObject_whenSave_thenReturnSavedCustomer() {
 
         //given
         var customer = Customer.builder()
                 .memberNumber("MEM345678")
+                .name("Marvin Nyingi")
                 .email("marvin@example.com")
                 .build();
 
         //when
-        var actual = customerRepository.save(customer);
+        var actual = underTest.save(customer);
 
         //then
-        Assertions.assertThat(actual).isNotNull();
-        Assertions.assertThat(actual.getId()).isGreaterThan(0);
+        assertThat(actual).isNotNull();
+        assertThat(actual.getId()).isGreaterThan(0);
+        assertThat(underTest.findAll().size()).isEqualTo(4);
+        assertThat(actual).satisfies(c -> {
+            assertThat(c.getEmail()).isEqualTo(customer.getEmail());
+            assertThat(c.getMemberNumber()).isEqualTo(customer.getMemberNumber());
+            assertThat(c.getName()).isEqualTo(customer.getName());
+        });
     }
 
-//    @Test
-//    @DisplayName(value = "Test Case for finding all Customers")
-//    void givenCustomerList_whenFindAll_thenReturnCustomerList(){
-//        customerRepository.deleteAll();
-//
-//        var newCustomer = Customer.builder()
-//                .email("foo2@example.com")
-//                .name("Foo Bar")
-//                .isEmailConfirmed(false)
-//                .memberNumber("MEM234569")
-//                .build();
-//
-//        customerRepository.save(customer);
-//        customerRepository.save(newCustomer);
-//
-//        //when
-//        var actual = customerRepository.findAll();
-//
-//        //then
-//        Assertions.assertThat(actual.size()).isGreaterThan(0);
-//        Assertions.assertThat(actual.size()).isEqualTo(2);
-//    }
+    @Test
+    void givenCustomerList_whenFindAll_thenReturnCustomerList() {
+
+        //when
+        var actual = underTest.findAll();
+
+        //then
+        assertThat(actual).isNotEmpty();
+        assertThat(actual.size()).isEqualTo(3);
+    }
 
     @Test
-    void findByMemberNumber() {
+    void givenValidMemberNumber_whenFindByMemberNumber_thenReturnCustomer() {
+
         //given
-        String memberNumber = "MEM234569";
+        String memberNumber = "MEM123";
 
+        //when
+        var actual = underTest.findByMemberNumber(memberNumber);
+
+        //then
+        assertThat(actual).isPresent();
+        actual.ifPresent(customer -> assertThat(customer.getMemberNumber()).isEqualTo(memberNumber));
     }
 
     @Test
-    void existsByEmail() {
-    }
+    void givenInvalidMemberNumber_whenFindByMemberNumber_thenThrowException() {
+        //given
+        String memberNumber = "000";
 
+        //when
+        var actual = underTest.findByMemberNumber(memberNumber);
+
+        //then
+        assertThat(actual).isNotPresent();
+        assertThatThrownBy(actual::get)
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("No value present");
+    }
 
     @Test
-    void testFindByMemberNumber() {
+    void givenValidEmail_whenExistsByEmail_thenReturnTrue() {
+        //given
+        String email = "customer2@presta.com";
+
+        //when
+        var actual = underTest.existsByEmail(email);
+
+        //then
+        assertThat(actual).isTrue();
     }
 
     @Test
-    void testExistsByEmail() {
+    void givenInvalidValidEmail_whenExistsByEmail_thenReturnFalse() {
+        //given
+        String email = "000@gmail.com";
+
+        //when
+        var actual = underTest.existsByEmail(email);
+
+        //then
+        assertThat(actual).isFalse();
     }
+
 }

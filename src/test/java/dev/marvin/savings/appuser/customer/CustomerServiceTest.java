@@ -3,14 +3,21 @@ package dev.marvin.savings.appuser.customer;
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
-import dev.marvin.savings.auth.confirmationtoken.ConfirmationTokenService;
+import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.notifications.email.EmailService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
@@ -35,17 +42,17 @@ class CustomerServiceTest {
     @Test
     void givenCustomerRegistrationRequest_whenRegisterCustomer_thenReturnEmailConfirmationToken() {
         //given
-        String username = "marvin@presta";
-        String name = "Marvin Nyingi";
-        String email = "marvin@example.com";
-        String password = "password";
+        var username = "marvin@presta";
+        var name = "Marvin Nyingi";
+        var email = "marvin@example.com";
+        var password = "password";
 
         final String REGISTRATION_RESPONSE = "A verification email has been sent. Please verify email to activate account";
 
         var request = new CustomerRegistrationRequest(username, name, email, password);
 
-        BDDMockito.given(appUserRepository.existsByUsername(request.username())).willReturn(false);
-        BDDMockito.given(customerRepository.existsByEmail(request.email())).willReturn(false);
+        given(appUserRepository.existsByUsername(request.username())).willReturn(false);
+        given(customerRepository.existsByEmail(request.email())).willReturn(false);
 
         var appUser = AppUser.builder()
                 .username(username)
@@ -59,21 +66,22 @@ class CustomerServiceTest {
                 .appUser(appUser)
                 .build();
 
-        BDDMockito.given(appUserRepository.save(Mockito.any(AppUser.class))).willReturn(appUser);
+        given(appUserRepository.save(any(AppUser.class))).willReturn(appUser);
 
-        BDDMockito.given(customerRepository.save(Mockito.any(Customer.class))).willReturn(customer);
+        given(customerRepository.save(any(Customer.class))).willReturn(customer);
 
         //when
         var actual = customerService.registerCustomer(request);
 
         ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
 
-        BDDMockito.verify(customerRepository).save(customerArgumentCaptor.capture());
+        verify(customerRepository).save(customerArgumentCaptor.capture());
 
-        Assertions.assertEquals(request.email(), customerArgumentCaptor.getValue().getEmail());
+        assertEquals(request.email(), customerArgumentCaptor.getValue().getEmail());
+        assertEquals(request.fullName(), customerArgumentCaptor.getValue().getName());
 
-        org.assertj.core.api.Assertions.assertThat(actual).isNotBlank();
-        org.assertj.core.api.Assertions.assertThat(actual).satisfies(s -> Assertions.assertEquals(s, REGISTRATION_RESPONSE));
+        assertThat(actual).isNotBlank();
+        assertThat(actual).satisfies(s -> assertEquals(s, REGISTRATION_RESPONSE));
     }
 
     @Test

@@ -3,9 +3,8 @@ package dev.marvin.savings.appuser.customer;
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
-import dev.marvin.savings.auth.confirmationtoken.ConfirmationTokenService;
+import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.exception.NotificationException;
 import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
@@ -34,6 +33,8 @@ public class CustomerService implements ICustomerService {
     @Override
     @Transactional
     public String registerCustomer(CustomerRegistrationRequest registrationRequest) {
+
+        final String REGISTRATION_RESPONSE = "A verification email has been sent. Please verify email to activate account";
 
         //check if username exists
         if (appUserRepository.existsByUsername(registrationRequest.username())) {
@@ -64,7 +65,6 @@ public class CustomerService implements ICustomerService {
                     .build();
 
             var savedCustomer = customerRepository.save(customer);
-            log.info("Customer saved: {}", savedCustomer);
 
             //generate email confirmation token
             String emailConfirmationToken = confirmationTokenService.generateToken(savedCustomer);
@@ -77,12 +77,9 @@ public class CustomerService implements ICustomerService {
             String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), link);
 
             //send email
-            try {
-                emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
-                return "A verification email has been sent. Please verify email to activate account";
-            } catch (Exception e) {
-                throw new NotificationException("Mail Service is Down");
-            }
+            emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
+
+            return REGISTRATION_RESPONSE;
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -123,7 +120,7 @@ public class CustomerService implements ICustomerService {
     }
 
     private String generateMemberNumber() {
-        return "MEM" + UUID.randomUUID().toString().substring(0, 7).toUpperCase();
+        return "MEM" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
 }
 
