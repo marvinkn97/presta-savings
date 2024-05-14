@@ -1,7 +1,7 @@
 package dev.marvin.savings.appuser;
 
 import dev.marvin.savings.AbstractTestContainersTest;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,116 +9,116 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AppUserRepositoryTest extends AbstractTestContainersTest {
     @Autowired
-    AppUserRepository appUserRepository;
+    AppUserRepository underTest;
+
+    @BeforeEach
+    void setUp() {
+        underTest.deleteAll();
+    }
 
     @Test
     @DisplayName(value = "Test Case for Saving AppUser")
     void givenAppUserObject_whenSave_thenReturnSavedAppUser() {
         //given
-        AppUser appUser = AppUser.builder()
+        var admin = AppUser.builder()
                 .username("admin@presta")
+                .password("password")
+                .role(Role.ADMIN)
                 .build();
 
         //when
-        var actual = appUserRepository.save(appUser);
+        var actual = underTest.save(admin);
 
         //then
-        Assertions.assertThat(actual).isNotNull();
-        Assertions.assertThat(actual.getId()).isGreaterThan(0);
+        assertThat(actual).isNotNull();
+        assertThat(actual.getId()).isGreaterThan(0);
+        assertThat(actual).satisfies(appUser -> {
+            assertThat(appUser.getUsername()).isEqualTo(admin.getUsername());
+            assertThat(appUser.getRole()).isEqualTo(admin.getRole());
+        });
     }
 
     @Test
     @DisplayName(value = "Test Case for find all AppUsers")
     void givenAppUserList_whenFindAll_thenReturnAppUserList() {
 
-        appUserRepository.deleteAll();
-
         //given
-        AppUser admin = AppUser.builder()
+        var admin = AppUser.builder()
                 .username("admin@presta")
+                .password("password")
+                .role(Role.ADMIN)
                 .build();
 
-        AppUser csr = AppUser.builder()
+        var csr = AppUser.builder()
                 .username("csr@presta")
+                .password("password")
+                .role(Role.CSR)
                 .build();
 
-        AppUser customer = AppUser.builder()
+        var customer = AppUser.builder()
                 .username("customer@presta")
+                .password("password")
+                .role(Role.CUSTOMER)
                 .build();
 
         var users = List.of(admin, csr, customer);
 
-        appUserRepository.saveAll(users);
+        underTest.saveAll(users);
 
         //when
-        var actual = appUserRepository.findAll();
+        var actual = underTest.findAll();
 
         //then
-        Assertions.assertThat(actual.size()).isGreaterThan(0);
-        Assertions.assertThat(actual.size()).isEqualTo(3);
+        assertThat(actual.size()).isGreaterThan(0);
+        assertThat(actual.size()).isEqualTo(3);
     }
 
-//    @Test
-//    @DisplayName(value = "Test Case for Positive find AppUser by username")
-//    void givenUsername_whenFindByUsername_thenReturnSavedAppUser() {
-//        //given
-//        appUserRepository.save(appUser);
-//
-//        //when
-//        var actualOptional = appUserRepository.findByUsername(appUser.getUsername());
-//        var actual = actualOptional.get();
-//
-//        //then
-//        Assertions.assertThat(actualOptional).isPresent();
-//        Assertions.assertThat(actual.getUsername()).isEqualTo(appUser.getUsername());
-//    }
-//
-//    @Test
-//    @DisplayName(value = "Test Case for Negative find AppUser by username")
-//    void givenNonExistentUsername_whenFindByUsername_thenThrowUserNameNotFoundException() {
-//        //given
-//        String username = "000";
-//
-//        //when
-//        var actualOptional = appUserRepository.findByUsername(username);
-//
-//        //then
-//        Assertions.assertThat(actualOptional).isNotPresent();
-//        Assertions.assertThatThrownBy(actualOptional::get)
-//                .isInstanceOf(NoSuchElementException.class)
-//                .hasMessage("No value present");
-//
-//    }
-//
-//    @Test
-//    @DisplayName(value = "Test Case for Positive Exists AppUser by Username ")
-//    void givenUsername_whenExistsByUsername_thenReturnTrue() {
-//        //given
-//
-//        appUserRepository.save(appUser);
-//
-//        //when
-//        var actual = appUserRepository.existsByUsername(appUser.getUsername());
-//
-//        //then
-//        Assertions.assertThat(actual).isEqualTo(true);
-//    }
-//
-//    @Test
-//    @DisplayName(value = "Test Case for Negative Exists AppUser by Username ")
-//    void givenNonExistentUsername_whenExistsByUsername_thenReturnFalse() {
-//        //given
-//        String username = "000";
-//
-//        //when
-//        var actual = appUserRepository.existsByUsername(username);
-//
-//        //then
-//        Assertions.assertThat(actual).isEqualTo(false);
-//    }
+    @Test
+    @DisplayName(value = "Test Case for Positive find AppUser by username")
+    void givenUsername_whenFindByUsername_thenReturnSavedAppUser() {
+        //given
+        String username = "customer@presta";
+
+        AppUser customer = AppUser.builder()
+                .username(username)
+                .password("password")
+                .role(Role.CUSTOMER)
+                .build();
+
+        underTest.save(customer);
+
+        //when
+        var actualOptional = underTest.findByUsername(username);
+
+        //then
+        actualOptional.ifPresent(appUser ->
+                assertThat(appUser.getUsername()).isEqualTo(username)
+        );
+        assertThat(actualOptional).isPresent();
+    }
+
+    @Test
+    @DisplayName(value = "Test Case for Negative find AppUser by username")
+    void givenInvalidUsername_whenFindByUsername_thenThrowException() {
+        //given
+        String username = "000";
+
+        //when
+        var actualOptional = underTest.findByUsername(username);
+
+        //then
+        assertThatThrownBy(actualOptional::get)
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("No value present");
+
+    }
 }

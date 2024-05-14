@@ -46,19 +46,19 @@ public class AppUserIntegrationTest {
     void givenListOfAppUsers_whenGetAllAppUsers_thenReturnListOfAppUsers() throws Exception {
 
         //given
-        AppUser admin = AppUser.builder()
+        var admin = AppUser.builder()
                 .username("admin@presta")
                 .password("password")
                 .role(Role.ADMIN)
                 .build();
 
-        AppUser csr = AppUser.builder()
+        var csr = AppUser.builder()
                 .username("csr@presta")
                 .password("password")
                 .role(Role.CSR)
                 .build();
 
-        AppUser customer = AppUser.builder()
+        var customer = AppUser.builder()
                 .username("customer@presta")
                 .password("password")
                 .role(Role.CUSTOMER)
@@ -69,11 +69,10 @@ public class AppUserIntegrationTest {
 
 
         var authentication = new UsernamePasswordAuthenticationToken(
-                admin.getUsername(), admin.getPassword(), admin.getAuthorities()
+                admin.getUsername(),admin.getPassword(), admin.getAuthorities()
         );
 
-
-        String token = jwtService.generateJwtToken(authentication);
+        var token = jwtService.generateJwtToken(authentication);
 
         webTestClient.get().uri("/api/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
