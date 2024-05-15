@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class AppUserService implements UserDetailsService, IAppUserService {
+
     private final AppUserRepository appUserRepository;
 
     @Override

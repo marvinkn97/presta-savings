@@ -20,6 +20,7 @@ import java.util.List;
 @Tag(name = "Customer Resource", description = "Customer Management")
 @Slf4j
 public class CustomerController {
+
     private final CustomerService customerService;
 
     @PostMapping(value = "/register")

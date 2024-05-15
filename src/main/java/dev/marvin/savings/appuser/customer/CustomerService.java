@@ -5,7 +5,6 @@ import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
-import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -46,51 +45,39 @@ public class CustomerService implements ICustomerService {
             throw new DuplicateResourceException("email already taken");
         }
 
-        try {
-            var appUser = AppUser.builder()
-                    .username(registrationRequest.username())
-                    .password(passwordEncoder.encode(registrationRequest.password()))
-                    .role(Role.CUSTOMER)
-                    .createdAt(LocalDateTime.now())
-                    .isNotLocked(true)
-                    .build();
+        var appUser = AppUser.builder()
+                .username(registrationRequest.username())
+                .password(passwordEncoder.encode(registrationRequest.password()))
+                .role(Role.CUSTOMER)
+                .createdAt(LocalDateTime.now())
+                .isNotLocked(true)
+                .build();
 
-            var savedAppUser = appUserRepository.save(appUser);
+        var savedAppUser = appUserRepository.save(appUser);
 
-            var customer = Customer.builder()
-                    .memberNumber(generateMemberNumber())
-                    .name(registrationRequest.fullName())
-                    .email(registrationRequest.email())
-                    .appUser(savedAppUser)
-                    .build();
+        var customer = Customer.builder()
+                .memberNumber(generateMemberNumber())
+                .name(registrationRequest.fullName())
+                .email(registrationRequest.email())
+                .appUser(savedAppUser)
+                .build();
 
-            var savedCustomer = customerRepository.save(customer);
+        var savedCustomer = customerRepository.save(customer);
 
-            //generate email confirmation token
-            String emailConfirmationToken = confirmationTokenService.generateToken(savedCustomer);
+        //generate email confirmation token
+        String emailConfirmationToken = confirmationTokenService.generateToken(savedCustomer);
 
-            //TODO: change this link
-            String link = "http://localhost:8081/savings/api/v1/auth/register/confirm?token=%s".formatted(emailConfirmationToken);
+        //TODO: change this link
+        String link = "http://localhost:8081/savings/api/v1/auth/register/confirm?token=%s".formatted(emailConfirmationToken);
 
 
-            //build email template
-            String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), link);
+        //build email template
+        String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), link);
 
-            //send email
-            emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
+        //send email
+        emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
 
-            return REGISTRATION_RESPONSE;
-
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RequestValidationException("Error saving customer");
-        }
-
-    }
-
-    @Override
-    public boolean existCustomerWithEmail(String email) {
-        return customerRepository.existsByEmail(email);
+        return REGISTRATION_RESPONSE;
     }
 
     @Override

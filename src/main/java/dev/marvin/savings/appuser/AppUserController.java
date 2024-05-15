@@ -26,6 +26,4 @@ public class AppUserController {
         List<AppUser> users = appUserService.getAllAppUsers();
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
-
-
 }

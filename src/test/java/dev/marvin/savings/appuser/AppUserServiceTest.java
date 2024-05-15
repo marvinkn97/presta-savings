@@ -1,7 +1,6 @@
 package dev.marvin.savings.appuser;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,39 +25,61 @@ class AppUserServiceTest {
     @InjectMocks
     AppUserService underTest;
 
+    AppUser admin;
+
+    AppUser csr;
+
+    AppUser customer;
+
+    List<AppUser> users;
+
     @BeforeEach
     void setUp() {
         appUserRepository.deleteAll();
+
+         admin = AppUser.builder()
+                .username("admin@presta")
+                .password("password")
+                .role(Role.ADMIN)
+                .build();
+
+         csr = AppUser.builder()
+                .username("csr@presta")
+                .password("password")
+                .role(Role.CSR)
+                .build();
+
+        customer = AppUser.builder()
+                .username("customer@presta")
+                .password("password")
+                .role(Role.CUSTOMER)
+                .build();
+
+        users = List.of(admin, csr, customer);
+
+        appUserRepository.saveAll(users);
     }
 
     @Test
-    @DisplayName(value = "Test Case for Positive getting AppUser by Username")
     void givenUsername_whenLoadUserByUsername_thenReturnUser() {
 
         //given
         String username = "admin@presta";
 
-        var appUser = AppUser.builder()
-                .username(username)
-                .password("password")
-                .role(Role.ADMIN)
-                .build();
-
         //when
-        when(appUserRepository.findByUsername(username)).thenReturn(Optional.of(appUser));
+        when(appUserRepository.findByUsername(username)).thenReturn(Optional.of(admin));
 
         var userDetails = underTest.loadUserByUsername(username);
 
         // then
-        assertEquals(username, userDetails.getUsername());
+        assertEquals(username, admin.getUsername());
         assertThat(userDetails).satisfies(u -> {
-            assertEquals(appUser.getUsername(), u.getUsername());
-            assertEquals(appUser.getAuthorities(), u.getAuthorities());
+            assertEquals(u.getUsername(), admin.getUsername());
+            assertEquals(u.getAuthorities(), admin.getAuthorities());
         });
     }
 
     @Test
-    @DisplayName(value = "Test Case for Negative getting AppUser by Username")
     void givenNonExistentUsername_whenLoadUserByUsername_thenReturnUser() {
         var username = "000";
 
@@ -69,32 +90,7 @@ class AppUserServiceTest {
     }
 
     @Test
-    @DisplayName(value = "Test Case for getting all AppUsers")
     void givenAppUserList_whenFindAll_thenReturnAppUserList() {
-
-        //given
-        var admin = AppUser.builder()
-                .username("admin@presta")
-                .password("password")
-                .role(Role.ADMIN)
-                .build();
-
-        var csr = AppUser.builder()
-                .username("csr@presta")
-                .password("password")
-                .role(Role.CSR)
-                .build();
-
-        var customer = AppUser.builder()
-                .username("customer@presta")
-                .password("password")
-                .role(Role.CUSTOMER)
-                .build();
-
-        var users = List.of(admin, csr, customer);
-
-        appUserRepository.saveAll(users);
-
 
         when(appUserRepository.findAll()).thenReturn(users);
 
