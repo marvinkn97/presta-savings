@@ -52,7 +52,6 @@ public class SavingsApplication {
                     .build();
 
             appUserRepository.save(CSR);
-
         };
     }
 

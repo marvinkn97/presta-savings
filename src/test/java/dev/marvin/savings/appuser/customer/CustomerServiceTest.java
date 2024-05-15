@@ -46,8 +46,6 @@ class CustomerServiceTest {
     @InjectMocks
     CustomerService underTest;
 
-
-
     @Test
     void givenCustomerRegistrationRequest_whenRegisterCustomer_thenReturnEmailConfirmationToken() {
         //given
@@ -152,11 +150,8 @@ class CustomerServiceTest {
 
 
     @Test
-    void existCustomerWithEmail() {
-    }
-
-    @Test
     void getAllCustomers() {
+
     }
 
     @Test

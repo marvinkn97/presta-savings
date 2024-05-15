@@ -46,9 +46,6 @@ public class Customer implements Serializable {
     @Column(name = "kra_pin")
     private String kraPin;
 
-    @Column(name = "profile_image_id")
-    private String profileImageId;
-
     @Column(insertable = false)
     private LocalDateTime updatedAt;
 

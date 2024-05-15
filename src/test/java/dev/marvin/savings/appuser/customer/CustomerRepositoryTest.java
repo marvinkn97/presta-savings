@@ -44,7 +44,6 @@ class CustomerRepositoryTest extends AbstractTestContainersTest {
         var customers = List.of(c1, c2, c3);
 
         underTest.saveAll(customers);
-
     }
 
     @Test

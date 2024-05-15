@@ -17,7 +17,5 @@ public record CustomerUpdateRequest(
 
         String mobile,
 
-        String governmentId,
-
         String profileImage) {
 }

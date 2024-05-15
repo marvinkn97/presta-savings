@@ -32,13 +32,13 @@ public class CustomerController {
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('CSR')")
-    public ResponseEntity<List<Customer>> getAllCustomers() {
-        List<Customer> customers = customerService.getAllCustomers();
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers() {
+        List<CustomerResponse> customers = customerService.getAllCustomers();
         return ResponseEntity.status(HttpStatus.OK).body(customers);
     }
 
     @GetMapping(value = "/{memberNumber}")
-    public Customer getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
+    public CustomerResponse getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
         return customerService.getCustomerByMemberNumber(memberNumber);
     }
 

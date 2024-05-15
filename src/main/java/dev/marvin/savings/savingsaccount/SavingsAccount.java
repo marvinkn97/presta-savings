@@ -2,7 +2,6 @@ package dev.marvin.savings.savingsaccount;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.marvin.savings.appuser.customer.Customer;
-import dev.marvin.savings.shared.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "t_savings_accounts")
-public class SavingsAccount extends BaseEntity implements Serializable {
+public class SavingsAccount implements Serializable {
     @Id
     @GeneratedValue
     @Column(updatable = false, nullable = false)

@@ -1,16 +1,19 @@
 package dev.marvin.savings.appuser.customer;
 
+import lombok.Builder;
+
+import java.time.LocalDateTime;
+
+@Builder
 public record CustomerResponse(
         String username,
-        boolean isNotLocked,
-        boolean isEnabled,
         String memberNumber,
         String email,
-        String emailConfirmed,
+        boolean emailConfirmed,
         String mobileNumber,
-        String mobileConfirmed,
+        boolean mobileConfirmed,
         Integer governmentId,
         String kraPin,
-        String profileImageId
+        LocalDateTime createdAt
 ) {
 }
