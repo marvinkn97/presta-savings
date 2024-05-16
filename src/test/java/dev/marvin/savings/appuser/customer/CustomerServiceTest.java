@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
@@ -113,7 +115,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void givenExistentUsername_whenRegisterCustomer_thenWillThrowException() {
+    void givenTakenUsername_whenRegisterCustomer_thenWillThrowException() {
 
         //given
         var username = "marvin@presta";
@@ -131,7 +133,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void givenExistentEmail_whenRegisterCustomer_thenWillThrowException() {
+    void givenTakenEmail_whenRegisterCustomer_thenWillThrowException() {
 
         //given
         var username = "marvin@presta";
@@ -150,8 +152,57 @@ class CustomerServiceTest {
 
 
     @Test
-    void getAllCustomers() {
+    void givenCustomerList_whenGetAllCustomers_thenReturnCustomerList() {
+        var u1 = AppUser.builder()
+                .username("customer@presta")
+                .password("password")
+                .role(Role.CUSTOMER)
+                .build();
 
+        var u2 = AppUser.builder()
+                .username("customer@presta")
+                .password("password")
+                .role(Role.CUSTOMER)
+                .build();
+
+        var u3 = AppUser.builder()
+                .username("customer@presta")
+                .password("password")
+                .role(Role.CUSTOMER)
+                .build();
+
+        var c1 = Customer.builder()
+                .email("customer1@presta.com")
+                .name("Customer One")
+                .memberNumber("MEM123")
+                .appUser(u1)
+                .build();
+
+        var c2 = Customer.builder()
+                .email("customer2@presta.com")
+                .name("Customer Two")
+                .memberNumber("MEM456")
+                .appUser(u2)
+                .build();
+
+        var c3 = Customer.builder()
+                .email("customer3@presta.com")
+                .name("Customer Three")
+                .memberNumber("MEM789")
+                .appUser(u3)
+                .build();
+
+        var customers = List.of(c1, c2, c3);
+        customerRepository.saveAll(customers);
+
+        when(customerRepository.findAll()).thenReturn(customers);
+
+        //when
+        var actual = underTest.getAllCustomers();
+
+        //then
+        assertThat(actual).isNotEmpty();
+        assertThat(actual.size()).isEqualTo(3);
     }
 
     @Test
@@ -164,5 +215,9 @@ class CustomerServiceTest {
 
     @Test
     void deleteCustomer() {
+    }
+
+    @Test
+    void name() {
     }
 }
