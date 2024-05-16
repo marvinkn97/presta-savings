@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -125,7 +126,7 @@ class CustomerServiceTest {
 
         var request = new CustomerRegistrationRequest(username, name, email, password);
 
-       given(appUserRepository.existsByUsername(request.username())).willReturn(true);
+        given(appUserRepository.existsByUsername(request.username())).willReturn(true);
 
         assertThatThrownBy(() -> underTest.registerCustomer(request))
                 .isInstanceOf(DuplicateResourceException.class)
@@ -153,6 +154,7 @@ class CustomerServiceTest {
 
     @Test
     void givenCustomerList_whenGetAllCustomers_thenReturnCustomerList() {
+
         var u1 = AppUser.builder()
                 .username("customer@presta")
                 .password("password")
@@ -206,7 +208,35 @@ class CustomerServiceTest {
     }
 
     @Test
-    void getCustomerByMemberNumber() {
+    void givenValidMemberNumber_whenGetCustomerByMemberNumber_thenReturnCustomer() {
+
+        //given
+        var memberNumber = "MEM456";
+
+        var u1 = AppUser.builder()
+                .username("customer@presta")
+                .password("password")
+                .role(Role.CUSTOMER)
+                .build();
+
+        var c1 = Customer.builder()
+                .email("customer1@presta.com")
+                .name("Customer One")
+                .memberNumber(memberNumber)
+                .appUser(u1)
+                .build();
+
+        when(customerRepository.findByMemberNumber(memberNumber)).thenReturn(Optional.of(c1));
+
+        //when
+        var actual = underTest.getCustomerByMemberNumber(memberNumber);
+
+        //then
+        assertThat(actual).satisfies(c -> {
+            assertThat(c.memberNumber()).isEqualTo(memberNumber);
+            assertThat(c.username()).isEqualTo(c1.getAppUser().getUsername());
+            assertThat(c.email()).isEqualTo(c1.getEmail());
+        });
     }
 
     @Test
@@ -217,7 +247,4 @@ class CustomerServiceTest {
     void deleteCustomer() {
     }
 
-    @Test
-    void name() {
-    }
 }
