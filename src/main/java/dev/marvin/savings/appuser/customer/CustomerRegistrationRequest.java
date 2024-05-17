@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(name = "Customer Registration Request")
 public record CustomerRegistrationRequest(
-        @NotBlank(message = "username is required")
-        @NotEmpty(message = "username is required")
+        @NotBlank(message = "username cannot be blank")
+        @NotEmpty(message = "username cannot be empty")
+        @NotNull(message = "username cannot be null")
         @Schema(name = "username", defaultValue = "marvin")
         String username,
 

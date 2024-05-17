@@ -23,11 +23,13 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping(value = "/register")
+    @PostMapping
     @Operation(method = "POST", description = "Register Customer")
     public ResponseEntity<String> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest){
-        var customer = customerService.registerCustomer(registrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        log.info("Registration Request: {}", registrationRequest);
+        var response = customerService.registerCustomer(registrationRequest);
+        log.info("Response: {}", response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
