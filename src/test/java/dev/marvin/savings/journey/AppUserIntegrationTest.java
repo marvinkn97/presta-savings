@@ -86,7 +86,8 @@ public class AppUserIntegrationTest {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(3)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].username", CoreMatchers.is("admin@presta")));
 
     }
 

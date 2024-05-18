@@ -31,17 +31,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(InsufficientAmountException.class)
-    public ResponseEntity<ErrorResponse> handleInsufficientAmountException(InsufficientAmountException e) {
-        var error = ErrorResponse.builder()
-                .timestamp(new Date())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .message(e.getMessage())
-                .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
-
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateResourceException(DuplicateResourceException e) {
         var error = ErrorResponse.builder()

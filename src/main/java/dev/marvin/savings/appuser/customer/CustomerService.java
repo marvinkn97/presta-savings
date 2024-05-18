@@ -115,7 +115,7 @@ public class CustomerService implements ICustomerService {
     }
 
     private String generateMemberNumber() {
-        return "MEM" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        return "MEM" + UUID.randomUUID().toString().substring(0, 7).toUpperCase();
     }
 
     private Customer getCustomerByField(String fieldName){

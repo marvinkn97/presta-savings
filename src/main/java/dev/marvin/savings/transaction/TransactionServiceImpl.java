@@ -1,22 +1,21 @@
 package dev.marvin.savings.transaction;
 
-import dev.marvin.savings.exception.InsufficientAmountException;
+import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.savingsaccount.SavingsAccount;
 import dev.marvin.savings.savingsaccount.SavingsAccountRepository;
-import dev.marvin.savings.util.UniqueIDSupplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
     private final SavingsAccountRepository savingsAccountRepository;
     private final TransactionRepository transactionRepository;
-    private final UniqueIDSupplier<Transaction> transactionUniqueIDSupplier = new UniqueIDSupplier<>(Transaction.class);
 
     @Override
     public Transaction performTransaction(TransactionRequest transactionRequest) {
@@ -28,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal amount = transactionRequest.amount();
 
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new InsufficientAmountException("Amount should be greater than zero");
+            throw new RequestValidationException("Amount should be greater than zero");
         }
 
         if (transactionType.equals(TransactionType.DEPOSIT)) {
@@ -37,13 +36,13 @@ public class TransactionServiceImpl implements TransactionService {
             if (savingsAccount.getBalance().compareTo(amount) >= 0) {
                 savingsAccount.setBalance(savingsAccount.getBalance().subtract(amount));
             } else {
-                throw new InsufficientAmountException("Insufficient Account Balance");
+                throw new RequestValidationException("Insufficient Account Balance");
 
             }
         }
 
         Transaction transaction = Transaction.builder()
-                .transactionCode(transactionUniqueIDSupplier.get())
+                .transactionCode(generateTransactionCode())
                 .transactionType(transactionType)
                 .paymentMethod(paymentMethod)
                 .amount(amount)
@@ -69,5 +68,10 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findByTransactionCode(transactionCode)
                 .orElseThrow(()-> new ResourceNotFoundException("transaction with given code [%s] does not exit".formatted(transactionCode)));
     }
+
+    private String generateTransactionCode() {
+        return "TX" + UUID.randomUUID().toString().substring(0, 7).toUpperCase();
+    }
+
 
 }
