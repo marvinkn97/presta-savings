@@ -1,9 +1,9 @@
 package dev.marvin.savings.notifications.email;
 
-import dev.marvin.savings.exception.NotificationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -13,6 +13,7 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MailDevEmailService implements EmailService {
     private final JavaMailSender javaMailSender;
 
@@ -20,10 +21,10 @@ public class MailDevEmailService implements EmailService {
     @Async
     public void sendEmail(String to, String message) {
 
-        try {
-            MimeMessage mailMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage);
+        MimeMessage mailMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage);
 
+        try {
             messageHelper.setFrom("savings@presta.co.ke");
             messageHelper.setSubject("Confirm Email");
             messageHelper.setText(message, true);
@@ -31,10 +32,8 @@ public class MailDevEmailService implements EmailService {
             messageHelper.setSentDate(new Date());
 
             javaMailSender.send(mailMessage);
-
         } catch (MessagingException e) {
-            throw new NotificationException("Email not sent");
+            log.info(e.getMessage());
         }
-
     }
 }

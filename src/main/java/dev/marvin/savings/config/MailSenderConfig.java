@@ -11,8 +11,7 @@ import java.util.Properties;
 public class MailSenderConfig {
 
     @Bean
-    public JavaMailSender javaMailSender(){
-
+    public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("localhost");
         mailSender.setPort(1025);
@@ -22,7 +21,7 @@ public class MailSenderConfig {
         props.put("mail.smtp.auth", "false");
         props.put("mail.smtp.starttls.enable", "false");
         props.put("mail.smtp.starttls.required", "false");
-        props.put("mail.debug", "true"); // Enable debug mode if needed
+        props.put("mail.debug", "true");
 
         return mailSender;
     }

@@ -5,10 +5,12 @@ import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import dev.marvin.savings.exception.NotificationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +59,7 @@ public class CustomerService implements ICustomerService {
         var savedAppUser = appUserRepository.save(appUser);
 
         var customer = Customer.builder()
-                .memberNumber(generateMemberNumber())
+                .memberNumber(UUID.randomUUID().toString().substring(0, 7).toUpperCase())
                 .name(registrationRequest.fullName())
                 .email(registrationRequest.email())
                 .appUser(savedAppUser)
@@ -76,7 +78,12 @@ public class CustomerService implements ICustomerService {
         String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), link);
 
         //send email
-        emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
+        try {
+            emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
+        } catch (MailSendException e) {
+            log.info(e.getMessage());
+            throw new NotificationException("Mail could not be sent");
+        }
 
         return REGISTRATION_RESPONSE;
     }
@@ -95,35 +102,32 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public CustomerResponse getCustomerByMemberNumber(String memberNumber) {
-        var customer = getCustomerByField(memberNumber);
+        var customer = getCustomer(memberNumber);
         return mapToDTO(customer);
     }
 
     @Override
     @Transactional
     public Customer updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest) {
-        String name = updateRequest.name();
-
-        var customer = getCustomerByField(memberNumber);
+        var customer = getCustomer(memberNumber);
         return null;
     }
 
     @Override
     @Transactional
     public void deleteCustomer(String memberNumber) {
-
+        var customer = getCustomer(memberNumber);
+        var appUser = customer.getAppUser();
+        customerRepository.delete(customer);
+        appUserRepository.delete(appUser);
     }
 
-    private String generateMemberNumber() {
-        return "MEM" + UUID.randomUUID().toString().substring(0, 7).toUpperCase();
+    private Customer getCustomer(String memberNumber) {
+        return customerRepository.findByMemberNumber(memberNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("customer with given details [%s] not found".formatted(memberNumber)));
     }
 
-    private Customer getCustomerByField(String fieldName){
-      return customerRepository.findByMemberNumber(fieldName)
-                .orElseThrow(() -> new ResourceNotFoundException("customer with given details [%s] not found".formatted(fieldName)));
-    }
-
-    private CustomerResponse mapToDTO(Customer customer){
+    private CustomerResponse mapToDTO(Customer customer) {
         return CustomerResponse.builder()
                 .memberNumber(customer.getMemberNumber())
                 .username(customer.getAppUser().getUsername())

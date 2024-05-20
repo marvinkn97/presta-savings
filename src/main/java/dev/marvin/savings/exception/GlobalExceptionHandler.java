@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,9 +13,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("NullableProblems")
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -58,11 +57,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotificationException(NotificationException e) {
         var error = ErrorResponse.builder()
                 .timestamp(new Date())
-                .status(HttpStatus.EXPECTATION_FAILED.value())
-                .reason(HttpStatus.EXPECTATION_FAILED.getReasonPhrase())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .reason(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .message(e.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(error);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 
     }
 
@@ -70,7 +69,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
 
-        List<ObjectError> errorList = ex.getBindingResult().getAllErrors();
+        var errorList = ex.getBindingResult().getAllErrors();
 
         errorList.forEach(error -> {
             String fieldName = ((FieldError) error).getField();
