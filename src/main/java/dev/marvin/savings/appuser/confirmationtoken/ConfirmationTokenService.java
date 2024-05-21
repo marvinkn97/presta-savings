@@ -24,10 +24,10 @@ public class ConfirmationTokenService {
     public String generateToken(Customer customer) {
 
         if (ObjectUtils.isEmpty(customer)) {
-            throw new RequestValidationException("Not Registered");
+            throw new RequestValidationException("customer does not exist");
         }
 
-        String token = UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString().substring(0,7).toUpperCase();
 
         ConfirmationToken confirmationToken = ConfirmationToken
                 .builder()

@@ -1,6 +1,7 @@
 package dev.marvin.savings.appuser;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,13 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
-@Tag(name = "User Resource", description = "User Management")
+@Tag(name = "AppUser Resource", description = "User Management APIs")
 public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('ADMIN')")
     @Operation(method = "GET", description = "GET ALL APP_USERS")
+    @ApiResponse(responseCode = "200")
     public ResponseEntity<List<AppUser>> getAllAppUsers() {
         List<AppUser> users = appUserService.getAllAppUsers();
         return ResponseEntity.status(HttpStatus.OK).body(users);

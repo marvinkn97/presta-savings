@@ -54,8 +54,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize
+                                .requestMatchers( "/v3/api-docs/**", // OpenAPI documentation
+                                        "/swagger-ui/**",  // Swagger UI static files
+                                        "/swagger-ui.html", // Swagger UI HTML
+                                        "/swagger-resources/**", // Swagger resources
+                                        "/webjars/**" // Webjars for Swagger
+                                ).permitAll()
                                 .requestMatchers(HttpMethod.POST, "api/v1/auth/login").permitAll()
-                                .requestMatchers(HttpMethod.POST, "api/v1/customers").permitAll()
+                                .requestMatchers(HttpMethod.POST, "api/v1/customers/registration/**").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {

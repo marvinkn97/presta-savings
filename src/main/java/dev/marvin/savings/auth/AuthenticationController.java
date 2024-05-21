@@ -19,13 +19,6 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-
-    @RequestMapping(value = "/register/confirm", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<String> confirmEmailToken(@RequestParam(name = "token") String token) {
-        authenticationService.confirmEmailToken(token);
-        return ResponseEntity.ok("Email Confirmed Successfully");
-    }
-
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.username(), authenticationRequest.password()));

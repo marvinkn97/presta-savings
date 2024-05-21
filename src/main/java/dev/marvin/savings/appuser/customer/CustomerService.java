@@ -70,12 +70,8 @@ public class CustomerService implements ICustomerService {
         //generate email confirmation token
         String emailConfirmationToken = confirmationTokenService.generateToken(savedCustomer);
 
-        //TODO: change this link
-        String link = "http://localhost:8081/savings/api/v1/auth/register/confirm?token=%s".formatted(emailConfirmationToken);
-
-
         //build email template
-        String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), link);
+        String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), emailConfirmationToken);
 
         //send email
         try {
@@ -86,6 +82,10 @@ public class CustomerService implements ICustomerService {
         }
 
         return REGISTRATION_RESPONSE;
+    }
+
+    public void confirmEmailToken(String token) {
+        confirmationTokenService.validateAndConfirmToken(token);
     }
 
     @Override

@@ -20,8 +20,8 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RequestValidationException.class)
-    public ResponseEntity<ErrorResponse> handleRequestValidationException(RequestValidationException e) {
-        var error = ErrorResponse.builder()
+    public ResponseEntity<HttpResponse> handleRequestValidationException(RequestValidationException e) {
+        var error = HttpResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
@@ -31,8 +31,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<ErrorResponse> handleDuplicateResourceException(DuplicateResourceException e) {
-        var error = ErrorResponse.builder()
+    public ResponseEntity<HttpResponse> handleDuplicateResourceException(DuplicateResourceException e) {
+        var error = HttpResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.CONFLICT.value())
                 .reason(HttpStatus.CONFLICT.getReasonPhrase())
@@ -42,8 +42,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
-        var error = ErrorResponse.builder()
+    public ResponseEntity<HttpResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        var error = HttpResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.NOT_FOUND.value())
                 .reason(HttpStatus.NOT_FOUND.getReasonPhrase())
@@ -54,8 +54,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NotificationException.class)
-    public ResponseEntity<ErrorResponse> handleNotificationException(NotificationException e) {
-        var error = ErrorResponse.builder()
+    public ResponseEntity<HttpResponse> handleNotificationException(NotificationException e) {
+        var error = HttpResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .reason(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())

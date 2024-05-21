@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface ICustomerService {
     String registerCustomer(CustomerRegistrationRequest registrationRequest);
+    void confirmEmailToken(String token);
     List<CustomerResponse> getAllCustomers();
     CustomerResponse getCustomerByMemberNumber(String memberNumber);
     Customer updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest);
