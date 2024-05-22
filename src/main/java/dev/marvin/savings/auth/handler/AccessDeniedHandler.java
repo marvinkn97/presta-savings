@@ -1,7 +1,7 @@
 package dev.marvin.savings.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.marvin.savings.exception.HttpResponse;
+import dev.marvin.savings.exception.ServerResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,17 +23,17 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        HttpResponse httpResponse = HttpResponse.builder()
+        ServerResponse serverResponse = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.FORBIDDEN.value())
                 .reason(HttpStatus.FORBIDDEN.getReasonPhrase())
-                .message("You do not have permission to access this data")
+                .data("You do not have permission to access this data")
                 .build();
 
         OutputStream outputStream = response.getOutputStream();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(outputStream, httpResponse);
+        mapper.writeValue(outputStream, serverResponse);
         outputStream.flush();
     }
 }

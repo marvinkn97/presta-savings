@@ -1,7 +1,7 @@
 package dev.marvin.savings.auth.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.marvin.savings.exception.HttpResponse;
+import dev.marvin.savings.exception.ServerResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -88,17 +88,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-            HttpResponse httpResponse = HttpResponse.builder()
+            ServerResponse serverResponse = ServerResponse.builder()
                     .timestamp(new Date())
                     .status(HttpStatus.BAD_REQUEST.value())
                     .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                    .message("Invalid token")
+                    .data("Invalid token")
                     .build();
 
             OutputStream outputStream = response.getOutputStream();
 
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(outputStream, httpResponse);
+            mapper.writeValue(outputStream, serverResponse);
 
             outputStream.flush();
             return;

@@ -20,46 +20,46 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RequestValidationException.class)
-    public ResponseEntity<HttpResponse> handleRequestValidationException(RequestValidationException e) {
-        var error = HttpResponse.builder()
+    public ResponseEntity<ServerResponse> handleRequestValidationException(RequestValidationException e) {
+        var error = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .message(e.getMessage())
+                .data(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<HttpResponse> handleDuplicateResourceException(DuplicateResourceException e) {
-        var error = HttpResponse.builder()
+    public ResponseEntity<ServerResponse> handleDuplicateResourceException(DuplicateResourceException e) {
+        var error = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.CONFLICT.value())
                 .reason(HttpStatus.CONFLICT.getReasonPhrase())
-                .message(e.getMessage())
+                .data(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<HttpResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
-        var error = HttpResponse.builder()
+    public ResponseEntity<ServerResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        var error = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.NOT_FOUND.value())
                 .reason(HttpStatus.NOT_FOUND.getReasonPhrase())
-                .message(e.getMessage())
+                .data(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 
     }
 
     @ExceptionHandler(NotificationException.class)
-    public ResponseEntity<HttpResponse> handleNotificationException(NotificationException e) {
-        var error = HttpResponse.builder()
+    public ResponseEntity<ServerResponse> handleNotificationException(NotificationException e) {
+        var error = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .reason(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-                .message(e.getMessage())
+                .data(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 

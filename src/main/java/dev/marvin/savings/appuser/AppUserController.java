@@ -1,5 +1,6 @@
 package dev.marvin.savings.appuser;
 
+import dev.marvin.savings.exception.ServerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,8 +26,17 @@ public class AppUserController {
     @PreAuthorize(value = "hasAuthority('ADMIN')")
     @Operation(method = "GET", description = "GET ALL APP_USERS")
     @ApiResponse(responseCode = "200")
-    public ResponseEntity<List<AppUser>> getAllAppUsers() {
+    public ResponseEntity<ServerResponse> getAllAppUsers() {
+
         List<AppUser> users = appUserService.getAllAppUsers();
-        return ResponseEntity.status(HttpStatus.OK).body(users);
+
+        ServerResponse response = ServerResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.OK.value())
+                .reason(HttpStatus.OK.getReasonPhrase())
+                .data(users)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

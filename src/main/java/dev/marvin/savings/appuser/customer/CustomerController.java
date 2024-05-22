@@ -1,6 +1,6 @@
 package dev.marvin.savings.appuser.customer;
 
-import dev.marvin.savings.exception.HttpResponse;
+import dev.marvin.savings.exception.ServerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,33 +27,33 @@ public class CustomerController {
 
     @PostMapping("/registration")
     @Operation(method = "POST", description = "Register Customer")
-    public ResponseEntity<HttpResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest){
+    public ResponseEntity<ServerResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest){
         log.info("Registration Request: {}", registrationRequest);
         var response = customerService.registerCustomer(registrationRequest);
         log.info("Response: {}", response);
 
-        HttpResponse httpResponse = HttpResponse.builder()
+        ServerResponse serverResponse = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.OK.value())
                 .reason(HttpStatus.OK.getReasonPhrase())
-                .message(response)
+                .data(response)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(httpResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(serverResponse);
     }
 
     @PostMapping(value = "/registration/confirm")
-    public ResponseEntity<HttpResponse> confirmEmailToken(@RequestParam(name = "token") String token) {
+    public ResponseEntity<ServerResponse> confirmEmailToken(@RequestParam(name = "token") String token) {
         customerService.confirmEmailToken(token);
 
-        HttpResponse httpResponse = HttpResponse.builder()
+        ServerResponse serverResponse = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.OK.value())
                 .reason(HttpStatus.OK.getReasonPhrase())
-                .message("Email Confirmed Successfully")
+                .data("Email Confirmed Successfully")
                 .build();
         
-        return ResponseEntity.ok(httpResponse);
+        return ResponseEntity.ok(serverResponse);
     }
 
     @GetMapping

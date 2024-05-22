@@ -1,7 +1,7 @@
 package dev.marvin.savings.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.marvin.savings.exception.HttpResponse;
+import dev.marvin.savings.exception.ServerResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,17 +21,17 @@ public class AuthenticationEntryPoint implements org.springframework.security.we
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        HttpResponse httpResponse = HttpResponse.builder()
+        ServerResponse serverResponse = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .reason(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-                .message(authException.getMessage())
+                .data(authException.getMessage())
                 .build();
 
         OutputStream outputStream = response.getOutputStream();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(outputStream, httpResponse);
+        mapper.writeValue(outputStream, serverResponse);
         outputStream.flush();
     }
 }
