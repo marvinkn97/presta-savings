@@ -37,18 +37,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (request.getServletPath().contains("api/v1/auth")) {
             filterChain.doFilter(request, response);
-            return;
         }
 
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
-            return;
         }
 
         try {
 
+            assert authorizationHeader != null;
             var token = authorizationHeader.substring(7);
             boolean validToken = jwtService.validateJwtToken(token);
 

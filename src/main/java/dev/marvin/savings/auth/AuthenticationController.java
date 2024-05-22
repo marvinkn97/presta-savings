@@ -36,7 +36,6 @@ public class AuthenticationController {
                 .data(token)
                 .build();
 
-
         return ResponseEntity.ok(response);
     }
 
