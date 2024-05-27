@@ -34,8 +34,8 @@ public class CustomerController {
 
         ServerResponse serverResponse = ServerResponse.builder()
                 .timestamp(new Date())
-                .status(HttpStatus.OK.value())
-                .reason(HttpStatus.OK.getReasonPhrase())
+                .status(HttpStatus.CREATED.value())
+                .reason(HttpStatus.CREATED.getReasonPhrase())
                 .data(response)
                 .build();
 
@@ -74,10 +74,19 @@ public class CustomerController {
         return null;
     }
 
-    @DeleteMapping("/{memberNumber}/delete/")
-    public ResponseEntity<String> deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
+    @DeleteMapping("/{memberNumber}")
+    @PreAuthorize(value = "hasAuthority('CUSTOMER')")
+    public ResponseEntity<ServerResponse> deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
         customerService.deleteCustomer(memberNumber);
-        return ResponseEntity.ok("customer deleted successfully");
+
+        ServerResponse response = ServerResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.OK.value())
+                .reason(HttpStatus.OK.getReasonPhrase())
+                .data("customer deleted successfully")
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
 }

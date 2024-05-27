@@ -40,12 +40,13 @@ public class ConfirmationTokenService {
         return token;
     }
 
+
     @Transactional
     public void validateAndConfirmToken(String token) {
 
         //check is token exists
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RequestValidationException("invalid token"));
+                .orElseThrow(() -> new RequestValidationException("token does not exist"));
 
 
         //check if token is already confirmed

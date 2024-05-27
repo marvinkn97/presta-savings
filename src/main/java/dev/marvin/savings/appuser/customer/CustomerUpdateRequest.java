@@ -15,7 +15,5 @@ public record CustomerUpdateRequest(
 
         String password,
 
-        String mobile,
-
-        String profileImage) {
+        String mobile) {
 }

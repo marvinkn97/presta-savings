@@ -10,6 +10,7 @@ import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ public class CustomerService implements ICustomerService {
                 .name(registrationRequest.fullName())
                 .email(registrationRequest.email())
                 .appUser(savedAppUser)
+                .isDeleted(false)
                 .build();
 
         var savedCustomer = customerRepository.save(customer);
@@ -118,13 +120,21 @@ public class CustomerService implements ICustomerService {
     public void deleteCustomer(String memberNumber) {
         var customer = getCustomer(memberNumber);
         var appUser = customer.getAppUser();
-        customerRepository.delete(customer);
-        appUserRepository.delete(appUser);
+
+        if (!ObjectUtils.isEmpty(appUser)) {
+            appUser.setEnabled(false);
+            appUser.setNotLocked(false);
+            var update = appUserRepository.save(appUser);
+            customer.setAppUser(update);
+            customer.setDeleted(true);
+            customerRepository.save(customer);
+        }
+
     }
 
     private Customer getCustomer(String memberNumber) {
         return customerRepository.findByMemberNumber(memberNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("customer with given details [%s] not found".formatted(memberNumber)));
+                .orElseThrow(() -> new ResourceNotFoundException("customer does not exist"));
     }
 
     private CustomerResponse mapToDTO(Customer customer) {

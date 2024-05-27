@@ -6,6 +6,7 @@ import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.confirmationtoken.ConfirmationToken;
 import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -244,7 +245,47 @@ class CustomerServiceTest {
     }
 
     @Test
-    void deleteCustomer() {
+    void givenValidMemberNumber_whenDeleteCustomer_thenAppUserIsLockedAndCustomerIsMarkedAsDeleted() {
+        var memberNumber = "MEM456";
+
+        var user = AppUser.builder()
+                .username("customer@presta")
+                .password("password")
+                .role(Role.CUSTOMER)
+                .isNotLocked(true)
+                .isEnabled(true)
+                .build();
+
+        var customer = Customer.builder()
+                .email("customer2@presta.com")
+                .name("Customer Two")
+                .memberNumber(memberNumber)
+                .appUser(user)
+                .isDeleted(false)
+                .build();
+
+        when(customerRepository.findByMemberNumber(any(String.class))).thenReturn(Optional.of(customer));
+
+        //when
+         underTest.deleteCustomer(memberNumber);
+
+         //then
+        assertThat(user.isEnabled()).isEqualTo(false);
+        assertThat(user.isNotLocked()).isEqualTo(false);
+        assertThat(customer.isDeleted()).isEqualTo(true);
+
+    }
+
+    @Test
+    void givenValidMemberNumber_whenDeleteCustomer_thenThrowException(){
+        var memberNumber = "0000";
+
+        when(customerRepository.findByMemberNumber(memberNumber)).thenReturn(Optional.empty());
+
+        //when & then
+        assertThatThrownBy(() -> underTest.deleteCustomer(memberNumber))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("customer does not exist");
     }
 
 }
