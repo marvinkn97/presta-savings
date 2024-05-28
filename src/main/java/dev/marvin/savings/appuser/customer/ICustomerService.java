@@ -7,6 +7,6 @@ public interface ICustomerService {
     void confirmEmailToken(String token);
     List<CustomerResponse> getAllCustomers();
     CustomerResponse getCustomerByMemberNumber(String memberNumber);
-    Customer updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest);
+    void updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest);
     void deleteCustomer(String memberNumber);
 }

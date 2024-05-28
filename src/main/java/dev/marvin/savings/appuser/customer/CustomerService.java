@@ -6,11 +6,13 @@ import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.NotificationException;
+import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -110,9 +112,30 @@ public class CustomerService implements ICustomerService {
 
     @Override
     @Transactional
-    public Customer updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest) {
+    public void updateCustomer(String memberNumber, CustomerUpdateRequest updateRequest) {
         var customer = getCustomer(memberNumber);
-        return null;
+
+        var changes = false;
+
+        if(StringUtils.isNotEmpty(updateRequest.name()) && !updateRequest.name().equals(customer.getName())){
+             customer.setName(updateRequest.name());
+             changes = true;
+        }
+
+        if(StringUtils.isNotEmpty(updateRequest.email()) && updateRequest.email().equals(customer.getEmail())){
+            if(customerRepository.existsByEmail(updateRequest.email())){
+                throw new DuplicateResourceException("email already taken");
+            }
+            customer.setEmail(updateRequest.email());
+            changes = true;
+        }
+
+
+        if(!changes){
+            throw new RequestValidationException("no data changes found");
+        }
+
+        customerRepository.save(customer);
     }
 
     @Override

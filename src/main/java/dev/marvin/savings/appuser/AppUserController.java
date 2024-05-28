@@ -1,6 +1,6 @@
 package dev.marvin.savings.appuser;
 
-import dev.marvin.savings.exception.ServerResponse;
+import dev.marvin.savings.config.ServerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

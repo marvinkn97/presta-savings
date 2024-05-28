@@ -17,11 +17,6 @@ public record CustomerUpdateRequest(
         String password,
 
         @Schema(name = "Mobile Number", nullable = true, defaultValue = "254792735465")
-        String mobileNumber,
-
-        @Schema(name = "Government ID", nullable = true, defaultValue = "22345313")
-        String governmentId,
-
-        @Schema(name = "KRA PIN", nullable = true, defaultValue = "A09983498349823C")
-        String kraPin) {
+        String mobileNumber
+ ) {
 }

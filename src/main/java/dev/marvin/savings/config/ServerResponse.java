@@ -1,4 +1,4 @@
-package dev.marvin.savings.exception;
+package dev.marvin.savings.config;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

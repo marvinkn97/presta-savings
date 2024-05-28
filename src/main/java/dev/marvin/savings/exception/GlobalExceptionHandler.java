@@ -1,5 +1,6 @@
 package dev.marvin.savings.exception;
 
+import dev.marvin.savings.config.ServerResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

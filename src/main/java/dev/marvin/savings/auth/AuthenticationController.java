@@ -1,7 +1,7 @@
 package dev.marvin.savings.auth;
 
 import dev.marvin.savings.auth.jwt.JwtService;
-import dev.marvin.savings.exception.ServerResponse;
+import dev.marvin.savings.config.ServerResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
