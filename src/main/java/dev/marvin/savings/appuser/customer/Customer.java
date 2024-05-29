@@ -34,16 +34,16 @@ public class Customer implements Serializable {
     @Column(name = "email_verified")
     private boolean isEmailConfirmed;
 
-    @Column(name = "mobile_number")
+    @Column(name = "mobile_number", nullable = false)
     private String mobileNumber;
 
     @Column(name = "mobile_verified")
     private boolean isMobileConfirmed;
 
-    @Column(name = "government_id")
-    private Integer governmentId;
+    @Column(name = "government_id", nullable = false)
+    private String governmentId;
 
-    @Column(name = "kra_pin")
+    @Column(name = "kra_pin", nullable = false)
     private String kraPin;
 
     @Column(insertable = false)

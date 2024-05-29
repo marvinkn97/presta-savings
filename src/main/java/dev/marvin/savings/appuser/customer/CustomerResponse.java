@@ -12,7 +12,7 @@ public record CustomerResponse(
         boolean emailConfirmed,
         String mobileNumber,
         boolean mobileConfirmed,
-        Integer governmentId,
+        String governmentId,
         String kraPin,
         LocalDateTime createdAt
 ) {

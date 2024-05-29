@@ -2,6 +2,10 @@ package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.config.ServerResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,18 +29,20 @@ public class CustomerController {
 
     @PostMapping("/registration")
     @Operation(method = "POST", description = "Register Customer")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "201", description = "CREATED", content = {@Content(schema = @Schema(implementation = ServerResponse.class))}),
+                    @ApiResponse(responseCode = "409", description = "CONFLICT", content = {@Content(schema = @Schema(implementation = ServerResponse.class))}),
+                    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = {@Content(schema = @Schema(implementation = ServerResponse.class))})})
     public ResponseEntity<ServerResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-        log.info("Registration Request: {}", registrationRequest);
         var response = customerService.registerCustomer(registrationRequest);
-        log.info("Response: {}", response);
 
         ServerResponse serverResponse = ServerResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.CREATED.value())
-                .reason(HttpStatus.CREATED.getReasonPhrase())
+                .reason(HttpStatus.CREATED.getReasonPhrase().toUpperCase())
                 .data(response)
                 .build();
-
         return ResponseEntity.status(HttpStatus.CREATED).body(serverResponse);
     }
 

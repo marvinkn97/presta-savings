@@ -1,10 +1,7 @@
 package dev.marvin.savings.appuser.customer;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 @Schema(name = "Customer Registration Request")
 public record CustomerRegistrationRequest(
@@ -18,7 +15,7 @@ public record CustomerRegistrationRequest(
         @NotEmpty(message = "name must not be null or empty")
         @NotBlank(message = "name must not be blank")
         @Size(min = 6, message = "name must have at least 6 characters")
-        @Schema(name = "full name", defaultValue = "Marvin Nyingi")
+        @Schema(name = "fullName", defaultValue = "Marvin Nyingi")
         String fullName,
 
         @Email(message = "provide a valid email address")
@@ -35,18 +32,20 @@ public record CustomerRegistrationRequest(
 
         @NotEmpty(message = "mobile number must not be null or empty")
         @NotBlank(message = "mobile number must not be blank")
-        @Schema(name = "mobile number", nullable = true, defaultValue = "254792735465")
+        @Min(value = 12, message = "provide valid mobile number")
+        @Pattern(regexp = "254[0-9]{9}")
+        @Schema(name = "mobileNumber", nullable = true, defaultValue = "254792735465")
         String mobileNumber,
 
 
         @NotEmpty(message = "government id must not be null or empty")
         @NotBlank(message = "government id must not be blank")
-        @Schema(name = "government id", nullable = true, defaultValue = "22345313")
+        @Schema(name = "governmentId", nullable = true, defaultValue = "22345313")
         String governmentId,
 
         @NotEmpty(message = "kra pin must not be null or empty")
         @NotBlank(message = "kra pin must not be blank")
-        @Schema(name = "kra pin", nullable = true, defaultValue = "A0998349823C")
+        @Schema(name = "kraPin", nullable = true, defaultValue = "A0998349823C")
         String kraPin
 ) {
 }

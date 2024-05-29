@@ -57,10 +57,13 @@ class CustomerServiceTest {
         var name = "Marvin Nyingi";
         var email = "marvin@example.com";
         var password = "password";
+        var mobileNumber = "254792865243";
+        var governmentId = "22345313";
+        var kraPin = "A0998349823C";
 
         final String REGISTRATION_RESPONSE = "A verification email has been sent. Please verify email to activate account";
 
-        var request = new CustomerRegistrationRequest(username, name, email, password);
+        var request = new CustomerRegistrationRequest(username, name, email, password, mobileNumber, governmentId, kraPin);
 
         given(appUserRepository.existsByUsername(request.username())).willReturn(false);
         given(customerRepository.existsByEmail(request.email())).willReturn(false);
@@ -124,8 +127,11 @@ class CustomerServiceTest {
         var name = "Marvin Nyingi";
         var email = "marvin@example.com";
         var password = "password";
+        var mobileNumber = "254792865243";
+        var governmentId = "22345313";
+        var kraPin = "A0998349823C";
 
-        var request = new CustomerRegistrationRequest(username, name, email, password);
+        var request = new CustomerRegistrationRequest(username, name, email, password, mobileNumber, governmentId, kraPin);
 
         given(appUserRepository.existsByUsername(request.username())).willReturn(true);
 
@@ -142,8 +148,11 @@ class CustomerServiceTest {
         var name = "Marvin Nyingi";
         var email = "marvin@example.com";
         var password = "password";
+        var mobileNumber = "254792865243";
+        var governmentId = "22345313";
+        var kraPin = "A0998349823C";
 
-        var request = new CustomerRegistrationRequest(username, name, email, password);
+        var request = new CustomerRegistrationRequest(username, name, email, password, mobileNumber, governmentId, kraPin);
 
         given(customerRepository.existsByEmail(request.email())).willReturn(true);
 

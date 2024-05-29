@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -61,13 +60,8 @@ public class CustomerService implements ICustomerService {
 
         var savedAppUser = appUserRepository.save(appUser);
 
-        var customer = Customer.builder()
-                .memberNumber(UUID.randomUUID().toString().substring(0, 7).toUpperCase())
-                .name(registrationRequest.fullName())
-                .email(registrationRequest.email())
-                .appUser(savedAppUser)
-                .isDeleted(false)
-                .build();
+        var customer = CustomerMapper.mapToEntity(registrationRequest);
+        customer.setAppUser(savedAppUser);
 
         var savedCustomer = customerRepository.save(customer);
 
@@ -96,10 +90,7 @@ public class CustomerService implements ICustomerService {
     public List<CustomerResponse> getAllCustomers() {
         var customers = customerRepository.findAll();
         var response = new ArrayList<CustomerResponse>();
-        customers.forEach(customer -> {
-            var customerResponse = mapToDTO(customer);
-            response.add(customerResponse);
-        });
+        customers.forEach(customer -> response.add(CustomerMapper.mapToDTO(customer)));
 
         return response;
     }
@@ -107,7 +98,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public CustomerResponse getCustomerByMemberNumber(String memberNumber) {
         var customer = getCustomer(memberNumber);
-        return mapToDTO(customer);
+        return CustomerMapper.mapToDTO(customer);
     }
 
     @Override
@@ -158,19 +149,5 @@ public class CustomerService implements ICustomerService {
     private Customer getCustomer(String memberNumber) {
         return customerRepository.findByMemberNumber(memberNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("customer does not exist"));
-    }
-
-    private CustomerResponse mapToDTO(Customer customer) {
-        return CustomerResponse.builder()
-                .memberNumber(customer.getMemberNumber())
-                .username(customer.getAppUser().getUsername())
-                .createdAt(customer.getAppUser().getCreatedAt())
-                .email(customer.getEmail())
-                .emailConfirmed(customer.isEmailConfirmed())
-                .mobileNumber(customer.getMobileNumber())
-                .mobileConfirmed(customer.isMobileConfirmed())
-                .kraPin(customer.getKraPin())
-                .governmentId(customer.getGovernmentId())
-                .build();
     }
 }
