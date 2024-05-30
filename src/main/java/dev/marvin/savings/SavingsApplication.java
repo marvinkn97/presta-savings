@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
-
 @SpringBootApplication(scanBasePackages = "dev.marvin.savings")
 @OpenAPIDefinition(info = @Info(title = "Presta Savings App Documentation",
         description = "Spring Boot  REST API Documentation", version = "v1.0",
@@ -37,7 +35,6 @@ public class SavingsApplication {
                     .role(Role.ADMIN)
                     .isEnabled(true)
                     .isNotLocked(true)
-                    .createdAt(LocalDateTime.now())
                     .build();
 
             appUserRepository.save(admin);
@@ -48,7 +45,6 @@ public class SavingsApplication {
                     .role(Role.CSR)
                     .isEnabled(true)
                     .isNotLocked(true)
-                    .createdAt(LocalDateTime.now())
                     .build();
 
             appUserRepository.save(CSR);

@@ -1,7 +1,7 @@
 package dev.marvin.savings.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.marvin.savings.config.ServerResponse;
+import dev.marvin.savings.config.AppResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,7 +23,7 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ServerResponse serverResponse = ServerResponse.builder()
+        AppResponse appResponse = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.FORBIDDEN.value())
                 .reason(HttpStatus.FORBIDDEN.getReasonPhrase())
@@ -33,7 +33,7 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
         OutputStream outputStream = response.getOutputStream();
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(outputStream, serverResponse);
+        mapper.writeValue(outputStream, appResponse);
         outputStream.flush();
     }
 }

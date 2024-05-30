@@ -4,25 +4,26 @@ import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.auth.jwt.JwtService;
-import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.BeforeEach;
+import dev.marvin.savings.config.AppResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
+import java.util.Objects;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Slf4j
 public class AppUserIntegrationTest {
 
     @Autowired
@@ -34,16 +35,10 @@ public class AppUserIntegrationTest {
     @Autowired
     JwtService jwtService;
 
-    @Autowired
-    MockMvc mockMvc;
-
-    @BeforeEach
-    void setUp() {
-        appUserRepository.deleteAll();
-    }
-
     @Test
-    void givenListOfAppUsers_whenGetAllAppUsers_thenReturnListOfAppUsers() throws Exception {
+    void givenListOfAppUsers_whenGetAllAppUsers_thenReturnListOfAppUsers(){
+
+        appUserRepository.deleteAll();
 
         //given
         var admin = AppUser.builder()
@@ -67,29 +62,29 @@ public class AppUserIntegrationTest {
         var users = List.of(admin, csr, customer);
         appUserRepository.saveAll(users);
 
-
         var authentication = new UsernamePasswordAuthenticationToken(
-                admin.getUsername(),admin.getPassword(), admin.getAuthorities()
+                admin.getUsername(), admin.getPassword(), admin.getAuthorities()
         );
 
         var token = jwtService.generateJwtToken(authentication);
 
-        webTestClient.get().uri("/api/v1/users")
+         var responseBody = webTestClient.get().uri("/api/v1/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .exchange()
-                .expectStatus()
-                .isOk();
+                .expectStatus().isOk()
+                .expectBody(AppResponse.class)
+                .returnResult()
+                .getResponseBody();
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].username", CoreMatchers.is("admin@presta")));
+        log.info("********************* {}", responseBody);
 
+        @SuppressWarnings("unchecked")
+        var data = (List<AppUser>) Objects.requireNonNull(responseBody).data();
+
+        // Verify the response
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.status()).isEqualTo(HttpStatus.OK.value());
+        assertThat(data).hasSize(3);
     }
-
-
 }

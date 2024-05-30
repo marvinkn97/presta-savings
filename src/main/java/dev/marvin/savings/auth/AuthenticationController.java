@@ -1,7 +1,7 @@
 package dev.marvin.savings.auth;
 
 import dev.marvin.savings.auth.jwt.JwtService;
-import dev.marvin.savings.config.ServerResponse;
+import dev.marvin.savings.config.AppResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,13 +23,13 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<ServerResponse> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request) {
+    public ResponseEntity<AppResponse> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest, HttpServletRequest request) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.username(), authenticationRequest.password()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateJwtToken(authentication);
 
-        ServerResponse response = ServerResponse.builder()
+        AppResponse response = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.OK.value())
                 .reason(HttpStatus.OK.getReasonPhrase())

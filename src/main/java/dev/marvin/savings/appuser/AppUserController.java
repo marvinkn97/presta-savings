@@ -1,6 +1,6 @@
 package dev.marvin.savings.appuser;
 
-import dev.marvin.savings.config.ServerResponse;
+import dev.marvin.savings.config.AppResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,11 +26,11 @@ public class AppUserController {
     @PreAuthorize(value = "hasAuthority('ADMIN')")
     @Operation(method = "GET", description = "GET ALL APP_USERS")
     @ApiResponse(responseCode = "200")
-    public ResponseEntity<ServerResponse> getAllAppUsers() {
+    public ResponseEntity<AppResponse> getAllAppUsers() {
 
         List<AppUser> users = appUserService.getAllAppUsers();
 
-        ServerResponse response = ServerResponse.builder()
+        AppResponse response = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.OK.value())
                 .reason(HttpStatus.OK.getReasonPhrase())

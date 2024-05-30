@@ -21,7 +21,8 @@ import java.util.Collections;
 @Table(name = "app_users")
 public class AppUser implements Serializable, UserDetails {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "user_id_sequence", sequenceName = "user_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_sequence")
     @Column(nullable = false, updatable = false)
     private Integer id;
 

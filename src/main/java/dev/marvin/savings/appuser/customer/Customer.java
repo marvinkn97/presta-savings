@@ -18,7 +18,8 @@ import java.util.List;
 @Table(name = "customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
 public class Customer implements Serializable {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "customer_id_sequence", sequenceName = "customer_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_sequence")
     @Column(updatable = false, nullable = false)
     private Integer id;
 
@@ -52,7 +53,7 @@ public class Customer implements Serializable {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = AppUser.class)
     @JoinColumn(name = "app_user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "app_user_id_fk"))
     private AppUser appUser;
 

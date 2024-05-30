@@ -1,6 +1,6 @@
 package dev.marvin.savings.exception;
 
-import dev.marvin.savings.config.ServerResponse;
+import dev.marvin.savings.config.AppResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,8 +21,8 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RequestValidationException.class)
-    public ResponseEntity<ServerResponse> handleRequestValidationException(RequestValidationException e) {
-        var error = ServerResponse.builder()
+    public ResponseEntity<AppResponse> handleRequestValidationException(RequestValidationException e) {
+        var error = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())
@@ -32,8 +32,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<ServerResponse> handleDuplicateResourceException(DuplicateResourceException e) {
-        var error = ServerResponse.builder()
+    public ResponseEntity<AppResponse> handleDuplicateResourceException(DuplicateResourceException e) {
+        var error = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.CONFLICT.value())
                 .reason(HttpStatus.CONFLICT.getReasonPhrase())
@@ -43,8 +43,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ServerResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
-        var error = ServerResponse.builder()
+    public ResponseEntity<AppResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        var error = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.NOT_FOUND.value())
                 .reason(HttpStatus.NOT_FOUND.getReasonPhrase())
@@ -55,8 +55,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NotificationException.class)
-    public ResponseEntity<ServerResponse> handleNotificationException(NotificationException e) {
-        var error = ServerResponse.builder()
+    public ResponseEntity<AppResponse> handleNotificationException(NotificationException e) {
+        var error = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .reason(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        var error = ServerResponse.builder()
+        var error = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .reason(HttpStatus.BAD_REQUEST.getReasonPhrase())

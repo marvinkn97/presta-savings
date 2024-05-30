@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,6 @@ public class CustomerService implements ICustomerService {
                 .username(registrationRequest.username())
                 .password(passwordEncoder.encode(registrationRequest.password()))
                 .role(Role.CUSTOMER)
-                .createdAt(LocalDateTime.now())
                 .isNotLocked(true)
                 .build();
 
@@ -76,7 +74,7 @@ public class CustomerService implements ICustomerService {
             emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
         } catch (MailSendException e) {
             log.info(e.getMessage());
-            throw new NotificationException("Mail could not be sent");
+            throw new NotificationException("Mail server connection failed");
         }
 
         return REGISTRATION_RESPONSE;
