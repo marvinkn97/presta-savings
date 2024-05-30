@@ -2,9 +2,11 @@ package dev.marvin.savings.appuser;
 
 import dev.marvin.savings.config.AppResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,15 +19,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users")
-@RequiredArgsConstructor
-@Tag(name = "AppUser Resource", description = "User Management APIs")
+@AllArgsConstructor
+@Tag(name = "AppUser Resource", description = "User Management API")
 public class AppUserController {
     private final AppUserService appUserService;
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('ADMIN')")
-    @Operation(method = "GET", description = "GET ALL APP_USERS")
-    @ApiResponse(responseCode = "200")
+    @Operation(method = "GET", description = "Get All AppUsers")
+    @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = AppResponse.class))})
     public ResponseEntity<AppResponse> getAllAppUsers() {
 
         List<AppUser> users = appUserService.getAllAppUsers();
