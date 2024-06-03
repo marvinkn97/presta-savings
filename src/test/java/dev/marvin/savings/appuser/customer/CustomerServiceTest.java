@@ -6,6 +6,7 @@ import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.confirmationtoken.ConfirmationToken;
 import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
+import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
 import dev.marvin.savings.notifications.email.EmailService;
 import org.junit.jupiter.api.Test;
@@ -250,8 +251,111 @@ class CustomerServiceTest {
     }
 
     @Test
-    void updateCustomer() {
+    void givenNameUpdateRequest_whenUpdateCustomer_thenUpdateCustomerName() {
+
+        String memberNumber = "123456";
+
+        Customer existingCustomer = new Customer();
+
+        var update = new CustomerUpdateRequest("New Name", null, null, null);
+
+        when(customerRepository.findByMemberNumber(memberNumber)).thenReturn(Optional.of(existingCustomer));
+
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        // when
+        underTest.updateCustomer(memberNumber, update);
+
+        verify(customerRepository).save(customerArgumentCaptor.capture());
+
+        assertThat(customerArgumentCaptor.getValue().getName()).isEqualTo(update.fullName());
     }
+
+    @Test
+    void givenEmailUpdateRequest_whenUpdateCustomer_thenUpdateCustomerEmail() {
+        String memberNumber = "123456";
+
+        Customer existingCustomer = new Customer();
+
+        var update = new CustomerUpdateRequest(null,"newEmail@gmail.com", null, null);
+
+        when(customerRepository.findByMemberNumber(memberNumber)).thenReturn(Optional.of(existingCustomer));
+
+
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        // when
+        underTest.updateCustomer(memberNumber, update);
+
+        verify(customerRepository).save(customerArgumentCaptor.capture());
+
+        assertThat(customerArgumentCaptor.getValue().getEmail()).isEqualTo(update.email());
+    }
+
+    @Test
+    void givenPasswordUpdateRequest_whenUpdateCustomer_thenUpdateCustomer() {
+        String memberNumber = "123456";
+
+        AppUser appUser = new AppUser();
+        Customer existingCustomer = new Customer();
+        existingCustomer.setAppUser(appUser);
+
+        String encodedPassword = passwordEncoder.encode("newPassword");
+
+        var update = new CustomerUpdateRequest(null, null, "newPassword", null);
+
+        when(customerRepository.findByMemberNumber(memberNumber)).thenReturn(Optional.of(existingCustomer));
+
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        // when
+        underTest.updateCustomer(memberNumber, update);
+
+        verify(customerRepository).save(customerArgumentCaptor.capture());
+
+        assertThat(customerArgumentCaptor.getValue().getAppUser().getPassword()).isEqualTo(encodedPassword);
+
+    }
+
+    @Test
+    void givenMobileNumberUpdateRequest_whenUpdateCustomer_thenUpdateCustomer() {
+        String memberNumber = "123456";
+
+        Customer existingCustomer = new Customer();
+
+        var update = new CustomerUpdateRequest(null,null, null, "254792736452");
+
+        when(customerRepository.findByMemberNumber(memberNumber)).thenReturn(Optional.of(existingCustomer));
+
+
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        // when
+        underTest.updateCustomer(memberNumber, update);
+
+        verify(customerRepository).save(customerArgumentCaptor.capture());
+
+        assertThat(customerArgumentCaptor.getValue().getMobileNumber()).isEqualTo(update.mobileNumber());
+    }
+
+    @Test
+    void givenUpdateRequestWithNoChanges_whenUpdateCustomer_thenPerformNoChanges() {
+
+        String memberNumber = "123456";
+
+        Customer existingCustomer = new Customer();
+        existingCustomer.setName("New Name");
+
+        var update = new CustomerUpdateRequest("New Name", null, null, null);
+
+        when(customerRepository.findByMemberNumber(memberNumber)).thenReturn(Optional.of(existingCustomer));
+
+        // when
+        assertThatThrownBy(() -> underTest.updateCustomer(memberNumber, update))
+                .isInstanceOf(RequestValidationException.class)
+                .hasMessage("no data changes found");
+    }
+
 
     @Test
     void givenValidMemberNumber_whenDeleteCustomer_thenAppUserIsLockedAndCustomerIsMarkedAsDeleted() {
@@ -266,7 +370,7 @@ class CustomerServiceTest {
                 .build();
 
         var customer = Customer.builder()
-                .email("customer2@presta.com")
+                .email("customer@presta.com")
                 .name("Customer Two")
                 .memberNumber(memberNumber)
                 .appUser(user)

@@ -89,8 +89,11 @@ public class CustomerController {
     }
 
     @PutMapping("/{memberNumber}")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<AppResponse> updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest) {
         customerService.updateCustomer(memberNumber, updateRequest);
+
+        System.out.println(updateRequest);
 
         AppResponse response = AppResponse.builder()
                 .timestamp(new Date())

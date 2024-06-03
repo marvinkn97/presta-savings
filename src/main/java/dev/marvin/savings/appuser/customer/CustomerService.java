@@ -106,12 +106,12 @@ public class CustomerService implements ICustomerService {
 
         var changes = false;
 
-        if(StringUtils.isNotEmpty(updateRequest.name()) && !updateRequest.name().equals(customer.getName())){
-             customer.setName(updateRequest.name());
+        if( StringUtils.isNotBlank(updateRequest.fullName()) && !updateRequest.fullName().equals(customer.getName())){
+             customer.setName(updateRequest.fullName());
              changes = true;
         }
 
-        if(StringUtils.isNotEmpty(updateRequest.email()) && updateRequest.email().equals(customer.getEmail())){
+        if(StringUtils.isNotBlank(updateRequest.email()) && !updateRequest.email().equals(customer.getEmail())){
             if(customerRepository.existsByEmail(updateRequest.email())){
                 throw new DuplicateResourceException("email already taken");
             }
@@ -119,6 +119,18 @@ public class CustomerService implements ICustomerService {
             changes = true;
         }
 
+        if(StringUtils.isNotBlank(updateRequest.password())){
+            if(!passwordEncoder.matches(updateRequest.password(), customer.getAppUser().getPassword())){
+                String encodedPassword = passwordEncoder.encode(updateRequest.password());
+                customer.getAppUser().setPassword(encodedPassword);
+                changes = true;
+            }
+        }
+
+        if(StringUtils.isNotBlank(updateRequest.mobileNumber()) && !updateRequest.mobileNumber().equals(customer.getMobileNumber())){
+            customer.setMobileNumber(updateRequest.mobileNumber());
+            changes = true;
+        }
 
         if(!changes){
             throw new RequestValidationException("no data changes found");

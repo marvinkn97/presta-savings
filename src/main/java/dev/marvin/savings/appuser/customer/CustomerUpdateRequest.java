@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Email;
 public record CustomerUpdateRequest(
 
         @Schema(name = "Full Name", nullable = true, defaultValue = "Foo Bar")
-        String name,
+        String fullName,
 
         @Schema(name = "Email", nullable = true, defaultValue = "foo@example.com")
         @Email

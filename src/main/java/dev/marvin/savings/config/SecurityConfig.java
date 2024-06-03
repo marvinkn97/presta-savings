@@ -58,7 +58,7 @@ public class SecurityConfig {
                                         "/swagger-resources/**", // Swagger resources
                                         "/webjars/**" // Webjars for Swagger
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.POST, "api/v1/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "api/v1/auth").permitAll()
                                 .requestMatchers(HttpMethod.POST, "api/v1/customers/registration/**").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -87,4 +87,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
