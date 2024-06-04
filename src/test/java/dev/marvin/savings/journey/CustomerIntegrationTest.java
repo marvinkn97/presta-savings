@@ -1,5 +1,6 @@
 package dev.marvin.savings.journey;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
@@ -7,6 +8,8 @@ import dev.marvin.savings.appuser.customer.CustomerRegistrationRequest;
 import dev.marvin.savings.auth.jwt.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -44,8 +47,11 @@ public class CustomerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
-    void givenCustomerRegistrationRequest_whenRegisterCustomer_thenSaveCustomerAndSendEmailNotification() throws Exception {
+    void customerAPIJourney_basicRegistrationAndRetrievalTest () throws Exception {
         var registrationRequest = new CustomerRegistrationRequest("foobar", "Foo Bar", "foo@example.com", "password", "254792876354", "339872634", "A2323E43534C");
 
         appUserRepository.deleteAll();
@@ -71,15 +77,31 @@ public class CustomerIntegrationTest {
 
         var token = jwtService.generateJwtToken(authentication);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/customers")
+        var response = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/customers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].username", CoreMatchers.is(registrationRequest.username())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].email", CoreMatchers.is(registrationRequest.email())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].mobileNumber", CoreMatchers.is(registrationRequest.mobileNumber())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].mobileNumber", CoreMatchers.is(registrationRequest.mobileNumber())))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
+
+        JSONObject jsonObject = new JSONObject(response);
+        JSONArray jsonArray = (JSONArray) jsonObject.get("data");
+        var memberNumber = jsonArray.getJSONObject(0).get("memberNumber");
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/customers/" + memberNumber)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.username", CoreMatchers.is(registrationRequest.username())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.email", CoreMatchers.is(registrationRequest.email())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.mobileNumber", CoreMatchers.is(registrationRequest.mobileNumber())));
 
     }
 

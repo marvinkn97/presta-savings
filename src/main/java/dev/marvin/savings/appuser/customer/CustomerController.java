@@ -76,6 +76,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{memberNumber}")
+    @PreAuthorize("hasAnyAuthority('CSR', 'CUSTOMER')")
     public ResponseEntity<AppResponse> getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
         var customer = customerService.getCustomerByMemberNumber(memberNumber);
         AppResponse response = AppResponse.builder()
