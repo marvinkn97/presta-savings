@@ -3,58 +3,44 @@ package dev.marvin.savings.appuser.customer;
 import dev.marvin.savings.AbstractTestContainersTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CustomerRepositoryTest extends AbstractTestContainersTest {
     @Autowired
     CustomerRepository underTest;
 
+    private Customer customer;
+
     @BeforeEach
     void setUp() {
         underTest.deleteAll();
 
-        var c1 = Customer.builder()
+        customer = Customer.builder()
                 .email("customer1@presta.com")
                 .name("Customer One")
                 .memberNumber("MEM123")
+                .mobileNumber("254792765349")
+                .governmentId("33452345")
+                .kraPin("AC3457890D")
                 .build();
 
-        var c2 = Customer.builder()
-                .email("customer2@presta.com")
-                .name("Customer Two")
-                .memberNumber("MEM456")
-                .build();
-
-        var c3 = Customer.builder()
-                .email("customer3@presta.com")
-                .name("Customer Three")
-                .memberNumber("MEM789")
-                .build();
-
-        var customers = List.of(c1, c2, c3);
-
-        underTest.saveAll(customers);
+        underTest.save(customer);
     }
 
     @Test
     void givenCustomerObject_whenSave_thenReturnSavedCustomer() {
-
-        //given
-        var customer = Customer.builder()
-                .memberNumber("MEM345678")
-                .name("Marvin Nyingi")
-                .email("marvin@example.com")
-                .build();
 
         //when
         var actual = underTest.save(customer);
@@ -62,7 +48,7 @@ class CustomerRepositoryTest extends AbstractTestContainersTest {
         //then
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isGreaterThan(0);
-        assertThat(underTest.findAll().size()).isEqualTo(4);
+        assertThat(underTest.findAll().size()).isEqualTo(1);
         assertThat(actual).satisfies(c -> {
             assertThat(c.getEmail()).isEqualTo(customer.getEmail());
             assertThat(c.getMemberNumber()).isEqualTo(customer.getMemberNumber());
@@ -78,7 +64,7 @@ class CustomerRepositoryTest extends AbstractTestContainersTest {
 
         //then
         assertThat(actual).isNotEmpty();
-        assertThat(actual.size()).isEqualTo(3);
+        assertThat(actual.size()).isEqualTo(1);
     }
 
     @Test
@@ -113,7 +99,7 @@ class CustomerRepositoryTest extends AbstractTestContainersTest {
     @Test
     void givenValidEmail_whenExistsByEmail_thenReturnTrue() {
         //given
-        String email = "customer2@presta.com";
+        String email = "customer1@presta.com";
 
         //when
         var actual = underTest.existsByEmail(email);

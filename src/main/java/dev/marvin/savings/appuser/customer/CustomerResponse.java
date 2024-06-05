@@ -14,6 +14,7 @@ public record CustomerResponse(
         boolean mobileConfirmed,
         String governmentId,
         String kraPin,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        boolean isDeleted
 ) {
 }

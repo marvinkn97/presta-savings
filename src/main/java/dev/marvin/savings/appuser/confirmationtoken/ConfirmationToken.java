@@ -23,12 +23,13 @@ public class ConfirmationToken {
     @Column(nullable = false)
     private String token;
 
-    @Column(nullable = false)
+    @Column(name = "iat", nullable = false)
     private LocalDateTime issuedAt;
 
-    @Column(nullable = false)
+    @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
+    @Column(name = "confirmed_at")
     private LocalDateTime confirmedAt;
 
     @ManyToOne

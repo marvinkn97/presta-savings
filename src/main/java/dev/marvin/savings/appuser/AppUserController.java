@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Tag(name = "AppUser Resource", description = "User Management API")
 public class AppUserController {
-    private final AppUserService appUserService;
+    private final AppUserServiceImpl appUserServiceImpl;
 
     @GetMapping
     @PreAuthorize(value = "hasAuthority('ADMIN')")
@@ -30,7 +30,7 @@ public class AppUserController {
     @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = AppResponse.class))})
     public ResponseEntity<AppResponse> getAllAppUsers() {
 
-        List<AppUser> users = appUserService.getAllAppUsers();
+        List<AppUser> users = appUserServiceImpl.getAllAppUsers();
 
         AppResponse response = AppResponse.builder()
                 .timestamp(new Date())

@@ -1,13 +1,14 @@
 package dev.marvin.savings;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
+@ActiveProfiles("test")
 public abstract class AbstractTestContainersTest {
 
     @SuppressWarnings("resource")
@@ -27,11 +28,12 @@ public abstract class AbstractTestContainersTest {
         dynamicPropertyRegistry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
         dynamicPropertyRegistry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         dynamicPropertyRegistry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+        //dynamicPropertyRegistry.add("spring.jpa.hibernate.ddl-auto", () -> "create-drop");
     }
 
     // Ensure the container is stopped after all tests are executed
-    @AfterAll
-    static void stopContainer() {
-        postgreSQLContainer.stop();
-    }
+//    @AfterAll
+//    static void stopContainer() {
+//        postgreSQLContainer.stop();
+//    }
 }

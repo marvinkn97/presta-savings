@@ -28,6 +28,7 @@ public class CustomerMapper {
                 .mobileConfirmed(customer.isMobileConfirmed())
                 .kraPin(customer.getKraPin())
                 .governmentId(customer.getGovernmentId())
+                .isDeleted(customer.isDeleted())
                 .build();
     }
 }
