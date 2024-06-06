@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
 @SpringBootApplication(scanBasePackages = "dev.marvin.savings")
 @OpenAPIDefinition(info = @Info(title = "Presta Savings App Documentation",
         description = "Spring Boot  REST API Documentation", version = "v1.0",
@@ -37,8 +39,6 @@ public class SavingsApplication {
                     .isNotLocked(true)
                     .build();
 
-            appUserRepository.save(admin);
-
             AppUser CSR = AppUser.builder()
                     .username("csr@presta")
                     .password(passwordEncoder.encode("password"))
@@ -47,7 +47,9 @@ public class SavingsApplication {
                     .isNotLocked(true)
                     .build();
 
-            appUserRepository.save(CSR);
+            var users = List.of(admin, CSR);
+
+            appUserRepository.saveAll(users);
         };
     }
 

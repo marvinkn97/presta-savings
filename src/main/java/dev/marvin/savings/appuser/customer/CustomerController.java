@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 public class CustomerController {
 
-    private final CustomerServiceImpl customerServiceImpl;
+    private final CustomerService customerService;
 
     @PostMapping("/registration")
     @Operation(method = "POST", description = "Register Customer")
@@ -35,7 +35,7 @@ public class CustomerController {
                     @ApiResponse(responseCode = "409", description = "CONFLICT", content = {@Content(schema = @Schema(implementation = AppResponse.class))}),
                     @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = {@Content(schema = @Schema(implementation = AppResponse.class))})})
     public ResponseEntity<AppResponse> registerCustomer(@Valid @RequestBody CustomerRegistrationRequest registrationRequest) {
-        var response = customerServiceImpl.registerCustomer(registrationRequest);
+        var response = customerService.registerCustomer(registrationRequest);
 
         AppResponse appResponse = AppResponse.builder()
                 .timestamp(new Date())
@@ -47,8 +47,9 @@ public class CustomerController {
     }
 
     @PostMapping("/registration/confirm")
+    @Operation(method = "POST", description = "Confirm Email")
     public ResponseEntity<AppResponse> confirmEmailToken(@RequestParam(name = "token") String token) {
-        customerServiceImpl.confirmEmailToken(token);
+        customerService.confirmEmailToken(token);
 
         AppResponse appResponse = AppResponse.builder()
                 .timestamp(new Date())
@@ -62,8 +63,13 @@ public class CustomerController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('CSR')")
+    @Operation(method = "GET", description = "Get All Customers")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = AppResponse.class))}),
+                    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = {@Content(schema = @Schema(implementation = AppResponse.class))})})
     public ResponseEntity<AppResponse> getAllCustomers() {
-        List<CustomerResponse> customers = customerServiceImpl.getAllCustomers();
+        List<CustomerResponse> customers = customerService.getAllCustomers();
 
         AppResponse response = AppResponse.builder()
                 .timestamp(new Date())
@@ -77,8 +83,9 @@ public class CustomerController {
 
     @GetMapping("/{memberNumber}")
     @PreAuthorize("hasAnyAuthority('CSR', 'CUSTOMER')")
+    @Operation(method = "GET", description = "Get One Customer")
     public ResponseEntity<AppResponse> getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
-        var customer = customerServiceImpl.getCustomerByMemberNumber(memberNumber);
+        var customer = customerService.getCustomerByMemberNumber(memberNumber);
         AppResponse response = AppResponse.builder()
                 .timestamp(new Date())
                 .status(HttpStatus.OK.value())
@@ -91,8 +98,15 @@ public class CustomerController {
 
     @PutMapping("/{memberNumber}")
     @PreAuthorize("hasAuthority('CUSTOMER')")
+    @Operation(method = "PUT", description = "Update Customer Details")
+    @ApiResponses(
+            {
+                    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = {@Content(schema = @Schema(implementation = AppResponse.class))}),
+                    @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = AppResponse.class))}),
+                    @ApiResponse(responseCode = "409", description = "CONFLICT", content = {@Content(schema = @Schema(implementation = AppResponse.class))}),
+                    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = {@Content(schema = @Schema(implementation = AppResponse.class))})})
     public ResponseEntity<AppResponse> updateCustomer(@PathVariable("memberNumber") String memberNumber, @Valid @RequestBody CustomerUpdateRequest updateRequest) {
-        customerServiceImpl.updateCustomer(memberNumber, updateRequest);
+        customerService.updateCustomer(memberNumber, updateRequest);
 
         System.out.println(updateRequest);
 
@@ -108,8 +122,10 @@ public class CustomerController {
 
     @DeleteMapping("/{memberNumber}")
     @PreAuthorize(value = "hasAuthority('CUSTOMER')")
+    @Operation(method = "DELETE", description = "Delete Customer")
+    @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = AppResponse.class))})
     public ResponseEntity<AppResponse> deleteCustomer(@PathVariable("memberNumber") String memberNumber) {
-        customerServiceImpl.deleteCustomer(memberNumber);
+        customerService.deleteCustomer(memberNumber);
 
         AppResponse response = AppResponse.builder()
                 .timestamp(new Date())
