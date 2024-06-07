@@ -58,30 +58,25 @@ public class CustomerServiceImpl implements CustomerService {
 
         var savedAppUser = appUserRepository.save(appUser);
 
+
         var customer = CustomerMapper.mapToEntity(registrationRequest);
         customer.setAppUser(savedAppUser);
 
         var savedCustomer = customerRepository.save(customer);
 
-        //generate email confirmation token
-        String emailConfirmationToken = confirmationTokenService.generateToken(savedCustomer);
-
-        //build email template
-        String emailTemplate = emailService.buildEmailTemplate(registrationRequest.fullName(), emailConfirmationToken);
-
-        //send email
-        try {
-            emailService.sendEmail(savedCustomer.getEmail(), emailTemplate);
-        } catch (MailSendException e) {
-            log.info(e.getMessage());
-            throw new NotificationException("Mail server connection failed");
-        }
+        generateConfirmationTokenAndSendToEmail(savedCustomer);
 
         return REGISTRATION_RESPONSE;
     }
 
     public void confirmEmailToken(String token) {
         confirmationTokenService.validateAndConfirmToken(token);
+    }
+
+    @Override
+    public void refreshConfirmationToken(String email) {
+       var customer = customerRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("customer does not exist"));
+       generateConfirmationTokenAndSendToEmail(customer);
     }
 
     @Override
@@ -106,33 +101,33 @@ public class CustomerServiceImpl implements CustomerService {
 
         var changes = false;
 
-        if( StringUtils.isNotBlank(updateRequest.fullName()) && !updateRequest.fullName().equals(customer.getName())){
-             customer.setName(updateRequest.fullName());
-             changes = true;
+        if (StringUtils.isNotBlank(updateRequest.fullName()) && !updateRequest.fullName().equals(customer.getName())) {
+            customer.setName(updateRequest.fullName());
+            changes = true;
         }
 
-        if(StringUtils.isNotBlank(updateRequest.email()) && !updateRequest.email().equals(customer.getEmail())){
-            if(customerRepository.existsByEmail(updateRequest.email())){
+        if (StringUtils.isNotBlank(updateRequest.email()) && !updateRequest.email().equals(customer.getEmail())) {
+            if (customerRepository.existsByEmail(updateRequest.email())) {
                 throw new DuplicateResourceException("email already taken");
             }
             customer.setEmail(updateRequest.email());
             changes = true;
         }
 
-        if(StringUtils.isNotBlank(updateRequest.password())){
-            if(!passwordEncoder.matches(updateRequest.password(), customer.getAppUser().getPassword())){
+        if (StringUtils.isNotBlank(updateRequest.password())) {
+            if (!passwordEncoder.matches(updateRequest.password(), customer.getAppUser().getPassword())) {
                 String encodedPassword = passwordEncoder.encode(updateRequest.password());
                 customer.getAppUser().setPassword(encodedPassword);
                 changes = true;
             }
         }
 
-        if(StringUtils.isNotBlank(updateRequest.mobileNumber()) && !updateRequest.mobileNumber().equals(customer.getMobileNumber())){
+        if (StringUtils.isNotBlank(updateRequest.mobileNumber()) && !updateRequest.mobileNumber().equals(customer.getMobileNumber())) {
             customer.setMobileNumber(updateRequest.mobileNumber());
             changes = true;
         }
 
-        if(!changes){
+        if (!changes) {
             throw new RequestValidationException("no data changes found");
         }
 
@@ -159,5 +154,21 @@ public class CustomerServiceImpl implements CustomerService {
     private Customer getCustomer(String memberNumber) {
         return customerRepository.findByMemberNumber(memberNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("customer does not exist"));
+    }
+
+    private void generateConfirmationTokenAndSendToEmail(Customer customer){
+        //generate email confirmation token
+        String emailConfirmationToken = confirmationTokenService.generateToken(customer);
+
+        //build email template
+        String emailTemplate = emailService.buildEmailTemplate(customer.getName(), emailConfirmationToken);
+
+        //send email
+        try {
+            emailService.sendEmail(customer.getEmail(), emailTemplate);
+        } catch (MailSendException e) {
+            log.info(e.getMessage());
+            throw new NotificationException("Mail server connection failed");
+        }
     }
 }

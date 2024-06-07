@@ -61,6 +61,23 @@ public class CustomerController {
         return ResponseEntity.ok(appResponse);
     }
 
+    @PostMapping("/registration/resend")
+    @Operation(method = "POST", description = "Resend Email")
+    public ResponseEntity<AppResponse> resendEmailToken(@RequestParam(name = "email") String email) {
+        customerService.refreshConfirmationToken(email);
+
+        AppResponse appResponse = AppResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.OK.value())
+                .reason(HttpStatus.OK.getReasonPhrase())
+                .data("Email Sent Successfully")
+                .build();
+
+        return ResponseEntity.ok(appResponse);
+    }
+
+
+
     @GetMapping
     @PreAuthorize("hasAuthority('CSR')")
     @Operation(method = "GET", description = "Get All Customers")

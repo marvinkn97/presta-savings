@@ -40,7 +40,6 @@ public class ConfirmationTokenService {
         return token;
     }
 
-
     @Transactional
     public void validateAndConfirmToken(String token) {
 

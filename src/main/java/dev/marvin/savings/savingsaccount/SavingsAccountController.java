@@ -12,48 +12,48 @@ import java.util.List;
 @RequestMapping("api/v1/accounts")
 @RequiredArgsConstructor
 public class SavingsAccountController {
-    private final ISavingsAccountService ISavingsAccountService;
+    private final SavingsAccountService SavingsAccountService;
 
     @PreAuthorize(value = "hasAuthority('CUSTOMER')")
     @PostMapping
     public ResponseEntity<SavingsAccount> createAccount(@RequestBody NewSavingsAccountRequest accountRequest) {
-        SavingsAccount savingsAccount = ISavingsAccountService.createAccount(accountRequest);
+        SavingsAccount savingsAccount = SavingsAccountService.createAccount(accountRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savingsAccount);
     }
 
     @GetMapping
     public List<SavingsAccount> getAllAccounts() {
-        return ISavingsAccountService.getAllAccounts();
+        return SavingsAccountService.getAllAccounts();
     }
 
     @GetMapping("/member/{memberNo}")
     public List<SavingsAccount> getAccountsByMemberNumber(@PathVariable("memberNo") String memberNumber) {
-        return ISavingsAccountService.getAccountsByMemberNumber(memberNumber);
+        return SavingsAccountService.getAccountsByMemberNumber(memberNumber);
     }
 
     @GetMapping("/type/{accountType}")
     public List<SavingsAccount> getAccountsByAccountType(@PathVariable("accountType") String accountType) {
-        return ISavingsAccountService.getAccountsByAccountType(accountType);
+        return SavingsAccountService.getAccountsByAccountType(accountType);
     }
 
     @GetMapping("/{accountNo}")
     public SavingsAccount getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber) {
-        return ISavingsAccountService.getAccountByAccountNumber(accountNumber);
+        return SavingsAccountService.getAccountByAccountNumber(accountNumber);
     }
 
     @DeleteMapping("/{accountNo}/delete")
     public String deleteAccount(@PathVariable("accountNo") String accountNumber) {
-        ISavingsAccountService.deleteAccount(accountNumber);
+        SavingsAccountService.deleteAccount(accountNumber);
         return null;
     }
 
     @GetMapping("/member/{memberNo}/balance")
     public Double getAllCustomerAccountsTotalBalance(@PathVariable("memberNo") String memberNumber) {
-        return ISavingsAccountService.getAllCustomerAccountsTotalBalance(memberNumber);
+        return SavingsAccountService.getAllCustomerAccountsTotalBalance(memberNumber);
     }
 
     @GetMapping("/all/total")
     public Double getAllCustomerAccountsTotalBalance() {
-        return ISavingsAccountService.getAllCustomersAccountTotalBalance();
+        return SavingsAccountService.getAllCustomersAccountTotalBalance();
     }
 }
