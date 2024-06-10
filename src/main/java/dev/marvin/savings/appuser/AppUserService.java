@@ -3,5 +3,6 @@ package dev.marvin.savings.appuser;
 import java.util.List;
 
 public interface AppUserService {
-    List<AppUser> getAllAppUsers();
+    List<AppUserResponse> getAllAppUsers();
+    AppUserResponse getAppUserById(Integer id);
 }
