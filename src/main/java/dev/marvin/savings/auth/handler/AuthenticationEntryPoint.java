@@ -25,7 +25,7 @@ public class AuthenticationEntryPoint implements org.springframework.security.we
                 .timestamp(new Date())
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .reason(HttpStatus.UNAUTHORIZED.getReasonPhrase())
-                .data(authException.getMessage())
+                .data("You need to be successfully authenticated to access the system")
                 .build();
 
         OutputStream outputStream = response.getOutputStream();
