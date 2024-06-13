@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public record CustomerResponse(
         String username,
         String memberNumber,
+        String name,
         String email,
         boolean emailConfirmed,
         String mobileNumber,

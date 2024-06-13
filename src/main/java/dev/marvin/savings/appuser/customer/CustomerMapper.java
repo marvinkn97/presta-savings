@@ -21,6 +21,7 @@ public class CustomerMapper {
         return CustomerResponse.builder()
                 .memberNumber(customer.getMemberNumber())
                 .username(customer.getAppUser().getUsername())
+                .name(customer.getName())
                 .createdAt(customer.getAppUser().getCreatedAt())
                 .email(customer.getEmail())
                 .emailConfirmed(customer.isEmailConfirmed())
