@@ -11,8 +11,3 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
-
-#sms:
-#  gateway:
-#    endpoint: https://api.tiaraconnect.io/api/messaging/sendsms
-#    apikey: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMzgiLCJvaWQiOjMzOCwidWlkIjoiNWUxOGE1ZWYtODkxMi00YjA3LTkxNDAtZWI4OTFlY2NiMTRkIiwiYXBpZCI6MjMzLCJpYXQiOjE3MDgxNTMxNTQsImV4cCI6MjA0ODE1MzE1NH0.KgQv1Zt7e4SfIUW3StgKuuKO1KpvACgvLCr5jmz5A_qw-5AuG3GDVlNI7rJmohO1owLWbfKDghC0I8Jzr7iKLA

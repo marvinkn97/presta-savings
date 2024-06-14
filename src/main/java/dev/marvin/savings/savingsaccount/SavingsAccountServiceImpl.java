@@ -1,8 +1,6 @@
 package dev.marvin.savings.savingsaccount;
 
 import dev.marvin.savings.appuser.customer.Customer;
-import dev.marvin.savings.appuser.customer.CustomerRepository;
-import dev.marvin.savings.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +12,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SavingsAccountServiceImpl implements SavingsAccountService {
     private final SavingsAccountRepository savingsAccountRepository;
-    private final CustomerRepository customerRepository;
 
     @Override
-    public SavingsAccount createAccount(NewSavingsAccountRequest accountRequest) {
-        Customer customer = customerRepository.findByMemberNumber(accountRequest.memberNumber())
-                .orElseThrow(() -> new ResourceNotFoundException("customer does not exist"));
-
+    public SavingsAccount createAccount(NewSavingsAccountRequest accountRequest, Customer customer) {
         SavingsAccount savingsAccount =  SavingsAccount.builder()
                     .accountNumber(generateAccountNumber())
-                    .accountName(accountRequest.accountName())
+                    .accountName(accountRequest.accountName().toUpperCase())
                     .savingsAccountType(SavingsAccountType.valueOf(accountRequest.accountType().toUpperCase()))
                     .balance(BigDecimal.ZERO)
                     .customer(customer)

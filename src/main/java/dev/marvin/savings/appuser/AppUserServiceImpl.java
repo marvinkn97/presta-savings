@@ -34,8 +34,6 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
     @Override
     public AppUserResponse getAppUserById(Integer id) {
         var user = appUserRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user does not exist"));
-
         return AppUserMapper.mapToDTO(user);
     }
-
 }

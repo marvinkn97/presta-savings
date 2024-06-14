@@ -1,9 +1,11 @@
 package dev.marvin.savings.savingsaccount;
 
+import dev.marvin.savings.appuser.customer.Customer;
+
 import java.util.List;
 
 public interface SavingsAccountService {
-    SavingsAccount createAccount(NewSavingsAccountRequest accountRequest);
+    SavingsAccount createAccount(NewSavingsAccountRequest accountRequest, Customer customer);
     List<SavingsAccount> getAllAccounts();
     List<SavingsAccount> getAccountsByMemberNumber(String memberNumber);
     List<SavingsAccount> getAccountsByAccountType(String accountType);

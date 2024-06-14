@@ -30,7 +30,6 @@ public class AppUserController {
     @Operation(method = "GET", description = "Get All AppUsers")
     @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = AppResponse.class))})
     public ResponseEntity<AppResponse> getAllAppUsers() {
-
         List<AppUserResponse> users = appUserService.getAllAppUsers();
 
         AppResponse response = AppResponse.builder()

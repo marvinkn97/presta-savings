@@ -1,5 +1,7 @@
 package dev.marvin.savings.appuser;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.marvin.savings.appuser.customer.Customer;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,6 +20,7 @@ import java.util.Collections;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "app_users")
 public class AppUser implements Serializable, UserDetails {
     @Id
@@ -48,6 +51,10 @@ public class AppUser implements Serializable, UserDetails {
 
     @Column(insertable = false)
     private LocalDateTime updatedAt;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "appUser", fetch = FetchType.EAGER)
+    private Customer customer;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

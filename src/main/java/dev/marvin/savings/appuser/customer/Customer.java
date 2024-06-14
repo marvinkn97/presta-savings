@@ -52,7 +52,7 @@ public class Customer implements Serializable {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = AppUser.class)
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = AppUser.class)
     @JoinColumn(name = "app_user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "app_user_id_fk"))
     private AppUser appUser;
 
