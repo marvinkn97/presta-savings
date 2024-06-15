@@ -14,7 +14,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     private final SavingsAccountRepository savingsAccountRepository;
 
     @Override
-    public SavingsAccount createAccount(NewSavingsAccountRequest accountRequest, Customer customer) {
+    public void createAccount(NewSavingsAccountRequest accountRequest, Customer customer) {
         SavingsAccount savingsAccount =  SavingsAccount.builder()
                     .accountNumber(generateAccountNumber())
                     .accountName(accountRequest.accountName().toUpperCase())
@@ -23,7 +23,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
                     .customer(customer)
                     .build();
 
-        return savingsAccountRepository.save(savingsAccount);
+         savingsAccountRepository.save(savingsAccount);
     }
 
     @Override
@@ -33,11 +33,6 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Override
     public List<SavingsAccount> getAccountsByMemberNumber(String memberNumber) {
-        return null;
-    }
-
-    @Override
-    public List<SavingsAccount> getAccountsByAccountType(String accountType) {
         return null;
     }
 

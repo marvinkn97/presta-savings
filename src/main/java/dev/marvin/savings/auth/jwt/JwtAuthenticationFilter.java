@@ -50,7 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-
             var token = authorizationHeader.substring(7);
             boolean validToken = jwtService.validateJwtToken(token);
 
