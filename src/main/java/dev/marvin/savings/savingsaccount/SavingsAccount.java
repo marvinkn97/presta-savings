@@ -35,7 +35,7 @@ public class SavingsAccount implements Serializable {
     private BigDecimal balance;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "customer_id_fk"))
     private Customer customer;
 }

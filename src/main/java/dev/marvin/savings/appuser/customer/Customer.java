@@ -9,13 +9,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+
 @Entity
 @Table(name = "customers", uniqueConstraints = @UniqueConstraint(name = "member_number_unique", columnNames = "memberNumber"))
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Customer implements Serializable {
     @Id
     @GeneratedValue
@@ -56,6 +57,6 @@ public class Customer implements Serializable {
     @JoinColumn(name = "app_user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "app_user_id_fk"))
     private AppUser appUser;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private List<SavingsAccount> savingsAccounts;
 }

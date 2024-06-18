@@ -21,7 +21,7 @@ import java.util.List;
         contact = @Contact(name = "Marvin", email = "marvin.nyingi97@gmail.com")))
 @ComponentScan(basePackages = "dev.marvin.savings")
 public class SavingsApplication {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         new SpringApplicationBuilder()
                 .profiles("dev")
                 .sources(SavingsApplication.class)
@@ -31,7 +31,7 @@ public class SavingsApplication {
     @Bean
     public CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            AppUser admin = AppUser.builder()
+            var admin = AppUser.builder()
                     .username("admin@presta")
                     .password(passwordEncoder.encode("password"))
                     .role(Role.ADMIN)
@@ -39,7 +39,7 @@ public class SavingsApplication {
                     .isNotLocked(true)
                     .build();
 
-            AppUser CSR = AppUser.builder()
+            var CSR = AppUser.builder()
                     .username("csr@presta")
                     .password(passwordEncoder.encode("password"))
                     .role(Role.CSR)
@@ -50,6 +50,7 @@ public class SavingsApplication {
             var users = List.of(admin, CSR);
 
             appUserRepository.saveAll(users);
+
         };
     }
 

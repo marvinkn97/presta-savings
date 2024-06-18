@@ -14,14 +14,13 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 
-@Builder
+@Entity
+@Table(name = "app_users")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
-@Entity
-@ToString
-@Table(name = "app_users")
 public class AppUser implements Serializable, UserDetails {
     @Id
     @SequenceGenerator(name = "user_id_sequence", sequenceName = "user_id_sequence")

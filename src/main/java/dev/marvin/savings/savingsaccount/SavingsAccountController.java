@@ -20,7 +20,7 @@ public class SavingsAccountController {
 
     @PreAuthorize(value = "hasAuthority('CUSTOMER')")
     @PostMapping
-    public ResponseEntity<AppResponse> createAccount(@RequestBody NewSavingsAccountRequest accountRequest) {
+    public ResponseEntity<AppResponse> createAccount(@RequestBody SavingsAccountRequest accountRequest) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var appUser = (AppUser) authentication.getPrincipal();
 
@@ -37,8 +37,18 @@ public class SavingsAccountController {
     }
 
     @GetMapping
-    public List<SavingsAccount> getAllAccounts() {
-        return savingsAccountService.getAllAccounts();
+    @PreAuthorize("hasAuthority('CSR')")
+    public ResponseEntity<AppResponse> getAllAccounts() {
+        var accounts = savingsAccountService.getAllAccounts();
+
+        AppResponse appResponse = AppResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.OK.value())
+                .reason(HttpStatus.OK.getReasonPhrase())
+                .data(accounts)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(appResponse);
     }
 
     @GetMapping("/member/{memberNo}")

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,21 +15,27 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
     private final SavingsAccountRepository savingsAccountRepository;
 
     @Override
-    public void createAccount(NewSavingsAccountRequest accountRequest, Customer customer) {
-        SavingsAccount savingsAccount =  SavingsAccount.builder()
-                    .accountNumber(generateAccountNumber())
-                    .accountName(accountRequest.accountName().toUpperCase())
-                    .savingsAccountType(SavingsAccountType.valueOf(accountRequest.accountType().toUpperCase()))
-                    .balance(BigDecimal.ZERO)
-                    .customer(customer)
-                    .build();
+    public void createAccount(SavingsAccountRequest accountRequest, Customer customer) {
+        SavingsAccount savingsAccount = SavingsAccount.builder()
+                .accountNumber(generateAccountNumber())
+                .accountName(accountRequest.accountName().toUpperCase())
+                .savingsAccountType(SavingsAccountType.valueOf(accountRequest.accountType().toUpperCase()))
+                .balance(BigDecimal.ZERO)
+                .customer(customer)
+                .build();
 
-         savingsAccountRepository.save(savingsAccount);
+        savingsAccountRepository.save(savingsAccount);
     }
 
     @Override
-    public List<SavingsAccount> getAllAccounts() {
-        return savingsAccountRepository.findAll();
+    public List<SavingsAccountResponse> getAllAccounts() {
+        var accounts = savingsAccountRepository.findAll();
+        List<SavingsAccountResponse> response = new ArrayList<>();
+        accounts.forEach(savingsAccount -> {
+            var accountDTO = SavingsAccountMapper.mapToDTO(savingsAccount);
+            response.add(accountDTO);
+        });
+        return response;
     }
 
     @Override
@@ -38,7 +45,7 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Override
     public SavingsAccount getAccountByAccountNumber(String accountNumber) {
-      return null;
+        return null;
     }
 
     @Override
@@ -52,13 +59,11 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Override
     public Double getAllCustomersAccountTotalBalance() {
-      return null;
+        return null;
     }
 
     private String generateAccountNumber() {
-        return "ACC" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        return UUID.randomUUID().toString();
     }
-
-
 }
 
