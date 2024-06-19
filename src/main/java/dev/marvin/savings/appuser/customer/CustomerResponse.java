@@ -1,8 +1,10 @@
 package dev.marvin.savings.appuser.customer;
 
+import dev.marvin.savings.savingsaccount.SavingsAccountResponse;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 public record CustomerResponse(
@@ -16,6 +18,7 @@ public record CustomerResponse(
         String governmentId,
         String kraPin,
         LocalDateTime createdAt,
-        boolean isDeleted
+        boolean isDeleted,
+        List<SavingsAccountResponse> accounts
 ) {
 }

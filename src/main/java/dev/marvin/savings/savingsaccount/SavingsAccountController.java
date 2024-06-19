@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/accounts")
@@ -51,17 +50,12 @@ public class SavingsAccountController {
         return ResponseEntity.status(HttpStatus.OK).body(appResponse);
     }
 
-    @GetMapping("/member/{memberNo}")
-    public List<SavingsAccount> getAccountsByMemberNumber(@PathVariable("memberNo") String memberNumber) {
-        return savingsAccountService.getAccountsByMemberNumber(memberNumber);
-    }
+//    @GetMapping("/{accountNo}")
+//    public SavingsAccount getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber) {
+//        return savingsAccountService.getAccountByAccountNumber(accountNumber);
+//    }
 
-    @GetMapping("/{accountNo}")
-    public SavingsAccount getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber) {
-        return savingsAccountService.getAccountByAccountNumber(accountNumber);
-    }
-
-    @DeleteMapping("/{accountNo}/delete")
+    @DeleteMapping("/{accountNo}")
     public String deleteAccount(@PathVariable("accountNo") String accountNumber) {
         savingsAccountService.deleteAccount(accountNumber);
         return null;

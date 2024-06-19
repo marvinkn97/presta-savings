@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -58,8 +59,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         var savedAppUser = appUserRepository.save(appUser);
 
-
         var customer = CustomerMapper.mapToEntity(registrationRequest);
+        customer.setMemberNumber(generateMemberNumber());
+        customer.setDeleted(false);
         customer.setAppUser(savedAppUser);
 
         var savedCustomer = customerRepository.save(customer);
@@ -67,6 +69,10 @@ public class CustomerServiceImpl implements CustomerService {
         generateConfirmationTokenAndSendToEmail(savedCustomer);
 
         return REGISTRATION_RESPONSE;
+    }
+
+    private String generateMemberNumber(){
+        return UUID.randomUUID().toString();
     }
 
     public void confirmEmailToken(String token) {
