@@ -21,9 +21,7 @@ public class CustomerMapper {
     public static CustomerResponse mapToDTO(Customer customer) {
         var accounts = new ArrayList<SavingsAccountResponse>();
 
-         customer.getSavingsAccounts().forEach(savingsAccount -> {
-            accounts.add(SavingsAccountMapper.mapToDTO(savingsAccount));
-        });
+         customer.getSavingsAccounts().forEach(savingsAccount -> accounts.add(SavingsAccountMapper.mapToDTO(savingsAccount)));
 
 
         return CustomerResponse.builder()

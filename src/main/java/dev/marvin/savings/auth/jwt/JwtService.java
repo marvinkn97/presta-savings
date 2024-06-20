@@ -1,5 +1,6 @@
 package dev.marvin.savings.auth.jwt;
 
+import dev.marvin.savings.appuser.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -36,6 +37,14 @@ public class JwtService {
         Map<String, Object> claimsMap = new HashMap<>();
 
         role.ifPresent(s -> claimsMap.put("role", s));
+
+        role.ifPresent(s -> {
+            if(s.equals("CUSTOMER")){
+              var userDetails = (AppUser) authentication.getPrincipal();
+                System.out.println(userDetails.getCustomer().getMemberNumber());
+                claimsMap.put("memNo", userDetails.getCustomer().getMemberNumber());
+            }
+        });
 
         return Jwts.builder()
                 .setIssuer("savings@presta")

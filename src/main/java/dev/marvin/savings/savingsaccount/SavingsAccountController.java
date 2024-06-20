@@ -50,6 +50,7 @@ public class SavingsAccountController {
         return ResponseEntity.status(HttpStatus.OK).body(appResponse);
     }
 
+
 //    @GetMapping("/{accountNo}")
 //    public SavingsAccount getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber) {
 //        return savingsAccountService.getAccountByAccountNumber(accountNumber);
