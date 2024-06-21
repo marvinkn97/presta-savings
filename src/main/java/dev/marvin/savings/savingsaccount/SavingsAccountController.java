@@ -2,6 +2,8 @@ package dev.marvin.savings.savingsaccount;
 
 import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.config.AppResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +16,13 @@ import java.util.Date;
 @RestController
 @RequestMapping("api/v1/accounts")
 @RequiredArgsConstructor
+@Tag(name = "Savings Account Resource", description = "SavingsAccount Management")
 public class SavingsAccountController {
     private final SavingsAccountService savingsAccountService;
 
     @PreAuthorize(value = "hasAuthority('CUSTOMER')")
     @PostMapping
+    @Operation(method = "POST", description = "Create Savings Account")
     public ResponseEntity<AppResponse> createAccount(@RequestBody SavingsAccountRequest accountRequest) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var appUser = (AppUser) authentication.getPrincipal();

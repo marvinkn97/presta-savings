@@ -3,6 +3,8 @@ package dev.marvin.savings.auth;
 import dev.marvin.savings.auth.jwt.JwtService;
 import dev.marvin.savings.config.AppResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,7 @@ import java.util.Date;
 @RestController
 @RequestMapping(value = "api/v1/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -29,9 +32,13 @@ public class AuthenticationController {
         Authentication authentication = authenticationManager
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(authenticationRequest.username(), authenticationRequest.password()));
+        String token = null;
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtService.generateJwtToken(authentication);
+        if(ObjectUtils.isNotEmpty(authentication) && authentication.isAuthenticated()){
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtService.generateJwtToken(authentication);
+            log.info("Generated Token: {}", token);
+        }
 
         AppResponse response = AppResponse.builder()
                 .timestamp(new Date())

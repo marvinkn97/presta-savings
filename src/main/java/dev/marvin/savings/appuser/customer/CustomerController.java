@@ -16,7 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/customers")
@@ -76,8 +78,6 @@ public class CustomerController {
         return ResponseEntity.ok(appResponse);
     }
 
-
-
     @GetMapping
     @PreAuthorize("hasAuthority('CSR')")
     @Operation(method = "GET", description = "Get All Customers")
@@ -87,6 +87,8 @@ public class CustomerController {
                     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = {@Content(schema = @Schema(implementation = AppResponse.class))})})
     public ResponseEntity<AppResponse> getAllCustomers() {
         List<CustomerResponse> customers = customerService.getAllCustomers();
+
+        Map<String,Object> payload = new HashMap<>();
 
         AppResponse response = AppResponse.builder()
                 .timestamp(new Date())
@@ -99,7 +101,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{memberNumber}")
-    @PreAuthorize("hasAnyAuthority('CSR', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('CSR','CUSTOMER')")
     @Operation(method = "GET", description = "Get One Customer")
     public ResponseEntity<AppResponse> getCustomerByMemberNumber(@PathVariable("memberNumber") String memberNumber) {
         var customer = customerService.getCustomerByMemberNumber(memberNumber);

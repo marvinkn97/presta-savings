@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -22,10 +21,6 @@ public class JwtService {
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     public final String generateJwtToken(Authentication authentication) {
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new BadCredentialsException("Not Authenticated");
-        }
 
         var expirationDurationMs = 60 * 60 * 1000;
         var expirationDate = new Date().getTime() + expirationDurationMs;
