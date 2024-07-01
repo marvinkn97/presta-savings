@@ -7,8 +7,7 @@ import java.util.List;
 public interface SavingsAccountService {
     void createAccount(SavingsAccountRequest accountRequest, Customer customer);
     List<SavingsAccountResponse> getAllAccounts();
-    List<SavingsAccount> getAccountsByMemberNumber(String memberNumber);
-    SavingsAccount getAccountByAccountNumber(String accountNumber);
+    List<SavingsAccountResponse> getAccountsByMemberNumber(String memberNumber);
     void deleteAccount(String accountNumber);
     Double getAllCustomerAccountsTotalBalance(String memberNumber);
     Double getAllCustomersAccountTotalBalance();

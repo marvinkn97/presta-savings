@@ -54,11 +54,20 @@ public class SavingsAccountController {
         return ResponseEntity.status(HttpStatus.OK).body(appResponse);
     }
 
+    @GetMapping("/member/{memberNo}")
+    @PreAuthorize(value = "hasAnyAuthority('CUSTOMER', 'CSR')")
+    public ResponseEntity<AppResponse> getAllAccountsByMemberNumber(@PathVariable("memberNo") String memberNumber){
+        var accounts = savingsAccountService.getAccountsByMemberNumber(memberNumber);
 
-//    @GetMapping("/{accountNo}")
-//    public SavingsAccount getAccountByAccountNumber(@PathVariable("accountNo") String accountNumber) {
-//        return savingsAccountService.getAccountByAccountNumber(accountNumber);
-//    }
+        AppResponse appResponse = AppResponse.builder()
+                .timestamp(new Date())
+                .status(HttpStatus.OK.value())
+                .reason(HttpStatus.OK.getReasonPhrase())
+                .data(accounts)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(appResponse);
+    }
 
     @DeleteMapping("/{accountNo}")
     public String deleteAccount(@PathVariable("accountNo") String accountNumber) {

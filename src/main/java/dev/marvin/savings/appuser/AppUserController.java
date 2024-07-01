@@ -29,7 +29,10 @@ public class AppUserController {
     @PreAuthorize(value = "hasAuthority('ADMIN')")
     @Operation(method = "GET", description = "Get All AppUsers")
     @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = AppResponse.class))})
-    public ResponseEntity<AppResponse> getAllAppUsers() {
+    public ResponseEntity<AppResponse> getAllAppUsers() throws InterruptedException {
+
+        Thread.sleep(1000);
+
         List<AppUserResponse> users = appUserService.getAllAppUsers();
 
         AppResponse response = AppResponse.builder()
