@@ -1,4 +1,4 @@
-package dev.marvin.savings.transaction;
+package dev.marvin.savings.dto;
 
 public record TransactionResponse() {
 }

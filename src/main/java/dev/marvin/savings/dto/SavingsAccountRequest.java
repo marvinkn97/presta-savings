@@ -1,4 +1,4 @@
-package dev.marvin.savings.savingsaccount;
+package dev.marvin.savings.dto;
 
 public record SavingsAccountRequest(String accountName, String accountType) {
 }

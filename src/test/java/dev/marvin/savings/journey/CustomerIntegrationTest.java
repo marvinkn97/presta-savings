@@ -6,7 +6,7 @@ import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.appuser.customer.CustomerRegistrationRequest;
 import dev.marvin.savings.appuser.customer.CustomerUpdateRequest;
-import dev.marvin.savings.auth.jwt.JwtService;
+import dev.marvin.savings.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
 import org.json.JSONArray;

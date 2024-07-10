@@ -1,4 +1,4 @@
-package dev.marvin.savings.auth.jwt;
+package dev.marvin.savings.service;
 
 import dev.marvin.savings.appuser.AppUser;
 import io.jsonwebtoken.Claims;

@@ -1,9 +1,15 @@
-package dev.marvin.savings.transaction;
+package dev.marvin.savings.serviceImpl;
 
+import dev.marvin.savings.dto.TransactionRequest;
+import dev.marvin.savings.entity.PaymentMethod;
+import dev.marvin.savings.entity.SavingsAccount;
+import dev.marvin.savings.entity.Transaction;
+import dev.marvin.savings.entity.TransactionType;
 import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
-import dev.marvin.savings.savingsaccount.SavingsAccount;
-import dev.marvin.savings.savingsaccount.SavingsAccountRepository;
+import dev.marvin.savings.repository.TransactionRepository;
+import dev.marvin.savings.repository.SavingsAccountRepository;
+import dev.marvin.savings.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

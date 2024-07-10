@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 public enum Role {
     ADMIN,
     CUSTOMER,
-    CSR;
+    CSR
 }

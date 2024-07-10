@@ -1,6 +1,5 @@
-package dev.marvin.savings.savingsaccount;
+package dev.marvin.savings.dto;
 
-import dev.marvin.savings.transaction.TransactionResponse;
 import lombok.Builder;
 
 import java.math.BigDecimal;

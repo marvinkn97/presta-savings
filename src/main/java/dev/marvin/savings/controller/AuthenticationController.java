@@ -1,7 +1,8 @@
-package dev.marvin.savings.auth;
+package dev.marvin.savings.controller;
 
-import dev.marvin.savings.auth.jwt.JwtService;
+import dev.marvin.savings.service.JwtService;
 import dev.marvin.savings.config.AppResponse;
+import dev.marvin.savings.dto.AuthenticationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;

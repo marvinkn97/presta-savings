@@ -1,6 +1,5 @@
-package dev.marvin.savings.transaction;
+package dev.marvin.savings.entity;
 
-import dev.marvin.savings.savingsaccount.SavingsAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

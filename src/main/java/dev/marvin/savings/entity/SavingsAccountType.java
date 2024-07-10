@@ -1,4 +1,4 @@
-package dev.marvin.savings.savingsaccount;
+package dev.marvin.savings.entity;
 
 public enum SavingsAccountType {
     EDUCATION, PERSONAL, VACATION

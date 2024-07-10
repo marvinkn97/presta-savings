@@ -1,4 +1,4 @@
-package dev.marvin.savings.savingsaccount;
+package dev.marvin.savings.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.marvin.savings.appuser.customer.Customer;

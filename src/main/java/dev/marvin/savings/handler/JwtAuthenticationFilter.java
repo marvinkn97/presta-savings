@@ -1,7 +1,8 @@
-package dev.marvin.savings.auth.jwt;
+package dev.marvin.savings.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.marvin.savings.config.AppResponse;
+import dev.marvin.savings.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

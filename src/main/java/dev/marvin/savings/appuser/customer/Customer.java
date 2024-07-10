@@ -1,7 +1,7 @@
 package dev.marvin.savings.appuser.customer;
 
 import dev.marvin.savings.appuser.AppUser;
-import dev.marvin.savings.savingsaccount.SavingsAccount;
+import dev.marvin.savings.entity.SavingsAccount;
 import jakarta.persistence.*;
 import lombok.*;
 

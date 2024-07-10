@@ -1,6 +1,6 @@
 package dev.marvin.savings.appuser.customer;
 
-import dev.marvin.savings.savingsaccount.SavingsAccountResponse;
+import dev.marvin.savings.dto.SavingsAccountResponse;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

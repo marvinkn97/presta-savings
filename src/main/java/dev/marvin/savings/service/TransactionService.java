@@ -1,4 +1,7 @@
-package dev.marvin.savings.transaction;
+package dev.marvin.savings.service;
+
+import dev.marvin.savings.dto.TransactionRequest;
+import dev.marvin.savings.entity.Transaction;
 
 import java.util.List;
 

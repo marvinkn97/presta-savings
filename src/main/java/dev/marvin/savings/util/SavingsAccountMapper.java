@@ -1,4 +1,7 @@
-package dev.marvin.savings.savingsaccount;
+package dev.marvin.savings.util;
+
+import dev.marvin.savings.dto.SavingsAccountResponse;
+import dev.marvin.savings.entity.SavingsAccount;
 
 public class SavingsAccountMapper {
 
