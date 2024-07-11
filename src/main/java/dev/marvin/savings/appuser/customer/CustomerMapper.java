@@ -1,6 +1,5 @@
 package dev.marvin.savings.appuser.customer;
 
-import dev.marvin.savings.util.SavingsAccountMapper;
 import dev.marvin.savings.dto.SavingsAccountResponse;
 
 import java.util.ArrayList;

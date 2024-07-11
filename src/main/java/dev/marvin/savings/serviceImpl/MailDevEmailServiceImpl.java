@@ -1,5 +1,6 @@
-package dev.marvin.savings.notifications.email;
+package dev.marvin.savings.serviceImpl;
 
+import dev.marvin.savings.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MailDevEmailService implements EmailService {
+public class MailDevEmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
 
     @Override

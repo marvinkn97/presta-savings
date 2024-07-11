@@ -8,7 +8,7 @@ import dev.marvin.savings.appuser.confirmationtoken.ConfirmationTokenService;
 import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
-import dev.marvin.savings.notifications.email.EmailService;
+import dev.marvin.savings.service.EmailService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

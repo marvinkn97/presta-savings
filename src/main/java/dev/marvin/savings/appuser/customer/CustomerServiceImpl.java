@@ -8,7 +8,7 @@ import dev.marvin.savings.exception.DuplicateResourceException;
 import dev.marvin.savings.exception.NotificationException;
 import dev.marvin.savings.exception.RequestValidationException;
 import dev.marvin.savings.exception.ResourceNotFoundException;
-import dev.marvin.savings.notifications.email.EmailService;
+import dev.marvin.savings.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;

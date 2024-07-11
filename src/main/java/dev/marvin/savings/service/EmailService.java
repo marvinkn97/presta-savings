@@ -1,4 +1,4 @@
-package dev.marvin.savings.notifications.email;
+package dev.marvin.savings.service;
 
 public interface EmailService {
     void sendEmail(String to, String message);

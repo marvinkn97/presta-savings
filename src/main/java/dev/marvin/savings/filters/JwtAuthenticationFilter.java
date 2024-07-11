@@ -1,4 +1,4 @@
-package dev.marvin.savings.handler;
+package dev.marvin.savings.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.marvin.savings.config.AppResponse;

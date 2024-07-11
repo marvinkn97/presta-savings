@@ -7,7 +7,8 @@ import dev.marvin.savings.entity.SavingsAccount;
 import dev.marvin.savings.entity.SavingsAccountType;
 import dev.marvin.savings.repository.SavingsAccountRepository;
 import dev.marvin.savings.service.SavingsAccountService;
-import dev.marvin.savings.util.SavingsAccountMapper;
+import dev.marvin.savings.util.Mapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
+@Slf4j
 public class SavingsAccountServiceImpl implements SavingsAccountService {
 
     @Autowired
@@ -37,33 +39,45 @@ public class SavingsAccountServiceImpl implements SavingsAccountService {
             response.put("message", "Account Created Successfully");
         } catch (Exception e) {
             System.out.println(e.getClass());
+            System.out.println(e.getMessage());
         }
         return response;
     }
 
     @Override
     public Map<String, Object> getAllAccounts() {
-        var accounts = savingsAccountRepository.findAll();
-        List<SavingsAccountResponse> response = new ArrayList<>();
-        accounts.forEach(savingsAccount -> {
-            var accountDTO = SavingsAccountMapper.mapToDTO(savingsAccount);
-            response.add(accountDTO);
-        });
-        return null;
+        log.info("Inside getAllAccounts of SavingsAccountServiceImpl");
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<SavingsAccount> accounts = savingsAccountRepository.findAll();
+            List<SavingsAccountResponse> accountsDTOs = accounts.stream()
+                    .map(Mapper::mapToSavingsAccountResponse)
+                    .toList();
+            response.put("status", "200");
+            response.put("payload", accountsDTOs);
+        } catch (Exception e) {
+            response.put("status", "500");
+            response.put("msg", "Error Fetching Accounts");
+        }
+        return response;
     }
 
     @Override
     public Map<String, Object> getAccountsByMemberNumber(String memberNumber) {
-        var accounts = savingsAccountRepository.findByCustomerMemberNumber(memberNumber);
-
-        List<SavingsAccountResponse> response = new ArrayList<>();
-
-        accounts.forEach(savingsAccount -> {
-            var accountDTO = SavingsAccountMapper.mapToDTO(savingsAccount);
-            response.add(accountDTO);
-        });
-
-        return null;
+        log.info("Inside getAllAccountsByMemberNumber of SavingsAccountServiceImpl");
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<SavingsAccount> accounts = savingsAccountRepository.findByCustomerMemberNumber(memberNumber);
+            List<SavingsAccountResponse> accountsDTOs = accounts.stream()
+                    .map(Mapper::mapToSavingsAccountResponse)
+                    .toList();
+            response.put("status", "200");
+            response.put("payload", accountsDTOs);
+        } catch (Exception e) {
+            response.put("status", "500");
+            response.put("msg", "Error Fetching Accounts");
+        }
+        return response;
     }
 
     @Override
