@@ -1,7 +1,7 @@
 package dev.marvin.savings.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.marvin.savings.config.AppResponse;
+import dev.marvin.savings.dto.AppResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

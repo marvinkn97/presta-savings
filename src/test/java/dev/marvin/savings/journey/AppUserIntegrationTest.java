@@ -4,7 +4,7 @@ import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.appuser.AppUserRepository;
 import dev.marvin.savings.appuser.Role;
 import dev.marvin.savings.service.JwtService;
-import dev.marvin.savings.config.AppResponse;
+import dev.marvin.savings.dto.AppResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

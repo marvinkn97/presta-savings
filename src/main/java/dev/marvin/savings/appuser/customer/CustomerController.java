@@ -1,6 +1,6 @@
 package dev.marvin.savings.appuser.customer;
 
-import dev.marvin.savings.config.AppResponse;
+import dev.marvin.savings.dto.AppResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

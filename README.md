@@ -8,13 +8,11 @@
            +  Implemented endpoints to create and manage multiple savings products, such as Education Savings, Personal Savings, and Vacation Savings.
            +  Ensured proper error handling and validation of incoming requests.
            +  Implemented unit tests to validate the functionality of the API endpoints.
-           +  Documented the APIs using Swagger, providing clear descriptions and examples for each endpoint.
+           +  Documented the APIs using Swagger.
            +  Implemented Authentication and Authorization with Spring Security and JWT
 
        +   Technologies Used
            +  Spring - Boot 3, JPA, Security with JWT
-           +  PostgreSQL
+           +  MySQL
            +  REST API Documentation with SpringDoc OPENAPI
            +  Tiara Connect SMS Gateway [https://www.tiaraconnect.io/]
-           +  MailDev [https://github.com/maildev/maildev]
-           +  Testcontainers for Persistence Layer Unit tests

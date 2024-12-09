@@ -1,6 +1,8 @@
 package dev.marvin.savings.service;
 
+import dev.marvin.savings.dto.SmsRequest;
+
 public interface SmsService{
-    String sendSMS(String from, String to, String message);
+    void sendSMS(SmsRequest smsRequest);
 
 }

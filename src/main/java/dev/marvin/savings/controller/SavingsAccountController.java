@@ -1,7 +1,7 @@
 package dev.marvin.savings.controller;
 
 import dev.marvin.savings.appuser.AppUser;
-import dev.marvin.savings.config.AppResponse;
+import dev.marvin.savings.dto.AppResponse;
 import dev.marvin.savings.dto.SavingsAccountRequest;
 import dev.marvin.savings.service.SavingsAccountService;
 import io.swagger.v3.oas.annotations.Operation;
