@@ -1,23 +1,20 @@
 package dev.marvin.savings.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.marvin.savings.appuser.customer.Customer;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "t_savings_accounts")
-public class SavingsAccount implements Serializable {
+public class SavingsAccount{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Integer id;
 
@@ -34,8 +31,7 @@ public class SavingsAccount implements Serializable {
     @Column(nullable = false, columnDefinition = "DECIMAL(15,2)")
     private BigDecimal balance;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "customer_id_fk"))
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 }

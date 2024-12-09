@@ -1,8 +1,8 @@
-package dev.marvin.serviceImpl;
+package dev.marvin.savings.serviceImpl;
 
-import dev.marvin.domain.UserEntity;
-import dev.marvin.domain.UserPrincipal;
-import dev.marvin.utils.UserUtils;
+import dev.marvin.savings.entity.UserEntity;
+import dev.marvin.savings.entity.UserPrincipal;
+import dev.marvin.savings.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

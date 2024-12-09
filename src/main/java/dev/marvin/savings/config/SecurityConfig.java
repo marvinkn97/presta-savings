@@ -1,8 +1,8 @@
 package dev.marvin.savings.config;
 
-import dev.marvin.savings.filters.AccessDeniedHandler;
-import dev.marvin.savings.filters.AuthenticationEntryPoint;
-import dev.marvin.savings.filters.JwtAuthenticationFilter;
+import dev.marvin.savings.filter.AccessDeniedHandler;
+import dev.marvin.savings.filter.AuthenticationEntryPoint;
+import dev.marvin.savings.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

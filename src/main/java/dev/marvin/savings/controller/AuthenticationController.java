@@ -1,19 +1,17 @@
 package dev.marvin.savings.controller;
 
-import dev.marvin.savings.dto.AppResponse;
-import dev.marvin.savings.dto.AuthenticationRequest;
-import dev.marvin.savings.dto.OtpVerificationRequest;
+import dev.marvin.savings.dto.*;
 import dev.marvin.savings.service.UserService;
+import dev.marvin.savings.util.JwtUtils;
 import dev.marvin.savings.util.OtpUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +32,7 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final OtpUtils otpUtils;
+    private final JwtUtils jwtUtils;
 
     @PostMapping("/verify-user")
     @Operation(summary = "Verify user", description = "Checks if a user is registered by their mobile number. If registered, prompts login; otherwise, sends an OTP for registration.", method = "POST")
@@ -60,31 +59,31 @@ public class AuthenticationController {
 
     @PostMapping("/create-password")
     @Operation(summary = "Create Password", description = "Creates a secure password for the user. Password must be at least 8 characters long.", method = "POST")
-    @ApiResponses({@ApiResponse(responseCode = "201", description = "Password created successfully", content = @Content(schema = @Schema(implementation = ResponseDto.class))), @ApiResponse(responseCode = "400", description = "Invalid password format or request data."), @ApiResponse(responseCode = "500", description = "Internal server error.")})
-    public ResponseEntity<ResponseDto<String>> createPassword(@Valid @RequestBody PasswordCreationRequest passwordCreationRequest) {
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Password created successfully"), @ApiResponse(responseCode = "400", description = "Invalid password format or request data."), @ApiResponse(responseCode = "500", description = "Internal server error.")})
+    public ResponseEntity<AppResponse<String>> createPassword(@Valid @RequestBody PasswordCreationRequest passwordCreationRequest) {
         log.info("Inside createPassword method of AuthenticationController");
         userService.setPasswordForUser(passwordCreationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto<>(HttpStatus.CREATED.getReasonPhrase(), dev.marvin.constants.MessageConstants.PASSWORD_CREATED));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AppResponse<>(HttpStatus.CREATED.getReasonPhrase(), dev.marvin.constants.MessageConstants.PASSWORD_CREATED));
     }
 
     @PostMapping("/complete-profile")
     @Operation(summary = "Complete Profile", description = "Completes the user profile by setting up required user details.", method = "POST")
-    @ApiResponses({@ApiResponse(responseCode = "200", description = "User profile completed successfully.", content = @Content(schema = @Schema(implementation = ResponseDto.class))), @ApiResponse(responseCode = "400", description = "Invalid request data.", content = @Content(schema = @Schema(implementation = ResponseDto.class))), @ApiResponse(responseCode = "500", description = "Internal server error.", content = @Content(schema = @Schema(implementation = ResponseDto.class)))})
-    public ResponseEntity<ResponseDto<String>> completeProfile(@Valid @RequestBody UserProfileRequest userProfileRequest) {
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "User profile completed successfully."), @ApiResponse(responseCode = "400", description = "Invalid request data."), @ApiResponse(responseCode = "500", description = "Internal server error.")})
+    public ResponseEntity<AppResponse<String>> completeProfile(@Valid @RequestBody UserProfileRequest userProfileRequest) {
         log.info("Inside completeProfile method of AuthenticationController");
         userService.completeUserProfile(userProfileRequest);
-        return ResponseEntity.ok(new ResponseDto<>(HttpStatus.CREATED.getReasonPhrase(), dev.marvin.constants.MessageConstants.ACCOUNT_CREATED));
+        return ResponseEntity.ok(new AppResponse<>(HttpStatus.CREATED.getReasonPhrase(), dev.marvin.constants.MessageConstants.ACCOUNT_CREATED));
     }
 
 
     @PostMapping("/login")
     @Operation(summary = "User login", description = "Verifies user credentials and generates a JWT token for successful login.", method = "POST")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User successfully authenticated and JWT token generated"), @ApiResponse(responseCode = "401", description = "Invalid credentials provided")})
-    public ResponseEntity<ResponseDto<Object>> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<AppResponse<Object>> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
         log.info("Inside authenticate method of AuthenticationController");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.mobile(), authenticationRequest.password()));
         String token = jwtUtils.generateToken(authentication);
-        return ResponseEntity.ok(new ResponseDto<>(HttpStatus.OK.getReasonPhrase(), new AuthenticationResponse(token)));
+        return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.AUTHORIZATION, token).body(new AppResponse<>(HttpStatus.OK.getReasonPhrase(), new AuthenticationResponse(token)));
     }
 
 }

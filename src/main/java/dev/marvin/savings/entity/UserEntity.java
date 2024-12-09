@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 @Entity
-@Table(name = "tbl_users")
+@Table(name = "t_users")
 @NoArgsConstructor
 @Getter
 @Setter

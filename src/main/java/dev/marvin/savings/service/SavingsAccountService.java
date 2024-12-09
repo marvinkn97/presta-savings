@@ -1,12 +1,12 @@
 package dev.marvin.savings.service;
 
-import dev.marvin.savings.appuser.customer.Customer;
 import dev.marvin.savings.dto.SavingsAccountRequest;
+import dev.marvin.savings.entity.UserEntity;
 
 import java.util.Map;
 
 public interface SavingsAccountService {
-    Map<String, Object> createAccount(SavingsAccountRequest accountRequest, Customer customer);
+    void createAccount(SavingsAccountRequest accountRequest, UserEntity userEntity);
     Map<String, Object> getAllAccounts();
     Map<String, Object> getAccountsByMemberNumber(String memberNumber);
     Map<String, Object> deleteAccount(String accountNumber);

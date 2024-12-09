@@ -1,56 +1,31 @@
 package dev.marvin.savings;
 
-import dev.marvin.savings.appuser.AppUser;
-import dev.marvin.savings.appuser.AppUserRepository;
-import dev.marvin.savings.appuser.Role;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Contact;
-import io.swagger.v3.oas.annotations.info.Info;
+import dev.marvin.savings.entity.RoleEnum;
+import dev.marvin.savings.entity.UserEntity;
+import dev.marvin.savings.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
-
 @SpringBootApplication(scanBasePackages = "dev.marvin.savings")
-@OpenAPIDefinition(info = @Info(title = "Presta Savings App Documentation",
-        description = "Spring Boot  REST API Documentation", version = "v1.0",
-        contact = @Contact(name = "Marvin", email = "marvin.nyingi97@gmail.com")))
 @ComponentScan(basePackages = "dev.marvin.savings")
 public class SavingsApplication {
     public static void main(String... args) {
-        new SpringApplicationBuilder()
-                .profiles("dev")
-                .sources(SavingsApplication.class)
-                .run(args);
+        SpringApplication.run(SavingsApplication.class, args);
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner commandLineRunner(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            var admin = AppUser.builder()
-                    .username("admin@presta")
-                    .password(passwordEncoder.encode("password"))
-                    .role(Role.ADMIN)
-                    .isEnabled(true)
-                    .isNotLocked(true)
-                    .build();
-
-            var CSR = AppUser.builder()
-                    .username("csr@presta")
-                    .password(passwordEncoder.encode("password"))
-                    .role(Role.CSR)
-                    .isEnabled(true)
-                    .isNotLocked(true)
-                    .build();
-
-            var users = List.of(admin, CSR);
-
-            appUserRepository.saveAll(users);
-
+            UserEntity userEntity = new UserEntity();
+            userEntity.setMobileNumber("254707808236");
+            userEntity.setFullName("Admin");
+            userEntity.setPassword(passwordEncoder.encode("password"));
+            userEntity.setRoleEnum(RoleEnum.ROLE_ADMIN);
+            userRepository.save(userEntity);
         };
     }
 

@@ -1,4 +1,4 @@
 package dev.marvin.savings.dto;
 
-public record AuthenticationRequest(String username, String password) {
+public record AuthenticationRequest(String mobile, String password) {
 }

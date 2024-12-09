@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Builder
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "t_transactions")
-public class Transaction implements Serializable {
+public class Transaction{
     @Id
     @GeneratedValue
     @Column(nullable = false, updatable = false)

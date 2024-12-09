@@ -1,20 +1,14 @@
 package dev.marvin.savings.controller;
 
-import dev.marvin.savings.appuser.AppUser;
 import dev.marvin.savings.dto.AppResponse;
 import dev.marvin.savings.dto.SavingsAccountRequest;
 import dev.marvin.savings.service.SavingsAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 
 @RestController
@@ -29,16 +23,12 @@ public class SavingsAccountController {
     @PostMapping
     @Operation(method = "POST", description = "Create Savings Account")
     public ResponseEntity<?> createAccount(@RequestBody SavingsAccountRequest accountRequest) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AppUser appUser = (AppUser) authentication.getPrincipal();
-        Map<String, Object> response = savingsAccountService.createAccount(accountRequest, appUser.getCustomer());
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return null;
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('CSR')")
     public ResponseEntity<AppResponse> getAllAccounts() {
-
         return null;
     }
 

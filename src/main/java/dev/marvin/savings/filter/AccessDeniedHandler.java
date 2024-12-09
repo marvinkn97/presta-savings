@@ -1,4 +1,4 @@
-package dev.marvin.savings.filters;
+package dev.marvin.savings.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.marvin.savings.dto.AppResponse;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
 
 @Component
 @Slf4j
@@ -23,12 +22,7 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        AppResponse appResponse = AppResponse.builder()
-                .timestamp(new Date())
-                .status(HttpStatus.FORBIDDEN.value())
-                .reason(HttpStatus.FORBIDDEN.getReasonPhrase())
-                .data("You do not have permission to access this data")
-                .build();
+        AppResponse<String> appResponse = new AppResponse<>(HttpStatus.FORBIDDEN.getReasonPhrase(), "You do not have permission to access this data");
 
         OutputStream outputStream = response.getOutputStream();
 
