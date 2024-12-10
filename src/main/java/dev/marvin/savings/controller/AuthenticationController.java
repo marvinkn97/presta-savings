@@ -84,5 +84,4 @@ public class AuthenticationController {
         String token = jwtUtils.generateToken(authentication);
         return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.AUTHORIZATION, token).body(new AppResponse<>(HttpStatus.OK.getReasonPhrase(), new AuthenticationResponse(token)));
     }
-
 }

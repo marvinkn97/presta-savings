@@ -37,6 +37,8 @@ public class UserEntity {
     @Column(name = "role")
     private RoleEnum roleEnum;
 
+    //TODO: Capture KRA and Government ID details
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
