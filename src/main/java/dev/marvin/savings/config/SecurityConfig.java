@@ -50,7 +50,7 @@ public class SecurityConfig {
                                         "/swagger-resources/**", // Swagger resources
                                         "/webjars/**" // Webjars for Swagger
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.POST, "api/v1/auth").permitAll()
+                                .requestMatchers(HttpMethod.POST, "api/v1/auth/**").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {

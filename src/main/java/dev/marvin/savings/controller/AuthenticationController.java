@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Tag(name = "Authentication Resource", description = "User Authentication Operation")
 public class AuthenticationController {
-
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final OtpUtils otpUtils;
